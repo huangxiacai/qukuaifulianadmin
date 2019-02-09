@@ -1,0 +1,20 @@
+@import '~iview/src/styles/index.less';
+//封装table header后fixed left right出现置顶的情况
+.packageTable .ivu-table-fixed,.packageTable .ivu-table-fixed-right{
+  top:48px !important;
+}
+.packageTable .ivu-table-title{
+  height: 64px!important;
+  line-height: normal !important;
+}
+@menu-dark-title: #001529;
+@menu-dark-active-bg: #000c17;
+@layout-sider-background: #001529;
+
+.ac_card .ivu-card-body{
+  height: 100%;
+}
+//必填的星号显示与否
+.hasRequireClass label:before{
+  content: " "!important;
+}
