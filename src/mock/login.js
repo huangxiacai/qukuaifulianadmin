@@ -30,12 +30,12 @@ export const login = req => {
   req = JSON.parse(req.body)
   let result = USER_MAP['super_admin'];
   let temp = {
-    "body":
+    "data":
       {
         ...result
       },
-    "result": 0,
-    "errorMsg": ""
+    "code": 20000,
+    "msg": ""
   };
   return temp;
 };
@@ -48,12 +48,12 @@ export const login = req => {
 export const getUserInfo = req => {
   //const params = getParams(req.url)
   let temp = {
-    "body":
+    "data":
       {
         ...USER_MAP.uerInfo
       },
-    "result": 0,
-    "errorMsg": ""
+    "code": 20000,
+    "msg": ""
   };
   return temp
 }

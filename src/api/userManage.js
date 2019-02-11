@@ -107,5 +107,79 @@ export const getUserMessageBase=(params)=>{
     data,
     method: 'post'
   })
-}
-
+};
+/**
+ * 分页查询所有的用户
+ * @param params
+ * @returns {*}
+ */
+export const getqueryUsers=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.queryUsers,
+    data,
+    method: 'post'
+  })
+};
+/**
+ * 改变用户账号状态
+ * @param params
+ * @returns {*}
+ */
+export const updateUserStatus=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.updateUserStatus,
+    data,
+    method: 'post'
+  })
+};
+/**
+ * 分页查询用户福利值活跃度
+ * @param params
+ * @returns {*}
+ */
+export const queryUserValues=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.queryUserValues,
+    data,
+    method: 'post'
+  })
+};
+/**
+ * 分页查询用户的福豆数量
+ * @param params
+ * @returns {*}
+ */
+export const queryUserBeans=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.queryUserBeans,
+    data,
+    method: 'post'
+  })
+};
+/**
+ * 分页查询用户的福豆数量
+ * @param params
+ * @returns {*}
+ */
+export const insertUser=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.insertUser,
+    data,
+    method: 'post'
+  })
+};

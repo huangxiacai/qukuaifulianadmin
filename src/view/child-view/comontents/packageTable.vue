@@ -21,7 +21,7 @@ slot=headRight  如排序字段 操作
       <div class="headRight">
         <slot name="headRight"></slot>
         <Button v-show="showSearchBtn" class="leftBtn" icon="ios-search" @click="showSearchPanel">高级搜索</Button>
-        <Button v-show="showRefreshBtn" class="leftBtn" icon="ios-refresh" @click="showRefreshParel">刷新</Button>
+        <!--<Button v-show="showRefreshBtn" class="leftBtn" icon="ios-refresh" @click="showRefreshParel">刷新</Button>-->
       </div>
     </div>
     <div slot="footer"

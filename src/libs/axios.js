@@ -26,8 +26,8 @@ class HttpRequest {
       headers: {
         //
         //'Content-Type':'text/plain',//+stringify
-        //'Content-Type': "application/x-www-form-urlencoded",//+stringify
-        "Content-Type": "application/json;"
+        'Content-Type': "application/x-www-form-urlencoded",//+stringify
+        //"Content-Type": "application/json;"
       },
       // transformRequest: [function (data) {
       //   // 对 data 进行任意转换处理
@@ -56,19 +56,9 @@ class HttpRequest {
     })
     // 响应拦截
     instance.interceptors.response.use(res => {
-      this.destroy(url)
+      this.destroy(url);
       const {data:data } = res;
-      //登录过期，重新登录
-      if(data.result===107 || data.result===812 ||data.result===813){
-        //删除 session状态，跳转登录页面
-        setToken('');
-        debugger
-        Router.$router.push({name:'login'});
-      }
-      return {
-        data:data.body,
-        status:data.result,
-        message:data.errorMsg}
+      return data;
     }, error => {
       this.destroy(url)
       addErrorLog(error.response)

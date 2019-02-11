@@ -2,14 +2,15 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import user from './module/user'
+import userManage from './module/userManage'
 import app from './module/app'
-import communityList from './module/communityList'//小区管理
-import ownerList from './module/ownerList'//业主管理
-import adminList from './module/adminList'//管理员管理
-import propertyList from './module/propertyList'//出入人员管理
-import deviceManage from './module/deviceManage'//设备管理
-import accessList from './module/accessList'//出入记录
-import roomManage from './module/roomManage'//房号管理
+// import communityList from './module/communityList'//小区管理
+// import ownerList from './module/ownerList'//业主管理
+// import adminList from './module/adminList'//管理员管理
+// import propertyList from './module/propertyList'//出入人员管理
+// import deviceManage from './module/deviceManage'//设备管理
+// import accessList from './module/accessList'//出入记录
+// import roomManage from './module/roomManage'//房号管理
 
 Vue.use(Vuex);
 
@@ -94,12 +95,6 @@ export default new Vuex.Store({
   modules: {
     user,
     app,
-    communityList,
-    ownerList,
-    adminList,
-    propertyList,
-    deviceManage,
-    accessList,
-    roomManage
+    userManage
   }
 })

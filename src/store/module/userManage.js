@@ -1,22 +1,24 @@
-import {getCommunity,editCommunity,addCommunity,delCommunity} from '../../api/communityList'
-import {getToken} from '@/libs/util'
+import {insertUser,getqueryUsers,updateUserStatus,queryUserValues,queryUserBeans} from '../../api/userManage'
+import {setToken, getToken} from '@/libs/util'
+
 export default {
   state: {
+
   },
   mutations: {
 
   },
   actions: {
     /**
-     * 获取小区信息管理
+     * 添加用户到管理
      * @param state
      * @param commit
      * @param params
      * @returns {Promise<any>}
      */
-    handleGetCommunityList({state, commit}, params){
+    handleInsertUser({state, commit}, params) {
       return new Promise((resolve, reject) => {
-        getCommunity({
+        insertUser({
           ...params,
           access_token: getToken()
         }).then(res => {
@@ -27,15 +29,15 @@ export default {
       });
     },
     /**
-     * 添加小区信息
+     * 分页查询所有的用户
      * @param state
      * @param commit
      * @param params
      * @returns {Promise<any>}
      */
-    handleAddCommunity({state, commit}, params){
+    handleGetqueryUsers({state, commit}, params) {
       return new Promise((resolve, reject) => {
-        addCommunity({
+        getqueryUsers({
           ...params,
           access_token: getToken()
         }).then(res => {
@@ -46,15 +48,15 @@ export default {
       });
     },
     /**
-     * 修改小区信息
+     * 改变用户账号状态
      * @param state
      * @param commit
      * @param params
      * @returns {Promise<any>}
      */
-    handleEditCommunity({state, commit}, params){
+    handleUpdateUserStatus({state, commit}, params) {
       return new Promise((resolve, reject) => {
-        editCommunity({
+        updateUserStatus({
           ...params,
           access_token: getToken()
         }).then(res => {
@@ -65,15 +67,15 @@ export default {
       });
     },
     /**
-     * 删除小区信息管理
+     * 分页查询用户福利值活跃度
      * @param state
      * @param commit
      * @param params
      * @returns {Promise<any>}
      */
-    handleDelCommunity({state, commit}, params){
+    handleQueryUserValues({state, commit}, params) {
       return new Promise((resolve, reject) => {
-        delCommunity({
+        queryUserValues({
           ...params,
           access_token: getToken()
         }).then(res => {
@@ -82,6 +84,25 @@ export default {
           reject(err)
         });
       });
-    }
+    },
+    /**
+     * 分页查询用户的福豆数量
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handleQueryUserBeans({state, commit}, params) {
+      return new Promise((resolve, reject) => {
+        queryUserBeans({
+          ...params,
+          access_token: getToken()
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        });
+      });
+    },
   }
 }

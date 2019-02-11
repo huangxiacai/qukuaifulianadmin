@@ -58,12 +58,13 @@ export default {
       return new Promise((resolve, reject) => {
         debugger
         login(params).then(res => {
-          if (res.status === 0) {
+          debugger
+          if (res.code === 20000) {
             const data = res.data;
             commit('setToken', data.access_token)
-            resolve(res.status)
+            resolve(res.code)
           } else {
-            resolve(res.status)
+            resolve(res.code)
           }
 
         }).catch(err => {

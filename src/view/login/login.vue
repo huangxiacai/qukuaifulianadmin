@@ -40,7 +40,7 @@ export default {
       localStorage.clear();
       sessionStorage.clear();
       this.handleLogin({ userName, password }).then(res => {
-        if(res===0){
+        if(res===20000){
           setUserNameCookie(userName);
           //设置当前帐号
           vm.getUserInfo().then(res => {
