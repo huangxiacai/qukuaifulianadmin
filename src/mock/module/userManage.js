@@ -23,7 +23,7 @@ const USER_MAP = {
       "oneCommendUserId": 0,
       "twoCommendUserId": 0,
       "inviteCode": "29DK96", // 邀请码
-      "createDate": 1548226129000, // 创建时间
+      "createDate": 1549938790000, // 创建时间
       "loginDate": 1549025298000, // 登录时间
       "ipAddress": "0:0:0:0:0:0:0:1", // IP地址
       "userAddress": {

@@ -38,6 +38,9 @@ Vue.prototype.errorCode=errorCode;
  */
 importDirective(Vue)
 
+import searchPanel from '@/views/comontents/searchPanel'//共用的搜索模块
+Vue.component('searchPanel',searchPanel);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

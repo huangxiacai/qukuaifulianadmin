@@ -1,5 +1,5 @@
 import axios from '@/libs/api.request'
-import {userManage,user} from './config'
+import {userManage} from './config'
 
 /**
  * 登录

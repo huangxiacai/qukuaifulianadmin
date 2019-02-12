@@ -9,9 +9,8 @@ export default {
       reduceheight:140,//默认需要 减去的高度
       selectTabelList:null,//table选中项
       reqBase: {//请求的base参数
-        access_token:getToken(),
-        page: 1,
-        page_size: 15,
+        currentPage: 1,
+        length: 15,
       },
       areaValue:[],//区域value
       getPageTotal: 0,//页面数据总数量
@@ -55,9 +54,8 @@ export default {
       this.areaValue=[];
       //重置筛选条件
       this.reqBase={
-        region_id: null,
-        page:1,
-        page_size:15
+        currentPage: 1,
+        length: 15,
       };
       this.init();
     },
@@ -105,7 +103,7 @@ export default {
     },
     //页码change
     pageonChange(index) {
-      this.reqBase.page=index;
+      this.reqBase.currentPage=index;
       this.init();
     },
     /**
@@ -120,7 +118,7 @@ export default {
      */
     onSearch(params){
       //重置当前页为1
-      this.reqBase.page=1;
+      this.reqBase.currentPage=1;
       Object.assign(this.reqBase,params);
       //重置当前的page
       this.$refs.contentBaseRef.initcurrentPage();

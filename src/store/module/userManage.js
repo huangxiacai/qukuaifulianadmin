@@ -55,6 +55,7 @@ export default {
      * @returns {Promise<any>}
      */
     handleUpdateUserStatus({state, commit}, params) {
+      debugger
       return new Promise((resolve, reject) => {
         updateUserStatus({
           ...params,

@@ -1,5 +1,24 @@
 <template>
   <div>
+      <searchPanel :title="title"
+                   @searchSubmit="onSearch"
+                   ref="filterBase"
+                   @resetConditions="resetConditions"
+                   :isReset="true">
+          <Form  inline class="ivu-row">
+              <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
+                  <Input v-model="filter_form.phone" type="text" icon="iphone"
+                         placeholder="请填写用户手机号"></Input>
+              </FormItem>
+              <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
+                  <Select v-model="filter_form.status" placeholder="请选择状态">
+                      <Option v-for="item in getStatus" :value="item.value"
+                              :key="item.label">{{ item.label }}
+                      </Option>
+                  </Select>
+              </FormItem>
+          </Form>
+      </searchPanel>
     <packageTable
       ref="contentBaseRef"
       :columnsData="columnsheader"
@@ -25,12 +44,32 @@
 
 <script>
   import packageTableMixins from '../mixins/packageTableMixins'
+  import {formatDate} from '../../../libs/util'
   import {mapActions} from 'vuex'
+  import addUser from './components/addUser'
   export default {
     name: "accessManage",
     mixins: [packageTableMixins],
     data() {
       return {
+        getStatus:[
+          {
+            label:'全部',
+            value:-1
+          },
+          {
+            label:'正常',
+            value:1
+          },
+          {
+            label:'冻结',
+            value:2
+          }
+        ],
+        filter_form:{
+          phone:null,
+          status:-1,
+        },
         headBtnList: [
           {
             mothod: this.add,
@@ -75,7 +114,10 @@
           {
             title: '创建时间',
             key: 'createDate',
-            align: 'center'
+            align: 'center',
+            render:(h,{row})=>{
+              return h('div',formatDate('Y-m-d',row.createDate))
+            }
           },
           {
             title: '状态',
@@ -96,6 +138,7 @@
             key: '',
             align: 'center',
             render: (h, {row}) => {
+              let vm=this;
               let result = "";
               if (row.status === 1) {
                 result = "冻结"
@@ -104,7 +147,10 @@
               }
               return h('Button', {
                 on: {
-                  click: this.updateUserStatus(row)
+                  click:function(){
+                    debugger
+                    vm.userUpdateUserStatus(row)
+                  }
                 }
               }, result)
             }
@@ -114,22 +160,101 @@
     },
     methods: {
       ...mapActions([
-        'handleGetqueryUsers'
+        'handleGetqueryUsers',
+        'handleInsertUser',
+        'handleUpdateUserStatus'
       ]),
       add() {
+        let config={
+          loading:true,
+          render:(h)=>{
+            return h('div',[
+              h('h3','新增用户帐号'),
+              h(addUser,{
+                ref:'addUser',
+                props:{
 
+                }
+              }),
+            ]);
+          },
+          onOk:function(){
+            let _this=this;
+            debugger
+            let obj=this.$refs.addUser;
+            obj.checkForm().then(res=>{
+              if(res){
+                let getData=obj.getData;
+                //发送请求
+                this.handleInsertUser({
+                  ...getData
+                }).then(res=>{
+                  if(res.code===2000){
+                    this.$Message.success("添加成功！");
+                    this.$Modal.remove();
+                    this.init();
+                  }else{
+                    this.$Message.error(res.message);
+                    _this.buttonLoading=false;
+                  }
+                });
+              }else{
+                _this.buttonLoading=false;
+              }
+            });
+          }
+        };
+        this.$Modal.confirm(config);
+      },
+      onSearch(){
+
+      },
+      //重置搜索条件
+      resetConditions(){
+        this.filter_form={
+          phone:null,
+            status:-1,
+        }
       },
       /**
        * 改变用户状态
        * @param userid
        * @param state
        */
-      updateUserStatus({userid, state}) {
+      userUpdateUserStatus({userid, status}) {
+        let vm=this;
+        let title=status==1?'冻结帐号':'解冻帐号';
+        let config={
+          title:title,
+          content:'您确定要'+title+"?",
+          loading:true,
+          onOk:function(){
+            let _this=this;
+            vm.handleUpdateUserStatus(
+              {
+                userid,
+                status
+              }
+            ).then(res=>{
+              if(res.code===20000){
+                vm.$Message.success(title);
+                vm.$Modal.remove();
+                vm.init();
+              }else{
+                vm.$Message.error(res.message);
+                _this.buttonLoading=false;
+              }
+            });
+
+          }
+        };
+        this.$Modal.confirm(config);
 
       },
       init() {
-        this.handleGetqueryUsers({}).then(res=>{
-          debugger
+        this.tableLoading=true;
+        this.handleGetqueryUsers({...this.reqBase}).then(res=>{
+          this.tableLoading=false;
           if(res.code===20000){
             this.tableDataList=res.data.data;
             this.getPageTotal=res.data.totalCount;
