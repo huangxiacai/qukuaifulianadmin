@@ -10,7 +10,7 @@ const USER_MAP = {
   },
   edit: {},
   del: {},
-  getList:  {
+  getList: {
     "data": [{
       "userId": 1,
       "nickname": "福友29DK96", // 用户昵称
@@ -19,7 +19,7 @@ const USER_MAP = {
       "payPassword": null,
       "type": 2, // 1-后台。2-安卓。3-IOS
       "image": "http%3A%2F%2Fwww.baidu.com%2FheadImage%2F2019%2F1%2F31%2F201901312001442965597.png", // 用户头像
-      "status":  1, // 1-正常，2-冻结
+      "status": 1, // 1-正常，2-冻结
       "oneCommendUserId": 0,
       "twoCommendUserId": 0,
       "inviteCode": "29DK96", // 邀请码
@@ -55,7 +55,7 @@ const USER_MAP = {
         "phone": "18819462477"
       },
       "twoCommendUser": {
-        "nickname": "福友123456" , //二级推荐人姓名
+        "nickname": "福友123456", //二级推荐人姓名
         "image": null,
         "phone": "18819462478"
       }
@@ -88,8 +88,53 @@ const USER_MAP = {
         "create_timesec": 123456,
         "region_id": 2
       }]
+  },
+  queryUserValues: {
+    "data": [{
+      "userId": 2,
+      "welfareValue": 902.5892, // 有效的福利值
+      "activeValue": 15, // 有效的活跃度
+      "freezeWelfareValue": 0.0000, // 被系统冻结的福利值
+      "freezeActive": 0, // 被系统冻结的活跃度
+      "postUser": {
+        "nickname": "福友4KG5Q8", // 昵称
+        "image": null,
+        "phone": "18819462477" // 手机号
+      }
+    }],
+    "currentPage": 1,
+    "length": 10,
+    "totalCount": 1,
+    "other": null
+  },
+  queryUserBeans:{
+    "data": [{
+      "userId": 0,
+      "suishenBean": 615.1190, // 随身福袋数量
+      "fubaoBean": 0.0000, // 福报福袋
+      "rewardBean": 0.0000, // 奖励福豆
+      "angelBean": 0.0000, // 天使投资福豆
+      "unlockBean": 0.0000, // 可解锁福豆
+      "commuityBean": 50.0000, // 社区福袋
+      "originBean": null,
+      "legalBean": 0.0000, // 法币福袋
+      "freezeBean": 30.0000, // 冻结的福袋
+      "totalBean": null,
+      "deductBean": 0.0000, // 被系统扣除的福豆
+      "postUser": {
+        "nickname": "福友4KG5Q8", // 昵称
+        "image": null,
+        "phone": "18819462477" // 手机号
+      },
+      "extend": null
+    }],
+    "currentPage": 1,
+    "length": 10,
+    "totalCount": 5,
+    "other": null
+
   }
-  };
+};
 //基本数据结构
 const result = {
   body: {},
@@ -149,7 +194,7 @@ export const updateUserStatus = req => {
  */
 export const queryUserValues = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['getList'];
+  let result = USER_MAP['queryUserValues'];
   let temp = {
     data: {...result},
     code: 20000,
@@ -164,9 +209,9 @@ export const queryUserValues = req => {
  */
 export const queryUserBeans = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['getList'];
+  let result = USER_MAP['queryUserBeans'];
   let temp = {
-    data: null,
+    data: {...result},
     code: 20000,
     msg: ""
   };
@@ -177,7 +222,7 @@ export const queryUserBeans = req => {
  * @param req
  * @returns {{body: {}, result: number, errorMsg: string}}
  */
-export const setBuserdeviceaclset=req=>{
+export const setBuserdeviceaclset = req => {
   req = JSON.parse(req.body);
   let temp = {
     body: {},

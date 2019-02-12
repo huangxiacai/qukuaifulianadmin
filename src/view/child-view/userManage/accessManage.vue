@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="position:relative;">
       <searchPanel :title="title"
-                   @searchSubmit="onSearch"
+                   @search="onSearch(filter_form)"
                    ref="filterBase"
-                   @resetConditions="resetConditions"
+                   @reset="resetConditions"
                    :isReset="true">
-          <Form  inline class="ivu-row">
+          <Form slot="formContent" inline class="ivu-row">
               <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
                   <Input v-model="filter_form.phone" type="text" icon="iphone"
                          placeholder="请填写用户手机号"></Input>
@@ -28,6 +28,7 @@
       :border="true"
       :tabletotallen="getPageTotal"
       @pageonChange="pageonChange"
+      @showSearchPanel="showSearchPanel"
       @getSelect="getSelectList">
       <template slot="headLeft">
         <Button v-for="(item,index) in headBtnList" @click="item.mothod" :key="index" class="base_btn_item"
@@ -52,6 +53,7 @@
     mixins: [packageTableMixins],
     data() {
       return {
+        title:'用户帐号管理过滤',
         getStatus:[
           {
             label:'全部',
@@ -148,7 +150,6 @@
               return h('Button', {
                 on: {
                   click:function(){
-                    debugger
                     vm.userUpdateUserStatus(row)
                   }
                 }
@@ -180,7 +181,6 @@
           },
           onOk:function(){
             let _this=this;
-            debugger
             let obj=this.$refs.addUser;
             obj.checkForm().then(res=>{
               if(res){
@@ -206,9 +206,11 @@
         };
         this.$Modal.confirm(config);
       },
-      onSearch(){
-
+      //
+      showSearchPanel(){
+        this.$refs.filterBase.init();
       },
+
       //重置搜索条件
       resetConditions(){
         this.filter_form={
@@ -263,7 +265,8 @@
             this.getPageTotal=0;
           }
         });
-      }
+      },
+
     },
     mounted() {
       this.init();

@@ -117,6 +117,7 @@ export default {
      * @param params
      */
     onSearch(params){
+      debugger
       //重置当前页为1
       this.reqBase.currentPage=1;
       Object.assign(this.reqBase,params);
