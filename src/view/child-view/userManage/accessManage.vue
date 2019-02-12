@@ -189,12 +189,12 @@
                 this.handleInsertUser({
                   ...getData
                 }).then(res=>{
-                  if(res.code===2000){
+                  if(res.code===20000){
                     this.$Message.success("添加成功！");
                     this.$Modal.remove();
                     this.init();
                   }else{
-                    this.$Message.error(res.message);
+                    this.$Message.error(res.msg);
                     _this.buttonLoading=false;
                   }
                 });
@@ -239,11 +239,11 @@
               }
             ).then(res=>{
               if(res.code===20000){
-                vm.$Message.success(title);
+                vm.$Message.success(title+"成功");
                 vm.$Modal.remove();
                 vm.init();
               }else{
-                vm.$Message.error(res.message);
+                vm.$Message.error(res.msg);
                 _this.buttonLoading=false;
               }
             });

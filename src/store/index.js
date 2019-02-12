@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import user from './module/user'
 import userManage from './module/userManage'
 import app from './module/app'
+import activeWelfareManage from './module/activeWelfareManage'
 // import communityList from './module/communityList'//小区管理
 // import ownerList from './module/ownerList'//业主管理
 // import adminList from './module/adminList'//管理员管理
@@ -95,6 +96,7 @@ export default new Vuex.Store({
   modules: {
     user,
     app,
-    userManage
+    userManage,
+    activeWelfareManage
   }
 })

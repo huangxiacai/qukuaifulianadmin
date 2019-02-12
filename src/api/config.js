@@ -13,5 +13,17 @@ export const userManage = {
   queryUserBeans:'manager/user/queryUserBeans',//分页查询用户的福豆数量
   insertUser:'manager/user/insertUser',//添加用户到管理
 };
+/**
+ * 福利值活跃度管理
+ * @type {{}}
+ */
+export const activeWelfareManage={
+  queryWelfareTools:'manager/welfare/queryWelfareTools',//查询福利值道具
+  saveOrUpdateWelfareTool:'manager/welfare/saveOrUpdateWelfareTool',//添加或者修改福利值道具
+  isSellWelfareTool:'manager/welfare/isSellWelfareTool',//上架/下架法师道具
+  queryActiveRecords:'manager/welfare/queryActiveRecords',//分页查询活跃度记录
+  queryWelfareRecords:'manager/welfare/queryWelfareRecords',//分页查询福利值记录
+
+};
 
 
