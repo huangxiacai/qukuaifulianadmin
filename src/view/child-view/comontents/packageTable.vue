@@ -12,9 +12,9 @@ slot=headRight  如排序字段 操作
          :show-header="showHeader"
          :height="getTableHeight"
          @on-selection-change="selectChange"
-         :class="{'packageTable':packageTableClass,'packageTableTdPadding':packageTableTdPadding}"
+         :class="{'packageTable':packageTableClass && showSlotHeader,'packageTableTdPadding':packageTableTdPadding}"
          :loading="loading">
-    <div slot="header" class="headerWrapper"  v-show="showHeader">
+    <div slot="header" class="headerWrapper"  v-if="showSlotHeader">
       <div class="headLeft">
         <slot name="headLeft"></slot>
       </div>
@@ -92,6 +92,10 @@ slot=headRight  如排序字段 操作
         default: false,
       },
       showHeader: {//是否显示 表头
+        type: Boolean,
+        default: true,
+      },
+      showSlotHeader:{
         type: Boolean,
         default: true,
       },
