@@ -1,5 +1,5 @@
-import {insertUser,getqueryUsers,updateUserStatus,queryUserValues,queryUserBeans} from '../../api/userManage'
-import {setToken, getToken} from '@/libs/util'
+import { insertUser, getqueryUsers, updateUserStatus, queryUserValues, queryUserBeans } from '../../api/userManage'
+import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
@@ -16,7 +16,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleInsertUser({state, commit}, params) {
+    handleInsertUser ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         insertUser({
           ...params,
@@ -25,8 +25,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询所有的用户
@@ -35,7 +35,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleGetqueryUsers({state, commit}, params) {
+    handleGetqueryUsers ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         getqueryUsers({
           ...params,
@@ -44,8 +44,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 改变用户账号状态
@@ -54,7 +54,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleUpdateUserStatus({state, commit}, params) {
+    handleUpdateUserStatus ({ state, commit }, params) {
       debugger
       return new Promise((resolve, reject) => {
         updateUserStatus({
@@ -64,8 +64,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询用户福利值活跃度
@@ -74,7 +74,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleQueryUserValues({state, commit}, params) {
+    handleQueryUserValues ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryUserValues({
           ...params,
@@ -83,8 +83,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询用户的福豆数量
@@ -93,7 +93,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleQueryUserBeans({state, commit}, params) {
+    handleQueryUserBeans ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryUserBeans({
           ...params,
@@ -102,8 +102,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
-    },
+        })
+      })
+    }
   }
 }
