@@ -146,12 +146,11 @@ export default {
             if (row.status === 1) {
               result = '冻结'
             } else if (row.status === 2) {
-              result = '冻结'
+              result = '解冻'
             }
             return h('Button', {
               on: {
                 click: function () {
-                  debugger
                   vm.userUpdateUserStatus(row)
                 }
               }

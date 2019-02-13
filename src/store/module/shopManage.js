@@ -17,10 +17,22 @@ import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
-
+    productTypeData:[],
   },
   mutations: {
-
+    setproductTypeData(state,data){
+      if(data.code===2000){
+        let arr=[];
+        for(let i in data.data){
+          let list=data.data[i];
+          arr.push({
+            label:list.typeName,
+            value:list.productTypeId
+          });
+        }
+        state.productTypeData=arr;
+      }
+    }
   },
   actions: {
     /**
@@ -55,6 +67,7 @@ export default {
           ...params,
           access_token: getToken()
         }).then(res => {
+          commit("setproductTypeData",res);
           resolve(res)
         }).catch(err => {
           reject(err)
@@ -62,7 +75,7 @@ export default {
       })
     },
     /**
-     * 分页查询产品分类
+     * 分页查询商品分类
      * @param state
      * @param commit
      * @param params

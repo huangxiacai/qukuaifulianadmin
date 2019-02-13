@@ -41,9 +41,76 @@ const USER_MAP = {
     'totalCount': 1,
     'other': null
 
-  }
+  },
+  queryShopImages:[
+    {
+      "shopImageId": 2,
+      "shopImage": "图片11", //轮播图图片地址
+      "sort": 0, // 排序地址
+      "createDate": 1548919018000,
+      "status": 0,  // 0-上架 1-下架'
+      "type": 0, // 0-跳转 1-不跳转
+      "desc": null, // 一般存跳转标识
+      "updateDate": 1548919018000
+    },
+    {
+      "shopImageId":3,
+      "shopImage": "图片2", //轮播图图片地址
+      "sort": 1, // 排序地址
+      "createDate": 1548919018000,
+      "status": 1,  // 0-上架 1-下架'
+      "type": 1, // 0-跳转 1-不跳转
+      "desc": 'www.baidu.com', // 一般存跳转标识
+      "updateDate": 1548919018000
+    }
 
-}
+  ],
+  queryProductTypes:{
+    "data": [{
+      "productTypeId": 2, // 产品分类Id
+      "typeName": "数码产品", // 分类名称
+      "createDate": 1548232287000,
+      "sort": 0,
+      "updateDate": 1548839738000
+    }],
+    "currentPage": 1,
+    "length": 10,
+    "totalCount": 1,
+    "other": null
+
+  },
+  queryProducts:{
+    "data": [{
+      "productId": 4,
+      "productTypeId": 2,
+      "productName": "VIVO1", // 商品名称
+      "amount": 40.5556, // 福豆价格
+      "addWelfare": 20.5556, // 购买商品添加的福利值
+      "productDetail": "VIVO1修改详情", //商品详情
+      "extend": null,
+      "logo": "VIVOLOGO",// 商品LOGO图地址
+      "createDate": 1548914609000, // 创建时间
+      "image": "VIVO1图片", // 商品图片，多个图片通过逗号隔开
+      "freight": 4.56, //商品运费
+      "isSelf": 1, // 是否商家 0-否 1-是
+      "productTypeName": "数码产品" // 商品分类名称
+    }],
+    "currentPage": 1,
+    "length": 10,
+    "totalCount": 4,
+    "other": null
+
+  },
+  queryAllProductType:[
+    {
+      "productTypeId": 2, // 分类Id
+      "typeName": "数码产品", // 分类名称
+      "createDate": 1548232287000,
+      "sort": 0,
+      "updateDate": 1548839738000
+    }
+  ]
+};
 // 基本数据结构
 const result = {
   body: {},
@@ -73,7 +140,7 @@ export const deleteProductTypeById = req => {
  */
 export const queryAllProductType = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['queryWelfareTools']
+  let result = USER_MAP['queryAllProductType']
   let temp = {
     data: result,
     code: 20000,
@@ -82,13 +149,13 @@ export const queryAllProductType = req => {
   return temp
 }
 /**
- * 分页查询产品分类
+ * 分页查询商品分类
  * @param req
  * @returns {{body: {}, result: number, errorMsg: string}}
  */
 export const queryProductTypes = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['queryWelfareTools']
+  let result = USER_MAP['queryProductTypes']
   let temp = {
     data: result,
     code: 20000,
@@ -118,7 +185,7 @@ export const saveOrUpdateProductTypes = req => {
  */
 export const queryProducts = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['queryWelfareTools']
+  let result = USER_MAP['queryProducts']
   let temp = {
     data: result,
     code: 20000,
@@ -178,7 +245,7 @@ export const isSelfProduct = req => {
  */
 export const queryShopImages = req => {
   req = JSON.parse(req.body)
-  let result = USER_MAP['queryWelfareTools']
+  let result = USER_MAP['queryShopImages']
   let temp = {
     data: result,
     code: 20000,
