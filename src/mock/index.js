@@ -17,6 +17,29 @@ import {
   isHideShopImage,
   queryOrders,
   updateOrderStatus } from './module/shopManage'
+import {
+  queryBeanProductRecords,
+  queryAccountTransferRecords,
+  queryBeanTransferRates,
+  updateBeanTransferRate,
+  queryBeanTransferRecords,
+  queryBeanPrices,
+  saveOrUpdateBeanPrice,
+  queryDistributeRecords,
+  queryWithdrawLegals,
+  updateWithdrawLegal,
+  queryWithdrawSuishens,
+  updateWithdrawSuishen,
+  queryBeanLocks,
+  saveBeanLock,
+  cancelBeanLock,
+  queryAngelQuitRecords,
+  updateAngelQuitRecord,
+  operUserFobBean,
+  querySystemFobBeanRecords,
+  queryBusinessLists,
+  queryBusinessDetails,
+  updateBusinessDetailStatus} from './module/fudouManage'
 // 登录相关和获取用户信息
 // Mock.mock(/\/login/, login)
 Mock.mock(/\/v3\/user\/login/, login)
@@ -53,4 +76,28 @@ Mock.mock(/\/manager\/shop\/deleteShopImage/, deleteShopImage)//
 Mock.mock(/\/manager\/shop\/isHideShopImage/, isHideShopImage)//
 Mock.mock(/\/manager\/shop\/queryOrders/, queryOrders)//
 Mock.mock(/\/manager\/shop\/updateOrderStatus/, updateOrderStatus)//
+//福豆管理
+Mock.mock(/\/manager\/fobBean\/queryBeanProductRecords/, queryBeanProductRecords)//
+Mock.mock(/\/manager\/fobBean\/queryAccountTransferRecords/, queryAccountTransferRecords)//
+Mock.mock(/\/manager\/fobBean\/queryBeanTransferRates/, queryBeanTransferRates)//
+Mock.mock(/\/manager\/fobBean\/updateBeanTransferRate/, updateBeanTransferRate)//
+Mock.mock(/\/manager\/fobBean\/queryBeanTransferRecords/, queryBeanTransferRecords)//
+Mock.mock(/\/manager\/fobBean\/queryBeanPrices/, queryBeanPrices)//
+Mock.mock(/\/manager\/fobBean\/saveOrUpdateBeanPrice/, saveOrUpdateBeanPrice)//
+Mock.mock(/\/manager\/fobBean\/queryDistributeRecords/, queryDistributeRecords)//
+Mock.mock(/\/manager\/fobBean\/queryWithdrawLegals/, queryWithdrawLegals)//
+Mock.mock(/\/manager\/fobBean\/updateWithdrawLegal/, updateWithdrawLegal)//
+Mock.mock(/\/manager\/fobBean\/queryWithdrawSuishens/, queryWithdrawSuishens)//
+Mock.mock(/\/manager\/fobBean\/updateWithdrawSuishen/, updateWithdrawSuishen)//
+Mock.mock(/\/manager\/fobBean\/queryBeanLocks/, queryBeanLocks)//
+Mock.mock(/\/manager\/fobBean\/saveBeanLock/, saveBeanLock)//
+Mock.mock(/\/manager\/fobBean\/cancelBeanLock/, cancelBeanLock)//
+Mock.mock(/\/manager\/fobBean\/queryAngelQuitRecords/, queryAngelQuitRecords)//
+Mock.mock(/\/manager\/fobBean\/updateAngelQuitRecord/, updateAngelQuitRecord)//
+Mock.mock(/\/manager\/fobBean\/operUserFobBean/, operUserFobBean)//
+Mock.mock(/\/manager\/fobBean\/querySystemFobBeanRecords/, querySystemFobBeanRecords)//
+Mock.mock(/\/manager\/fobBean\/queryBusinessLists/, queryBusinessLists)//
+Mock.mock(/\/manager\/fobBean\/queryBusinessDetails/, queryBusinessDetails)//
+Mock.mock(/\/manager\/fobBean\/updateBusinessDetailStatus/, updateBusinessDetailStatus)//
+
 export default Mock

@@ -1,4 +1,3 @@
-
 export const userManage = {
   busercreate: '/v3/tobbase/busercreate', // 添加⽤⼾
   buseredit: '/v3/tobbase/buseredit', // 编辑用户
@@ -44,4 +43,29 @@ export const shopManage = {
   isHideShopImage: 'manager/shop/isHideShopImage', // 上架/下架轮播图
   queryOrders: 'manager/shop/queryOrders', // 分页查询订单
   updateOrderStatus: 'manager/shop/updateOrderStatus'// 修改订单状态
-}
+};
+//福豆管理
+export const fudouManage = {
+  queryBeanProductRecords: 'manager/fobBean/queryBeanProductRecords',//分页查询每日产豆记录接口
+  queryAccountTransferRecords: 'manager/fobBean/queryAccountTransferRecords',//分页查询转账记录
+  queryBeanTransferRates: 'manager/fobBean/queryBeanTransferRates',//查询福袋转换汇率
+  updateBeanTransferRate: 'manager/fobBean/updateBeanTransferRate',//修改福袋转换汇率
+  queryBeanTransferRecords: 'manager/fobBean/queryBeanTransferRecords',//分页查询福袋转换记录
+  queryBeanPrices: 'manager/fobBean/queryBeanPrices',//分页查询福豆价格
+  saveOrUpdateBeanPrice: 'manager/fobBean/saveOrUpdateBeanPrice',//添加/修改福豆价格
+  queryDistributeRecords: "manager/fobBean/queryDistributeRecords",//分页查询分销记录
+  queryWithdrawLegals: 'manager/fobBean/queryWithdrawLegals',//分页查询法币提现记录
+  updateWithdrawLegal: 'manager/fobBean/updateWithdrawLegal',//修改法币提现
+  queryWithdrawSuishens: 'manager/fobBean/queryWithdrawSuishens',//分页查询IM钱包提现记录
+  updateWithdrawSuishen: 'manager/fobBean/updateWithdrawSuishen',//修改IM提现
+  queryBeanLocks: 'manager/fobBean/queryBeanLocks',//分页查询锁仓列表
+  saveBeanLock: 'manager/fobBean/saveBeanLock',//添加锁仓记录
+  cancelBeanLock: 'manager/fobBean/cancelBeanLock',//撤销锁仓
+  queryAngelQuitRecords: 'manager/fobBean/queryAngelQuitRecords',//分页查询提前退出列表
+  updateAngelQuitRecord: 'manager/fobBean/updateAngelQuitRecord',//更新提前退出审核状态
+  operUserFobBean: 'manager/fobBean/operUserFobBean',//充值/扣款用户的福豆、活跃度、福利值
+  querySystemFobBeanRecords: 'manager/fobBean/querySystemFobBeanRecords',//分页查询系统充值/扣款记录
+  queryBusinessLists: 'manager/fobBean/queryBusinessLists',//分页查询交易市场列表
+  queryBusinessDetails: 'manager/fobBean/queryBusinessDetails',//分页查询购入列表
+  updateBusinessDetailStatus: 'manager/fobBean/updateBusinessDetailStatus',//更新购入订单详情状态
+};
