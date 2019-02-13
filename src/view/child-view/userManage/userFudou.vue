@@ -44,146 +44,146 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import {mapActions} from 'vuex'
-  export default {
-    name: "userFudou",
-    mixins: [packageTableMixins],
-    data() {
-      return {
-        title:'用户福豆过滤',
-        getStatus:[
-          {
-            label:'全部',
-            value:-1
-          },
-          {
-            label:'正常',
-            value:1
-          },
-          {
-            label:'冻结',
-            value:2
-          }
-        ],
-        filter_form:{
-          phone:null,
-          status:-1,
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+export default {
+  name: 'userFudou',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      title: '用户福豆过滤',
+      getStatus: [
+        {
+          label: '全部',
+          value: -1
         },
-        headBtnList: [
+        {
+          label: '正常',
+          value: 1
+        },
+        {
+          label: '冻结',
+          value: 2
+        }
+      ],
+      filter_form: {
+        phone: null,
+        status: -1
+      },
+      headBtnList: [
 
-        ],
-        columnsheader: [
-          {
-            title: '用户昵称',
-            key: 'nickname',
-            align: 'center',
-            fixed: 'left',
-            render:(h,{row})=>{
-              return h('div',row.postUser.nickname);
-            }
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center'
-          },
-          {
-            title: '手机号',
-            key: 'phone',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.phone);
-            }
-          },
-          {
-            title: '随身福袋数量',
-            key: 'suishenBean',
-            align: 'center'
-          },
-          {
-            title: '福报福袋',
-            key: 'fubaoBean',
-            align: 'center'
-          },
-          {
-            title: '奖励福豆',
-            key: 'rewardBean',
-            align: 'center'
-          },
-          {
-            title: '天使投资福豆',
-            key: 'angelBean',
-            align: 'center'
-          },
-          {
-            title: '可解锁福豆',
-            key: 'unlockBean',
-            align: 'center'
-          },
-          {
-            title: '社区福袋',
-            key: 'commuityBean',
-            align: 'center'
-          },
-          {
-            title: '法币福袋',
-            key: 'legalBean',
-            align: 'center'
-          },
-          {
-            title: '冻结的福袋',
-            key: 'freezeBean',
-            align: 'center'
-          },
-          {
-            title: '被系统扣除的福豆',
-            key: 'deductBean',
-            align: 'center'
+      ],
+      columnsheader: [
+        {
+          title: '用户昵称',
+          key: 'nickname',
+          align: 'center',
+          fixed: 'left',
+          render: (h, { row }) => {
+            return h('div', row.postUser.nickname)
           }
-        ],
+        },
+        {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
+          title: '手机号',
+          key: 'phone',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.phone)
+          }
+        },
+        {
+          title: '随身福袋数量',
+          key: 'suishenBean',
+          align: 'center'
+        },
+        {
+          title: '福报福袋',
+          key: 'fubaoBean',
+          align: 'center'
+        },
+        {
+          title: '奖励福豆',
+          key: 'rewardBean',
+          align: 'center'
+        },
+        {
+          title: '天使投资福豆',
+          key: 'angelBean',
+          align: 'center'
+        },
+        {
+          title: '可解锁福豆',
+          key: 'unlockBean',
+          align: 'center'
+        },
+        {
+          title: '社区福袋',
+          key: 'commuityBean',
+          align: 'center'
+        },
+        {
+          title: '法币福袋',
+          key: 'legalBean',
+          align: 'center'
+        },
+        {
+          title: '冻结的福袋',
+          key: 'freezeBean',
+          align: 'center'
+        },
+        {
+          title: '被系统扣除的福豆',
+          key: 'deductBean',
+          align: 'center'
+        }
+      ]
+    }
+  },
+  methods: {
+    ...mapActions([
+      'handleQueryUserBeans'
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+
+    // 重置搜索条件
+    resetConditions () {
+      this.filter_form = {
+        phone: null,
+        status: -1
       }
     },
-    methods: {
-      ...mapActions([
-        'handleQueryUserBeans'
-      ]),
-      //
-      showSearchPanel(){
-        this.$refs.filterBase.init();
-      },
 
-      //重置搜索条件
-      resetConditions(){
-        this.filter_form={
-          phone:null,
-          status:-1,
+    init () {
+      this.tableLoading = true
+      this.handleQueryUserBeans({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          debugger
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
         }
-      },
-
-      init() {
-        this.tableLoading=true;
-        this.handleQueryUserBeans({...this.reqBase}).then(res=>{
-          this.tableLoading=false;
-          if(res.code===20000){
-            debugger
-            this.tableDataList=res.data.data;
-            this.getPageTotal=res.data.totalCount;
-          }else{
-            this.tableDataList=[];
-            this.getPageTotal=0;
-          }
-        });
-      },
-
-    },
-    mounted() {
-      this.init();
-    },
-    created() {
-
+      })
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>

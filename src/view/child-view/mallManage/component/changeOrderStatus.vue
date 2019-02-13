@@ -22,57 +22,56 @@
 </template>
 
 <script>
-  import {renderFormMixins} from '../../mixins/rendFormMixins'
-  export default {
-    name: "suWelfareTool",
-    mixins: [renderFormMixins],
-    data() {
-
-      return {
-        deliverGoodsStatus:[
-          {
-            label:'待发货',
-            value:1
-          },
-          {
-            label:'待收货',
-            value:2
-          },
-          {
-            label:'已发货',
-            value:3
-          }
-        ],
-        getData: {
-          status:null
+import { renderFormMixins } from '../../mixins/rendFormMixins'
+export default {
+  name: 'suWelfareTool',
+  mixins: [renderFormMixins],
+  data () {
+    return {
+      deliverGoodsStatus: [
+        {
+          label: '待发货',
+          value: 1
         },
-        getRult: {
-          status: [
-            {required: true,type:'number', message: '请选择发货状态', trigger: 'change'}
-          ]
+        {
+          label: '待收货',
+          value: 2
+        },
+        {
+          label: '已发货',
+          value: 3
         }
-      }
-    },
-    props:{
-      setData:{
-        type:Object,
-        default:null
-      }
-    },
-    components: {},
-    computed: {},
-    methods: {
-    },
-    mounted() {
-
-    },
-    created(){
-      if(this.setData!=undefined){
-        debugger
-        Object.assign(this.getData,this.setData)
+      ],
+      getData: {
+        status: null
+      },
+      getRult: {
+        status: [
+          { required: true, type: 'number', message: '请选择发货状态', trigger: 'change' }
+        ]
       }
     }
+  },
+  props: {
+    setData: {
+      type: Object,
+      default: null
+    }
+  },
+  components: {},
+  computed: {},
+  methods: {
+  },
+  mounted () {
+
+  },
+  created () {
+    if (this.setData != undefined) {
+      debugger
+      Object.assign(this.getData, this.setData)
+    }
   }
+}
 </script>
 
 <style scoped>

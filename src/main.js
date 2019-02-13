@@ -14,8 +14,8 @@ import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
 
-import searchPanel from '@/view/child-view/comontents/searchPanel'//共用的搜索模块
-Vue.component('searchPanel',searchPanel);
+import searchPanel from '@/view/child-view/comontents/searchPanel'// 共用的搜索模块
+Vue.component('searchPanel', searchPanel)
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')

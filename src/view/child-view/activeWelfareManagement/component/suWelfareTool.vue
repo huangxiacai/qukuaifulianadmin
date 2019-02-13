@@ -34,70 +34,69 @@
 </template>
 
 <script>
-  import {renderFormMixins} from '../../mixins/rendFormMixins'
-  export default {
-    name: "suWelfareTool",
-    mixins: [renderFormMixins],
-    data() {
-
-      return {
-        isSellData:[
-          {
-            value:0,
-            label:'是',
-          },
-          {
-            value:1,
-            label:'否',
-          }
-        ],
-        currPoint:{},//当前point
-        modal_loading:false,
-        dbmap:null,//地图对象
-        mapModel:false,
-        meetingTime:null,
-        getData: {
-          toolName:null,
-          price: null,
-          addWelfare:null,
-          isSell: ''
+import { renderFormMixins } from '../../mixins/rendFormMixins'
+export default {
+  name: 'suWelfareTool',
+  mixins: [renderFormMixins],
+  data () {
+    return {
+      isSellData: [
+        {
+          value: 0,
+          label: '是'
         },
-        getRult: {
-          toolName: [
-            {required: true, message: '请填写道具名称', trigger: 'blur'}
-          ],
-          price: [
-            {required: true,type:'number', message: '请填写道具价格', trigger: 'blur'}
-          ],
-          addWelfare: [
-            {required: true,type:'number', message: '请填写购买道具获得的福利值', trigger: 'blur'}
-            ],
-          isSell:[
-            {required: true, message: '请选择是否上架', trigger: 'change'}
-          ]
+        {
+          value: 1,
+          label: '否'
         }
-      }
-    },
-    props:{
-      setData:{
-        type:Object,
-        default:null
-      }
-    },
-    components: {},
-    computed: {},
-    methods: {
-    },
-    mounted() {
-
-    },
-    created(){
-      if(this.setData!=undefined){
-        debugger
-        Object.assign(this.getData,this.setData)
+      ],
+      currPoint: {}, // 当前point
+      modal_loading: false,
+      dbmap: null, // 地图对象
+      mapModel: false,
+      meetingTime: null,
+      getData: {
+        toolName: null,
+        price: null,
+        addWelfare: null,
+        isSell: ''
+      },
+      getRult: {
+        toolName: [
+          { required: true, message: '请填写道具名称', trigger: 'blur' }
+        ],
+        price: [
+          { required: true, type: 'number', message: '请填写道具价格', trigger: 'blur' }
+        ],
+        addWelfare: [
+          { required: true, type: 'number', message: '请填写购买道具获得的福利值', trigger: 'blur' }
+        ],
+        isSell: [
+          { required: true, message: '请选择是否上架', trigger: 'change' }
+        ]
       }
     }
+  },
+  props: {
+    setData: {
+      type: Object,
+      default: null
+    }
+  },
+  components: {},
+  computed: {},
+  methods: {
+  },
+  mounted () {
+
+  },
+  created () {
+    if (this.setData != undefined) {
+      debugger
+      Object.assign(this.getData, this.setData)
+    }
   }
+}
 </script>
 
 <style scoped>

@@ -12,8 +12,8 @@ import {
   deleteShopImage,
   isHideShopImage,
   queryOrders,
-  updateOrderStatus} from '../../api/shopManage'
-import {setToken, getToken} from '@/libs/util'
+  updateOrderStatus } from '../../api/shopManage'
+import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
@@ -30,7 +30,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handledeleteProductTypeById({state, commit}, params) {
+    handledeleteProductTypeById ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         deleteProductTypeById({
           ...params,
@@ -39,8 +39,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 查询所有的商品分类
@@ -49,7 +49,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlequeryAllProductType({state, commit}, params) {
+    handlequeryAllProductType ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryAllProductType({
           ...params,
@@ -58,8 +58,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询产品分类
@@ -68,7 +68,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlequeryProductTypes({state, commit}, params) {
+    handlequeryProductTypes ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryProductTypes({
           ...params,
@@ -77,8 +77,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 添加或者修改产品分类
@@ -87,7 +87,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlesaveOrUpdateProductTypes({state, commit}, params) {
+    handlesaveOrUpdateProductTypes ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         saveOrUpdateProductTypes({
           ...params,
@@ -96,8 +96,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询商品
@@ -106,7 +106,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlequeryProducts({state, commit}, params) {
+    handlequeryProducts ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryProducts({
           ...params,
@@ -115,8 +115,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 添加商品
@@ -125,7 +125,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlesaveProduct({state, commit}, params) {
+    handlesaveProduct ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         saveProduct({
           ...params,
@@ -134,8 +134,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 修改商品
@@ -144,7 +144,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleupdateProduct({state, commit}, params) {
+    handleupdateProduct ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         updateProduct({
           ...params,
@@ -153,8 +153,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 上架或者下架商品
@@ -163,7 +163,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleisSelfProduct({state, commit}, params) {
+    handleisSelfProduct ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         isSelfProduct({
           ...params,
@@ -172,8 +172,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 查询所有的商城轮播图
@@ -182,7 +182,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlequeryShopImages({state, commit}, params) {
+    handlequeryShopImages ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryShopImages({
           ...params,
@@ -191,8 +191,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 添加或者修改商城轮播图
@@ -201,7 +201,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlesaveOrUpdateShopImage({state, commit}, params) {
+    handlesaveOrUpdateShopImage ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         saveOrUpdateShopImage({
           ...params,
@@ -210,8 +210,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 删除轮播图
@@ -220,7 +220,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handledeleteShopImage({state, commit}, params) {
+    handledeleteShopImage ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         deleteShopImage({
           ...params,
@@ -229,8 +229,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 上架/下架轮播图
@@ -239,7 +239,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleisHideShopImage({state, commit}, params) {
+    handleisHideShopImage ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         isHideShopImage({
           ...params,
@@ -248,8 +248,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询订单
@@ -258,7 +258,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handlequeryOrders({state, commit}, params) {
+    handlequeryOrders ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryOrders({
           ...params,
@@ -267,8 +267,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 修改订单状态
@@ -277,7 +277,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleupdateOrderStatus({state, commit}, params) {
+    handleupdateOrderStatus ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         updateOrderStatus({
           ...params,
@@ -286,8 +286,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
-    },
+        })
+      })
+    }
   }
 }

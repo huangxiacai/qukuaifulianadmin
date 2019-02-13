@@ -47,5 +47,5 @@ module.exports = {
     hotOnly: false,
     proxy: null, // 设置代理
     before: app => {}
-  },
+  }
 }

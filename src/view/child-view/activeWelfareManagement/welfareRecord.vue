@@ -54,171 +54,171 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import {mapActions} from 'vuex'
-  import {formatDate} from '@/libs/util'
-  export default {
-    name: "welfareRecord",
-    mixins: [packageTableMixins],
-    data() {
-      return {
-        reqBase:{
-          type:-1,
-          currentPage:1,
-          length:15
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+import { formatDate } from '@/libs/util'
+export default {
+  name: 'welfareRecord',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      reqBase: {
+        type: -1,
+        currentPage: 1,
+        length: 15
+      },
+      title: '福利值记录过滤',
+      getStatus: [
+        {
+          label: '全部',
+          value: -1
         },
-        title:'福利值记录过滤',
-        getStatus:[
-          {
-            label:'全部',
-            value:-1
-          },
-          {
-            label:'注册认证',
-            value:0
-          },
-          {
-            label:'邀请',
-            value:1
-          },
-          {
-            label:'功德捐赠',
-            value:2
-          },
-          {
-            label:'购买商品',
-            value:3
-          },
-          {
-            label:'活跃度转换',
-            value:4
-          },
-          {
-            label:'购买道具',
-            value:5
-          }
-        ],
-        startDate:null,
-        endDate:null,
-        filter_form:{
-          phone:null,
-          type:-1,
-          startDate:null,
-          endDate:null,
-          nickName:null,
+        {
+          label: '注册认证',
+          value: 0
         },
-        headBtnList: [
+        {
+          label: '邀请',
+          value: 1
+        },
+        {
+          label: '功德捐赠',
+          value: 2
+        },
+        {
+          label: '购买商品',
+          value: 3
+        },
+        {
+          label: '活跃度转换',
+          value: 4
+        },
+        {
+          label: '购买道具',
+          value: 5
+        }
+      ],
+      startDate: null,
+      endDate: null,
+      filter_form: {
+        phone: null,
+        type: -1,
+        startDate: null,
+        endDate: null,
+        nickName: null
+      },
+      headBtnList: [
 
-        ],
-        columnsheader: [
-          {
-            title: '用户昵称',
-            key: 'nickname',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.nickname);
-            }
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center'
-          },
-          {
-            title: '手机号',
-            key: 'phone',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.phone);
-            }
-          },
-          {
-            title: '福利值',
-            key: 'welfareValue',
-            align: 'center'
-          },
-          {
-            title: '福利值来源',
-            key: 'type',
-            align: 'center',
-            render:(h,{row})=>{
-              let vm=this;
-              let result="";
-              for(let s=0;s<vm.getStatus.length;s++){
-                let list=vm.getStatus[s];
-                if(list.value===row.type){
-                  result=list.label;
-                  break;
-                }
-              }
-              return h('div',result)
-            }
-          },
-          {
-            title: '福利值获得时间',
-            key: 'createDate',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',formatDate('Y-m-d h:m:s',row.createDate))
-            }
-          },
-          {
-            title: '备注',
-            key: 'desc',
-            align: 'center'
+      ],
+      columnsheader: [
+        {
+          title: '用户昵称',
+          key: 'nickname',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.nickname)
           }
-        ],
+        },
+        {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
+          title: '手机号',
+          key: 'phone',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.phone)
+          }
+        },
+        {
+          title: '福利值',
+          key: 'welfareValue',
+          align: 'center'
+        },
+        {
+          title: '福利值来源',
+          key: 'type',
+          align: 'center',
+          render: (h, { row }) => {
+            let vm = this
+            let result = ''
+            for (let s = 0; s < vm.getStatus.length; s++) {
+              let list = vm.getStatus[s]
+              if (list.value === row.type) {
+                result = list.label
+                break
+              }
+            }
+            return h('div', result)
+          }
+        },
+        {
+          title: '福利值获得时间',
+          key: 'createDate',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+          }
+        },
+        {
+          title: '备注',
+          key: 'desc',
+          align: 'center'
+        }
+      ]
+    }
+  },
+  methods: {
+    ...mapActions([
+      'handleQueryWelfareRecords'
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
+    // 重置搜索条件
+    resetConditions () {
+      this.startDate = null
+      this.endDate = null
+      this.filter_form = {
+        phone: null,
+        type: -1,
+        startDate: null,
+        endDate: null,
+        nickName: null
       }
     },
-    methods: {
-      ...mapActions([
-        'handleQueryWelfareRecords'
-      ]),
-      //
-      showSearchPanel(){
-        this.$refs.filterBase.init();
-      },
-      startDateChange(value){
-        this.$set(this.filter_form,"startDate",value);
-      },
-      endDateChange(value){
-        this.$set(this.filter_form,"endDate",value);
-      },
-      //重置搜索条件
-      resetConditions(){
-        this.startDate=null;
-        this.endDate=null;
-        this.filter_form={
-          phone:null,
-          type:-1,
-          startDate:null,
-          endDate:null,
-          nickName:null,
+
+    init () {
+      this.tableLoading = true
+      this.handleQueryWelfareRecords({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
         }
-      },
-
-      init() {
-        this.tableLoading=true;
-        this.handleQueryWelfareRecords({...this.reqBase}).then(res=>{
-          this.tableLoading=false;
-          if(res.code===20000){
-            this.tableDataList=res.data.data;
-            this.getPageTotal=res.data.totalCount;
-          }else{
-            this.tableDataList=[];
-            this.getPageTotal=0;
-          }
-        });
-      },
-
-    },
-    mounted() {
-      this.init();
-    },
-    created() {
-
+      })
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>

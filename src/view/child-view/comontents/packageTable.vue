@@ -41,126 +41,126 @@ slot=headRight  如排序字段 操作
 </template>
 
 <script>
-  export default {
-    name: "packageTable",
-    data() {
-      return {
-        tableRef:'packageTable'
+export default {
+  name: 'packageTable',
+  data () {
+    return {
+      tableRef: 'packageTable'
+    }
+  },
+  props: {
+    packageTableClass: {// packageTable基本样式
+      type: Boolean,
+      default: true
+    },
+    packageTableTdPadding: {// packageTdPadding 单元格之间padding的样式
+      type: Boolean,
+      default: false
+    },
+    showRefreshBtn: {
+      type: Boolean,
+      default: true
+    },
+    showSearchBtn: {// 是否显示高级搜索
+      type: Boolean,
+      default: true
+    },
+    headBtnList: {// 头部操作按钮list
+      type: Array,
+      default: function () {
+        return []
       }
     },
-    props: {
-      packageTableClass: {//packageTable基本样式
-        type: Boolean,
-        default: true,
-      },
-      packageTableTdPadding: {//packageTdPadding 单元格之间padding的样式
-        type: Boolean,
-        default: false
-      },
-      showRefreshBtn:{
-        type: Boolean,
-        default: true
-      },
-      showSearchBtn: {//是否显示高级搜索
-        type: Boolean,
-        default: true
-      },
-      headBtnList: {//头部操作按钮list
-        type: Array,
-        default: function () {
-          return [];
-        }
-      },
-      tableData: {//表格数据
-        type: Array,
-        default: function () {
-          return [];
-        }
-      },
-      columnsData: {//表格列数据
-        type: Array,
-        default: function () {
-          return [];
-        }
-      },
-      stripe: {//是否显示间隔斑马纹
-        type: Boolean,
-        default: false
-      },
-      border: {//是否显示纵向边框
-        type: Boolean,
-        default: false,
-      },
-      showHeader: {//是否显示 表头
-        type: Boolean,
-        default: true,
-      },
-      showSlotHeader:{
-        type: Boolean,
-        default: true,
-      },
-      showFooter: {//是否显示footer
-        type: Boolean,
-        default: true
-      },
-      height: {//表格高度
-        type: Number,
-      },
-      loading: {//表格loading
-        type: Boolean,
-        default: false
-      },
-      tabletotallen: {//分页总数
-        type: Number,
-        default: 0
-      },
-      tablePageSize: {//分页尺寸
-        type: Number,
-        default: 15
-      },
-      tablePageIndex: {//分页index
-        type: Number,
-        default: 1
-      },
-      reduceheight: {//默认需要减去的高度
-        type: Number,
-        default: 140
-      },
-
-    },
-    components: {},
-    computed: {
-      getTableHeight() {
-        return this.$store.state.wh.innerHeight - this.reduceheight;
+    tableData: {// 表格数据
+      type: Array,
+      default: function () {
+        return []
       }
     },
-    methods: {
-      pageOnchange(index) {
-        this.$emit("pageonChange", index);
-      },
-      pageSizeChange() {
+    columnsData: {// 表格列数据
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    stripe: {// 是否显示间隔斑马纹
+      type: Boolean,
+      default: false
+    },
+    border: {// 是否显示纵向边框
+      type: Boolean,
+      default: false
+    },
+    showHeader: {// 是否显示 表头
+      type: Boolean,
+      default: true
+    },
+    showSlotHeader: {
+      type: Boolean,
+      default: true
+    },
+    showFooter: {// 是否显示footer
+      type: Boolean,
+      default: true
+    },
+    height: {// 表格高度
+      type: Number
+    },
+    loading: {// 表格loading
+      type: Boolean,
+      default: false
+    },
+    tabletotallen: {// 分页总数
+      type: Number,
+      default: 0
+    },
+    tablePageSize: {// 分页尺寸
+      type: Number,
+      default: 15
+    },
+    tablePageIndex: {// 分页index
+      type: Number,
+      default: 1
+    },
+    reduceheight: {// 默认需要减去的高度
+      type: Number,
+      default: 140
+    }
 
-      },
-      initcurrentPage() {
-        //重置当前currentpage
-        this.$refs.pageRef.currentPage = 1;
-      },
-      /**
+  },
+  components: {},
+  computed: {
+    getTableHeight () {
+      return this.$store.state.wh.innerHeight - this.reduceheight
+    }
+  },
+  methods: {
+    pageOnchange (index) {
+      this.$emit('pageonChange', index)
+    },
+    pageSizeChange () {
+
+    },
+    initcurrentPage () {
+      // 重置当前currentpage
+      this.$refs.pageRef.currentPage = 1
+    },
+    /**
        * 显示面板btn操作
        */
-      showRefreshParel() {
-        //location.reload();//刷新整个页面
-        this.$emit("refreshBtn");
-      },
-      showSearchPanel(){
-        this.$emit("showSearchPanel");
-      },
-      //选择改变时触发
-      selectChange(selection) {
-        this.$emit("getSelect", selection);
-      },
+    showRefreshParel () {
+      // location.reload();//刷新整个页面
+      this.$emit('refreshBtn')
+    },
+    showSearchPanel () {
+      this.$emit('showSearchPanel')
+    },
+    // 选择改变时触发
+    selectChange (selection) {
+      this.$emit('getSelect', selection)
     }
   }
+}
 </script>
 
 <style scoped>

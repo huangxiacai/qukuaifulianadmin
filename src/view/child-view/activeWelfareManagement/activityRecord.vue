@@ -55,166 +55,165 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import {mapActions} from 'vuex'
-  import {formatDate} from '@/libs/util'
-  export default {
-    name: "welfareRecord",
-    mixins: [packageTableMixins],
-    data() {
-      return {
-        reqBase:{
-          type:-1,
-          currentPage:1,
-          length:15
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+import { formatDate } from '@/libs/util'
+export default {
+  name: 'welfareRecord',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      reqBase: {
+        type: -1,
+        currentPage: 1,
+        length: 15
+      },
+      title: '活跃度记录过滤',
+      getStatus: [
+        {
+          label: '全部',
+          value: -1
         },
-        title:'活跃度记录过滤',
-        getStatus:[
-          {
-            label:'全部',
-            value:-1
-          },
-          {
-            label:'签到',
-            value:1
-          },
-          {
-            label:'发帖',
-            value:2
-          },
-          {
-            label:'转换成福利值',
-            value:3
-          },
-          {
-            label:'置顶帖子',
-            value:4
-          }
-        ],
-        startDate:null,
-        endDate:null,
-        filter_form:{
-          phone:null,
-          type:-1,
-          startDate:null,
-          endDate:null,
-          nickName:null,
+        {
+          label: '签到',
+          value: 1
         },
-        headBtnList: [
+        {
+          label: '发帖',
+          value: 2
+        },
+        {
+          label: '转换成福利值',
+          value: 3
+        },
+        {
+          label: '置顶帖子',
+          value: 4
+        }
+      ],
+      startDate: null,
+      endDate: null,
+      filter_form: {
+        phone: null,
+        type: -1,
+        startDate: null,
+        endDate: null,
+        nickName: null
+      },
+      headBtnList: [
 
-        ],
-        columnsheader: [
-          {
-            title: '用户昵称',
-            key: 'nickname',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.nickname);
-            }
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center'
-          },
-          {
-            title: '手机号',
-            key: 'phone',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.phone);
-            }
-          },
-          {
-            title: '活跃度',
-            key: 'activeValue',
-            align: 'center'
-          },
-          {
-            title: '活跃度来源',
-            key: 'type',
-            align: 'center',
-            render:(h,{row})=>{
-              let vm=this;
-              let result="";
-              for(let s=0;s<vm.getStatus.length;s++){
-                let list=vm.getStatus[s];
-                if(list.value===row.type){
-                  result=list.label;
-                  break;
-                }
-              }
-              return h('div',result)
-            }
-          },
-          {
-            title: '活跃度获得时间',
-            key: 'createDate',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',formatDate('Y-m-d h:m:s',row.createDate))
-            }
-          },
-          {
-            title: '备注',
-            key: 'recordDesc',
-            align: 'center'
+      ],
+      columnsheader: [
+        {
+          title: '用户昵称',
+          key: 'nickname',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.nickname)
           }
-        ],
+        },
+        {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
+          title: '手机号',
+          key: 'phone',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.phone)
+          }
+        },
+        {
+          title: '活跃度',
+          key: 'activeValue',
+          align: 'center'
+        },
+        {
+          title: '活跃度来源',
+          key: 'type',
+          align: 'center',
+          render: (h, { row }) => {
+            let vm = this
+            let result = ''
+            for (let s = 0; s < vm.getStatus.length; s++) {
+              let list = vm.getStatus[s]
+              if (list.value === row.type) {
+                result = list.label
+                break
+              }
+            }
+            return h('div', result)
+          }
+        },
+        {
+          title: '活跃度获得时间',
+          key: 'createDate',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+          }
+        },
+        {
+          title: '备注',
+          key: 'recordDesc',
+          align: 'center'
+        }
+      ]
+    }
+  },
+  methods: {
+    ...mapActions([
+      'handleQueryActiveRecords'
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
+    // 重置搜索条件
+    resetConditions () {
+      this.startDate = null
+      this.endDate = null
+      this.filter_form = {
+        phone: null,
+        type: -1,
+        startDate: null,
+        endDate: null,
+        nickName: null
       }
     },
-    methods: {
-      ...mapActions([
-        'handleQueryActiveRecords'
-      ]),
-      //
-      showSearchPanel(){
-        this.$refs.filterBase.init();
-      },
-      startDateChange(value){
-        this.$set(this.filter_form,"startDate",value);
-      },
-      endDateChange(value){
-        this.$set(this.filter_form,"endDate",value);
-      },
-      //重置搜索条件
-      resetConditions(){
-        this.startDate=null;
-        this.endDate=null;
-        this.filter_form={
-          phone:null,
-          type:-1,
-          startDate:null,
-          endDate:null,
-          nickName:null,
+
+    init () {
+      this.tableLoading = true
+      this.handleQueryActiveRecords({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
         }
-      },
-
-      init() {
-        this.tableLoading=true;
-        this.handleQueryActiveRecords({...this.reqBase}).then(res=>{
-          this.tableLoading=false;
-          if(res.code===20000){
-            this.tableDataList=res.data.data;
-            this.getPageTotal=res.data.totalCount;
-          }else{
-            this.tableDataList=[];
-            this.getPageTotal=0;
-          }
-        });
-      },
-
-    },
-    mounted() {
-      this.init();
-    },
-    created() {
-
+      })
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>
 
 </style>
-

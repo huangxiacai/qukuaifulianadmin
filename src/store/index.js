@@ -7,11 +7,11 @@ import app from './module/app'
 import activeWelfareManage from './module/activeWelfareManage'
 import shopManage from './module/shopManage'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    //审核状态
+    // 审核状态
     auditSatus: [
       {
         value: 1,
@@ -19,27 +19,27 @@ export default new Vuex.Store({
       },
       {
         value: 2,
-        label: "提交审核",
+        label: '提交审核'
       },
       {
         value: 3,
-        label: "审核未通过"
+        label: '审核未通过'
       },
       {
         value: 4,
         label: '审核通过'
       }
     ],
-    //用户类型
+    // 用户类型
     userTypeObj: {
       1: '业主家人',
       2: '租客',
       3: '租客成员',
-      11: "物业人员",
-      12: "快递",
-      13: "外卖",
-      14: "其它",
-      99: "黑名单"
+      11: '物业人员',
+      12: '快递',
+      13: '外卖',
+      14: '其它',
+      99: '黑名单'
     },
     communtiyListArr: [
       {
@@ -56,33 +56,33 @@ export default new Vuex.Store({
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight
     },
-    //合同状态
+    // 合同状态
     contract: [
       {
         key: 1,
-        value: "添加"
+        value: '添加'
       },
       {
         key: 2,
-        value: "提交审核"
+        value: '提交审核'
       },
       {
         key: 3,
-        value: "审核未通过"
+        value: '审核未通过'
       },
       {
         key: 4,
-        value: "审核通过"
-      },
+        value: '审核通过'
+      }
 
     ]
   },
   mutations: {
     //
-    windowResize(state, wh) {
-      state.wh.innerWidth = wh.innerWidth;
-      state.wh.innerHeight = wh.innerHeight;
-    },
+    windowResize (state, wh) {
+      state.wh.innerWidth = wh.innerWidth
+      state.wh.innerHeight = wh.innerHeight
+    }
   },
   actions: {
     //

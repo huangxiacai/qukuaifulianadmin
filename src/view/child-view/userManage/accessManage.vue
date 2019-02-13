@@ -44,262 +44,260 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import {formatDate} from '../../../libs/util'
-  import {mapActions} from 'vuex'
-  import addUser from './components/addUser'
+import packageTableMixins from '../mixins/packageTableMixins'
+import { formatDate } from '../../../libs/util'
+import { mapActions } from 'vuex'
+import addUser from './components/addUser'
 
-  export default {
-    name: 'accessManage',
-    mixins: [packageTableMixins],
-    data() {
-      return {
-        title:'用户帐号过滤',
-        getStatus: [
-          {
-            label: '全部',
-            value: -1
-          },
-          {
-            label: '正常',
-            value: 1
-          },
-          {
-            label: '冻结',
-            value: 2
-          }
-        ],
-        filter_form: {
-          phone: null,
-          status: -1
+export default {
+  name: 'accessManage',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      title: '用户帐号过滤',
+      getStatus: [
+        {
+          label: '全部',
+          value: -1
         },
-        headBtnList: [
-          {
-            mothod: this.add,
-            type: 'primary',
-            icon: '',
-            text: '新增'
+        {
+          label: '正常',
+          value: 1
+        },
+        {
+          label: '冻结',
+          value: 2
+        }
+      ],
+      filter_form: {
+        phone: null,
+        status: -1
+      },
+      headBtnList: [
+        {
+          mothod: this.add,
+          type: 'primary',
+          icon: '',
+          text: '新增'
+        }
+      ],
+      columnsheader: [
+        {
+          title: '用户昵称',
+          key: 'nickname',
+          align: 'center'
+        },
+        {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
+          title: '手机号',
+          key: 'phone',
+          align: 'center'
+        },
+        {
+          title: '平台',
+          key: 'type',
+          align: 'center',
+          render: (h, { row }) => {
+            let result = ''
+            if (row.type === 1) {
+              result = '后台'
+            } else if (row.type === 2) {
+              result = '安卓'
+            } else if (row.type === 3) {
+              result = 'ios'
+            }
+            return h('div', result)
           }
-        ],
-        columnsheader: [
-          {
-            title: '用户昵称',
-            key: 'nickname',
-            align: 'center'
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center'
-          },
-          {
-            title: '手机号',
-            key: 'phone',
-            align: 'center'
-          },
-          {
-            title: '平台',
-            key: 'type',
-            align: 'center',
-            render: (h, {row}) => {
-              let result = ''
-              if (row.type === 1) {
-                result = '后台'
-              } else if (row.type === 2) {
-                result = '安卓'
-              } else if (row.type === 3) {
-                result = 'ios'
-              }
-              return h('div', result)
-            }
-          },
+        },
 
-          {
-            title: '创建时间',
-            key: 'createDate',
-            align: 'center',
-            render: (h, {row}) => {
-              return h('div', formatDate('Y-m-d', row.createDate))
+        {
+          title: '创建时间',
+          key: 'createDate',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d', row.createDate))
+          }
+        },
+        {
+          title: '状态',
+          key: 'status',
+          align: 'center',
+          render: (h, { row }) => {
+            let result = ''
+            if (row.status === 1) {
+              result = '正常'
+            } else if (row.status === 2) {
+              result = '冻结'
             }
-          },
-          {
-            title: '状态',
-            key: 'status',
-            align: 'center',
-            render: (h, {row}) => {
-              let result = ''
-              if (row.status === 1) {
-                result = '正常'
-              } else if (row.status === 2) {
-                result = '冻结'
-              }
-              return h('div', result)
+            return h('div', result)
+          }
+        },
+        {
+          title: '操作',
+          key: '',
+          align: 'center',
+          render: (h, { row }) => {
+            let vm = this
+            let result = ''
+            if (row.status === 1) {
+              result = '冻结'
+            } else if (row.status === 2) {
+              result = '冻结'
             }
-          },
-          {
-            title: '操作',
-            key: '',
-            align: 'center',
-            render: (h, {row}) => {
-              let vm = this
-              let result = ''
-              if (row.status === 1) {
-                result = '冻结'
-              } else if (row.status === 2) {
-                result = '冻结'
-              }
-              return h('Button', {
-                on: {
-                  click: function () {
-                    debugger
-                    vm.userUpdateUserStatus(row)
-                  }
+            return h('Button', {
+              on: {
+                click: function () {
+                  debugger
+                  vm.userUpdateUserStatus(row)
                 }
-              }, result)
-            }
-          }
-        ]
-      }
-    },
-    methods: {
-      ...mapActions([
-        'handleGetqueryUsers',
-        'handleInsertUser',
-        'handleUpdateUserStatus'
-      ]),
-      add() {
-        let vm=this;
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '新增用户帐号'),
-              h(addUser, {
-                ref: 'addUser',
-                props: {}
-              }),
-            ]);
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addUser;
-            obj.checkForm().then(res => {
-              if (res) {
-                let getData = obj.getData;
-                //发送请求
-                vm.handleInsertUser({
-                  ...getData
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success("添加成功！");
-                    vm.$Modal.remove();
-                    vm.init();
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false;
-                  }
-                });
-              } else {
-                _this.buttonLoading = false;
               }
-            });
-          }
-        };
-        this.$Modal.confirm(config);
-      },
-      //
-      showSearchPanel() {
-        this.$refs.filterBase.init();
-      },
-
-      //重置搜索条件
-      resetConditions() {
-        this.filter_form = {
-          phone: null,
-          status: -1,
-        }
-      },
-
-      userUpdateUserStatus({userid, status}) {
-        let vm = this
-        let title = status == 1 ? '冻结帐号' : '解冻帐号'
-        let config = {
-          title: title,
-          content: '您确定要' + title + '?',
-          loading: true,
-          onOk: function () {
-            let _this = this
-            vm.handleUpdateUserStatus(
-              {
-                userid,
-                status
-              }
-            ).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success(title)
-                vm.$Modal.remove()
-                vm.init()
-              } else {
-                vm.$Message.error(res.message)
-                _this.buttonLoading = false
-              }
-            })
+            }, result)
           }
         }
-        this.$Modal.confirm(config)
-      },
-      userUpdateUserStatus({userid, status}) {
-        let vm = this;
-        let title = status == 1 ? '冻结帐号' : '解冻帐号';
-        let config = {
-          title: title,
-          content: '您确定要' + title + "?",
-          loading: true,
-          onOk: function () {
-            let _this = this;
-            vm.handleUpdateUserStatus(
-              {
-                userid,
-                status
-              }
-            ).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success(title + "成功");
-                vm.$Modal.remove();
-                vm.init();
-              } else {
-                vm.$Message.error(res.msg);
-                _this.buttonLoading = false;
-              }
-            });
-
-          }
-        };
-        this.$Modal.confirm(config);
-
-      },
-
-      init() {
-        this.tableLoading = true
-        this.handleGetqueryUsers({...this.reqBase}).then(res => {
-          this.tableLoading = false
-          if (res.code === 20000) {
-            this.tableDataList = res.data.data
-            this.getPageTotal = res.data.totalCount
-          } else {
-            this.tableDataList = []
-            this.getPageTotal = 0
-          }
-        })
-      }
-    },
-    mounted() {
-      this.init()
-    },
-    created() {
-
+      ]
     }
+  },
+  methods: {
+    ...mapActions([
+      'handleGetqueryUsers',
+      'handleInsertUser',
+      'handleUpdateUserStatus'
+    ]),
+    add () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '新增用户帐号'),
+            h(addUser, {
+              ref: 'addUser',
+              props: {}
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addUser
+          obj.checkForm().then(res => {
+            if (res) {
+              let getData = obj.getData
+              // 发送请求
+              vm.handleInsertUser({
+                ...getData
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('添加成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+
+    // 重置搜索条件
+    resetConditions () {
+      this.filter_form = {
+        phone: null,
+        status: -1
+      }
+    },
+
+    userUpdateUserStatus ({ userid, status }) {
+      let vm = this
+      let title = status == 1 ? '冻结帐号' : '解冻帐号'
+      let config = {
+        title: title,
+        content: '您确定要' + title + '?',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handleUpdateUserStatus(
+            {
+              userid,
+              status
+            }
+          ).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success(title)
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.message)
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    userUpdateUserStatus ({ userid, status }) {
+      let vm = this
+      let title = status == 1 ? '冻结帐号' : '解冻帐号'
+      let config = {
+        title: title,
+        content: '您确定要' + title + '?',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handleUpdateUserStatus(
+            {
+              userid,
+              status
+            }
+          ).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success(title + '成功')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+
+    init () {
+      this.tableLoading = true
+      this.handleGetqueryUsers({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
+        }
+      })
+    }
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>

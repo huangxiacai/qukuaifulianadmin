@@ -3,8 +3,8 @@ import {
   saveOrUpdateWelfareTool,
   isSellWelfareTool,
   queryActiveRecords,
-  queryWelfareRecords} from '../../api/activeWelfareManage'
-import {setToken, getToken} from '@/libs/util'
+  queryWelfareRecords } from '../../api/activeWelfareManage'
+import { setToken, getToken } from '@/libs/util'
 
 export default {
   state: {
@@ -21,7 +21,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleQueryWelfareTools({state, commit}, params) {
+    handleQueryWelfareTools ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryWelfareTools({
           ...params,
@@ -30,8 +30,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 添加或者修改福利值道具
@@ -40,7 +40,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleSaveOrUpdateWelfareTool({state, commit}, params) {
+    handleSaveOrUpdateWelfareTool ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         saveOrUpdateWelfareTool({
           ...params,
@@ -49,8 +49,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 上架/下架法师道具
@@ -59,7 +59,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleIsSellWelfareTool({state, commit}, params) {
+    handleIsSellWelfareTool ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         isSellWelfareTool({
           ...params,
@@ -68,8 +68,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询活跃度记录
@@ -78,7 +78,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleQueryActiveRecords({state, commit}, params) {
+    handleQueryActiveRecords ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryActiveRecords({
           ...params,
@@ -87,8 +87,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 分页查询福利值记录
@@ -97,7 +97,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleQueryWelfareRecords({state, commit}, params) {
+    handleQueryWelfareRecords ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryWelfareRecords({
           ...params,
@@ -106,8 +106,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
-    },
+        })
+      })
+    }
   }
 }
