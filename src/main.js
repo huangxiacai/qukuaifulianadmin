@@ -13,6 +13,9 @@ import installPlugin from '@/plugin'
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+
+import searchPanel from '@/view/child-view/comontents/searchPanel'//共用的搜索模块
+Vue.component('searchPanel',searchPanel);
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')
@@ -38,8 +41,6 @@ Vue.prototype.errorCode=errorCode;
  */
 importDirective(Vue)
 
-import searchPanel from '@/views/comontents/searchPanel'//共用的搜索模块
-Vue.component('searchPanel',searchPanel);
 
 /* eslint-disable no-new */
 new Vue({
