@@ -46,7 +46,7 @@ export default {
       return new Promise((resolve, reject) => {
         deleteProductTypeById({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -65,7 +65,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryAllProductType({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           commit("setproductTypeData",res);
           resolve(res)
@@ -85,7 +85,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryProductTypes({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -104,7 +104,7 @@ export default {
       return new Promise((resolve, reject) => {
         saveOrUpdateProductTypes({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -123,7 +123,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryProducts({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -142,7 +142,7 @@ export default {
       return new Promise((resolve, reject) => {
         saveProduct({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -161,7 +161,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateProduct({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -180,7 +180,7 @@ export default {
       return new Promise((resolve, reject) => {
         isSelfProduct({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -199,7 +199,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryShopImages({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -218,7 +218,7 @@ export default {
       return new Promise((resolve, reject) => {
         saveOrUpdateShopImage({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -237,7 +237,7 @@ export default {
       return new Promise((resolve, reject) => {
         deleteShopImage({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -256,7 +256,7 @@ export default {
       return new Promise((resolve, reject) => {
         isHideShopImage({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -275,7 +275,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryOrders({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -294,7 +294,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateOrderStatus({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {

@@ -14,7 +14,7 @@ export default {
    */
   baseUrl: {
     //dev: 'https://www.easy-mock.com/mock/5add9213ce4d0e69998a6f51/iview-admin/',
-    dev: 'http://test.fuliantianxia.com',
+    dev: '/',//http://test.fuliantianxia.com
     pro: 'http://prod.fuliantianxia.com'
   },
   /**

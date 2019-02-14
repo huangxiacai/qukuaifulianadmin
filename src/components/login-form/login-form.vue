@@ -1,7 +1,7 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
-      <Input v-model="form.userName" :maxlength="11" placeholder="请输入用户名">
+      <Input v-model="form.userName" placeholder="请输入用户名">
         <span slot="prepend">
           <Icon :size="16" type="ios-person"></Icon>
         </span>
@@ -27,8 +27,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '手机号不能为空', trigger: 'change' },
-          {pattern: /^1(3|4|5|6|7|8|9)\d{9}$/, message: '手机号格式不正确', trigger: 'change'}
+          { required: true, message: '登录名不能为空', trigger: 'change' },
         ]
       }
     },

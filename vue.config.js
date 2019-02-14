@@ -35,7 +35,7 @@ module.exports = {
   },
   // 打包时不生成.map文件
   productionSourceMap: true,
-  // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
+  // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '/' ，即空字符串
   // devServer: {
   //   proxy: 'localhost:3000'
   // }
@@ -45,7 +45,17 @@ module.exports = {
     port: 89,
     https: false,
     hotOnly: false,
-    proxy: null, // 设置代理
+    proxy:"http://test.fuliantianxia.com",
+    // proxy: {
+    //   '/api': {
+    //     target: "http://test.fuliantianxia.com/api",
+    //     ws:true,
+    //     changOrigin:true,
+    //     pathRewrite:{
+    //       '^/api':'/'
+    //     }
+    //   }
+    // }, // 设置代理
     before: app => {}
   }
 }

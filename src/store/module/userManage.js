@@ -20,7 +20,7 @@ export default {
       return new Promise((resolve, reject) => {
         insertUser({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -38,8 +38,7 @@ export default {
     handleGetqueryUsers ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         getqueryUsers({
-          ...params,
-          access_token: getToken()
+          ...params
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -55,11 +54,10 @@ export default {
      * @returns {Promise<any>}
      */
     handleUpdateUserStatus ({ state, commit }, params) {
-      debugger
       return new Promise((resolve, reject) => {
         updateUserStatus({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {

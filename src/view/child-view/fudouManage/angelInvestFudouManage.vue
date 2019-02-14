@@ -300,6 +300,7 @@
                 ref: 'addAngelInvestFudou',
                 props: {
                   getRuleType:vm.getRuleType,
+                  getType:vm.getType
                 }
               })
             ])
@@ -310,9 +311,19 @@
             obj.checkForm().then(res => {
               if (res) {
                 let getData = obj.getData;
+                let ruleValue="";
+                if(getData.ruleType===2){
+                  ruleValue=getData.ruleValue0+","+getData.ruleValue1;
+                }else{
+                  ruleValue=getData.ruleValue;
+                }
                 // 发送请求
                 vm.handlesaveBeanLock({
-                  ...getData
+                  userId:getData.userId,
+                  amount:getData.amount,
+                  ruleType:getData.ruleType,
+                  ruleValue:ruleValue,
+                  type:getData.type
                 }).then(res => {
                   if (res.code === 20000) {
                     vm.$Message.success('添加锁仓记录成功！');

@@ -117,6 +117,8 @@ export const getqueryUsers=(params)=>{
   const data = {
     ...params
   };
+  debugger
+  console.log(userManage.queryUsers);
   return axios.request({
     url: userManage.queryUsers,
     data,

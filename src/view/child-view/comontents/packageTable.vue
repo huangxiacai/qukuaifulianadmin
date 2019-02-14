@@ -26,7 +26,7 @@ slot=headRight  如排序字段 操作
     </div>
     <div slot="footer"
          class="content_base_page"
-         v-show="showFooter">
+         v-if="showFooter">
       <Page
         :total="tabletotallen"
         ref="pageRef"

@@ -41,7 +41,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBeanProductRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -60,7 +60,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryAccountTransferRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -79,7 +79,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBeanTransferRates({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -98,7 +98,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateBeanTransferRate({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -117,7 +117,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBeanTransferRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -136,7 +136,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBeanPrices({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -155,26 +155,7 @@ export default {
       return new Promise((resolve, reject) => {
         saveOrUpdateBeanPrice({
           ...params,
-          access_token: getToken()
-        }).then(res => {
-          resolve(res)
-        }).catch(err => {
-          reject(err)
-        })
-      })
-    },
-    /**
-     * 添加/修改福豆价格
-     * @param state
-     * @param commit
-     * @param params
-     * @returns {Promise<any>}
-     */
-    handlequeryDistributeRecords ({ state, commit }, params) {
-      return new Promise((resolve, reject) => {
-        queryDistributeRecords({
-          ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -193,7 +174,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryDistributeRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -212,7 +193,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryWithdrawLegals({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -231,7 +212,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateWithdrawLegal({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -250,7 +231,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryWithdrawSuishens({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -269,7 +250,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateWithdrawSuishen({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -288,7 +269,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBeanLocks({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -307,7 +288,7 @@ export default {
       return new Promise((resolve, reject) => {
         saveBeanLock({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -326,7 +307,7 @@ export default {
       return new Promise((resolve, reject) => {
         cancelBeanLock({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -345,7 +326,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryAngelQuitRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -364,7 +345,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateAngelQuitRecord({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -383,7 +364,7 @@ export default {
       return new Promise((resolve, reject) => {
         operUserFobBean({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -402,7 +383,7 @@ export default {
       return new Promise((resolve, reject) => {
         querySystemFobBeanRecords({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -421,7 +402,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBusinessLists({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -440,7 +421,7 @@ export default {
       return new Promise((resolve, reject) => {
         queryBusinessDetails({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {
@@ -459,7 +440,7 @@ export default {
       return new Promise((resolve, reject) => {
         updateBusinessDetailStatus({
           ...params,
-          access_token: getToken()
+
         }).then(res => {
           resolve(res)
         }).catch(err => {

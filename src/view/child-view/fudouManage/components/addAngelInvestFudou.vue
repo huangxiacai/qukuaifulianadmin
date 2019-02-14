@@ -5,6 +5,10 @@
               :rules="getRult"
               label-position="top"
               class="show_area" inline>
+          <FormItem label="用户ID" class="qdd_layout100" prop="userId">
+            <InputNumber :min="1" v-model="getData.userId" placeholder="请输入用户ID"
+                         class="setfill"></InputNumber>
+          </FormItem>
             <FormItem label="锁仓数量" class="qdd_layout100" prop="amount">
                 <InputNumber v-model="getData.amount" placeholder="请输入锁仓数量"
                              class="setfill"></InputNumber>
@@ -12,7 +16,7 @@
             <FormItem label="锁仓规则" class="qdd_layout100" prop="ruleType">
                 <Select v-model="getData.ruleType" placeholder="请选择锁仓规则"  :transfer="true">
                     <Option v-for="item in getRuleType"
-                            :value="item.value"
+                            :value="item.value" v-if="item.value!=-1"
                             :key="item.value">{{ item.label }}</Option>
                 </Select>
             </FormItem>
@@ -29,7 +33,13 @@
                 <InputNumber :min="0" v-model="getData.ruleValue" placeholder="请填写锁仓的值"
                              class="setfill" ></InputNumber>
             </FormItem>
-
+          <FormItem label="类型" class="qdd_layout100" prop="type">
+            <Select v-model="getData.type" placeholder="请选择类型"  :transfer="true">
+              <Option v-for="item in getType" v-if="item.value!=-1"
+                      :value="item.value"
+                      :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </FormItem>
         </Form>
     </div>
 
@@ -43,13 +53,18 @@
     data () {
       return {
         getData: {
+          userId:null,
           amount:null,
           ruleType:null,
           ruleValue:null,
           ruleValue0:null,
-          ruleValue1:null
+          ruleValue1:null,
+          type:null,
         },
         getRult: {
+          userId: [
+            { required: true,type:'number', message: '请输入用户Id', trigger: 'change' }
+          ],
           amount: [
             { required: true,type:'number', message: '请输入锁仓数量', trigger: 'change' }
           ],
@@ -63,6 +78,9 @@
             { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
           ],
           ruleValue1: [
+            { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
+          ],
+          type: [
             { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
           ]
         }
