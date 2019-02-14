@@ -22,8 +22,15 @@ export const activeWelfareManage = {
   isSellWelfareTool: 'manager/welfare/isSellWelfareTool', // 上架/下架法师道具
   queryActiveRecords: 'manager/welfare/queryActiveRecords', // 分页查询活跃度记录
   queryWelfareRecords: 'manager/welfare/queryWelfareRecords'// 分页查询福利值记录
-
-}
+};
+/**
+ * 共用模块
+ * @type {{upload: string, delete: string}}
+ */
+export const common={
+  upload:'manager/file/upload',//上传文件
+  delete:'manager/file/delete',//删除文件
+};
 /**
  * 商品管理
  * @type {{}}
@@ -68,4 +75,26 @@ export const fudouManage = {
   queryBusinessLists: 'manager/fobBean/queryBusinessLists',//分页查询交易市场列表
   queryBusinessDetails: 'manager/fobBean/queryBusinessDetails',//分页查询购入列表
   updateBusinessDetailStatus: 'manager/fobBean/updateBusinessDetailStatus',//更新购入订单详情状态
+};
+/**
+ * 系统管理模块
+ * @type {{}}
+ */
+export const systemManage={
+  queryNotices:'manager/system/queryNotices',//分页查询公告
+  saveOrUpdateNotice:'manager/system/saveOrUpdateNotice',//添加或者修改公告
+  deleteNotice:'manager/system/deleteNotice',//删除公告
+  queryMusics:'manager/system/queryMusics',//查询首页音乐
+  saveOrUpdateMusic:'manager/system/saveOrUpdateMusic',//添加或者删除音乐
+  deleteMusic:'manager/system/deleteMusic',//删除音乐
+  queryRabbis:'manager/system/queryRabbis',//查询所有的法师
+  saveOrUpdateRabbi:'manager/system/saveOrUpdateRabbi',//添加或者修改法师
+  isSellRabbi:'manager/system/isSellRabbi',//上架/下架法师
+  queryDictionarys:'manager/system/queryDictionarys',//分页查询常量
+  updateDictionary:'manager/system/updateDictionary',//修改常量值
+  queryPosts:'manager/system/queryPosts',//分页查询帖子
+  isDeletePost:'manager/system/isDeletePost',//是否删除帖子
+  isStickPost:'manager/system/isStickPost',//是否置顶帖子
+  queryUserRabbis:'manager/system/queryUserRabbis',//分页查询用户购买的法师
+  deleteUserRabbi:'manager/system/deleteUserRabbi',//删除用户法师
 };

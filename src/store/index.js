@@ -7,6 +7,7 @@ import app from './module/app'
 import activeWelfareManage from './module/activeWelfareManage'
 import shopManage from './module/shopManage'
 import fudouManage from './module/fudouManage'
+import systemManage from './module/systemManage'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -93,6 +94,7 @@ export default new Vuex.Store({
     userManage,
     activeWelfareManage,
     shopManage,
-    fudouManage
+    fudouManage,
+    systemManage
   }
 })
