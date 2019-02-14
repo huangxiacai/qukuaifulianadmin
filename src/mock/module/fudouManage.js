@@ -71,6 +71,37 @@ const USER_MAP = {
     "totalCount": 1,
     "other": null
 
+  },
+  queryAngelQuitRecords:{
+    "data": [{
+      "recordId": 1,
+      "beanLockId": 1,
+      "amount": 1000.0000, // 申请提前退出的数量
+      "createDate": 1548759327000, // 申请时间
+      "status": 1, // 申请状态 0-审核中 1-审核完成 2-审核失败
+      "beanLock": { //对应锁仓的详情
+        "beanLockId": 1,
+        "userId": 1,
+        "amount": 1000.0000, // 锁仓的数量
+        "freezeAmount": 0.0000, // 冻结的数量
+        "finishAmount": 100.0000, // 完成锁仓的数量
+        "createDate": 1548759327000, // 锁仓时间
+        "ruleType": 0, //
+        "ruleValue": "1",
+        "type": 1,
+        "status": 1,
+        "postUser": {
+          "nickname": "福友29DK96", // 用户昵称
+          "image": null,
+          "phone": "18819462476" // 用户手机号
+        }
+      }
+    }],
+    "currentPage": 1,
+    "length": 10,
+    "totalCount": 1,
+    "other": null
+
   }
 };
 // 基本数据结构

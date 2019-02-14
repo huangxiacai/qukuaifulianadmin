@@ -14,8 +14,8 @@ export default {
    */
   baseUrl: {
     //dev: 'https://www.easy-mock.com/mock/5add9213ce4d0e69998a6f51/iview-admin/',
-    dev: 'http://120.77.80.184:80',
-    pro: 'http://120.77.80.184:80'
+    dev: 'http://test.fuliantianxia.com',
+    pro: 'http://prod.fuliantianxia.com'
   },
   /**
    * @description 默认打开的首页的路由name值，默认为home

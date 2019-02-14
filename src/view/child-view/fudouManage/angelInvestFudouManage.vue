@@ -21,9 +21,16 @@
                 <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
                     <DatePicker v-model="endDate" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
                 </FormItem>
-                <FormItem label="领取状态:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Select v-model="filter_form.status" placeholder="请选择领取状态">
-                        <Option v-for="item in getStatus" :value="item.value"
+                <FormItem label="锁仓规则:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Select v-model="filter_form.ruleType" placeholder="请选择锁仓规则">
+                        <Option v-for="item in getRuleType" :value="item.value"
+                                :key="item.label">{{ item.label }}
+                        </Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="类型:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Select v-model="filter_form.type" placeholder="请选择类型">
+                        <Option v-for="item in getType" :value="item.value"
                                 :key="item.label">{{ item.label }}
                         </Option>
                     </Select>
@@ -58,6 +65,7 @@
   import packageTableMixins from '../mixins/packageTableMixins'
   import { mapActions } from 'vuex'
   import { formatDate } from '@/libs/util'
+  import addAngelInvestFudou from './components/addAngelInvestFudou'
   export default {
     name: 'angelInvestFudouManage',
     mixins: [packageTableMixins],
@@ -70,6 +78,10 @@
         },
         title: '天使投资福豆管理过滤',
         getRuleType:[
+          {
+            label: '全部',
+            value: -1
+          },
           {
             label: '到期一次释放',
             value: 0
@@ -84,6 +96,10 @@
           },
         ],
         getType:[
+          {
+            label: '全部',
+            value: -1
+          },
           {
             label: '天使投资',
             value: 1
@@ -107,13 +123,19 @@
         endDate: null,
         filter_form: {
           phone: null,
-          status: -1,
           startDate: null,
           endDate: null,
-          nickName: null
+          nickName: null,
+          ruleType:-1,
+          type:-1
         },
         headBtnList: [
-
+          {
+            mothod: this.add,
+            type: 'primary',
+            icon: '',
+            text: '添加锁仓'
+          }
         ],
         columnsheader: [
           {
@@ -177,6 +199,23 @@
             }
           },
           {
+            title: '释放规则',
+            key: 'ruleValue',
+            align: 'center',
+            render:(h,{row})=>{
+              let result="";
+              if(row.ruleType==0){
+                result=row.ruleValue+"天后一次性释放";
+              }else if(row.ruleType==1){
+                result=row.ruleValue+"个月释放";
+              }else if(row.ruleType==2){
+                let temp=row.ruleValue.split(",");
+                result=temp[0]+"天到期，"+temp[1]+"个月释放完";
+              }
+              return h('div',result);
+            }
+          },
+          {
             title: '类型',
             key: 'type',
             align: 'center',
@@ -207,13 +246,38 @@
               }
               return h('div',result);
             }
+          },
+          {
+            title: '操作',
+            key: '',
+            align: 'center',
+            width:100,
+            fixed: 'right',
+            render: (h, { row }) => {
+              let vm = this;
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: function () {
+                      vm.del(row)
+                    }
+                  }
+                }, '撤销锁仓')
+              ])
+            }
           }
         ]
       }
     },
     methods: {
       ...mapActions([
-        'handlequeryBeanLocks'
+        'handlequeryBeanLocks',
+        "handlesaveBeanLock",//添加锁仓
+        'handlecancelBeanLock',//撤销锁仓
       ]),
       //
       showSearchPanel () {
@@ -226,37 +290,36 @@
         this.$set(this.filter_form, 'endDate', value)
       },
       add () {
-        let vm = this
+        let vm = this;
         let config = {
           loading: true,
           render: (h) => {
             return h('div', [
-              h('h3', '添加福利值道具'),
-              h(suWelfareTool, {
-                ref: 'suWelfareTool',
+              h('h3', '添加锁仓记录'),
+              h(addAngelInvestFudou, {
+                ref: 'addAngelInvestFudou',
                 props: {
-
+                  getRuleType:vm.getRuleType,
                 }
               })
             ])
           },
           onOk: function () {
-            let _this = this
-            let obj = this.$refs.suWelfareTool
+            let _this = this;
+            let obj = this.$refs.addAngelInvestFudou;
             obj.checkForm().then(res => {
               if (res) {
-                let getData = obj.getData
+                let getData = obj.getData;
                 // 发送请求
-                vm.handleSaveOrUpdateWelfareTool({
+                vm.handlesaveBeanLock({
                   ...getData
                 }).then(res => {
-                  debugger
                   if (res.code === 20000) {
-                    vm.$Message.success('添加成功！')
-                    vm.$Modal.remove()
+                    vm.$Message.success('添加锁仓记录成功！');
+                    vm.$Modal.remove();
                     vm.init()
                   } else {
-                    vm.$Message.error(res.msg)
+                    vm.$Message.error(res.msg);
                     _this.buttonLoading = false
                   }
                 })
@@ -265,7 +328,7 @@
               }
             })
           }
-        }
+        };
         this.$Modal.confirm(config)
       },
       // 重置搜索条件
@@ -274,10 +337,11 @@
         this.endDate = null
         this.filter_form = {
           phone: null,
-          status: -1,
           startDate: null,
           endDate: null,
-          nickName: null
+          nickName: null,
+          ruleType:-1,
+          type:-1
         }
       },
       sellWelfareTool (row, text) {
@@ -367,6 +431,34 @@
             this.getPageTotal = 0
           }
         })
+      },
+      /**
+       * 撤销锁仓
+       * @param row
+       */
+      del(row){
+        let vm=this;
+        let config={
+          title:'撤销锁仓',
+          content:"您确定要撤销这边锁仓吗？",
+          loading:true,
+          onOk:function(){
+            let _this=this;
+            vm.handlecancelBeanLock({
+              beanLockId:row.beanLockId
+            }).then(res=>{
+              if (res.code === 20000) {
+                vm.$Message.success('撤销锁仓成功！');
+                vm.$Modal.remove();
+                vm.init()
+              } else {
+                vm.$Message.error(res.msg)
+                _this.buttonLoading = false
+              }
+            });
+          }
+        };
+        this.$Modal.confirm(config);
       }
 
     },
