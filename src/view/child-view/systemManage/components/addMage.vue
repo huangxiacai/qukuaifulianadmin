@@ -25,8 +25,8 @@
         <InputNumber v-model="getData.twoGenerateBean" placeholder="请输入二级分销福豆"
                      class="setfill"></InputNumber>
       </FormItem>
-      <FormItem label="最终回馈的福豆" class="qdd_layout50" prop="fnalFeedback">
-        <InputNumber v-model="getData.fnalFeedback" placeholder="请输入最终回馈的福豆"
+      <FormItem label="最终回馈的福豆" class="qdd_layout50" prop="finalFeedback">
+        <InputNumber v-model="getData.finalFeedback" placeholder="请输入最终回馈的福豆"
                      class="setfill"></InputNumber>
       </FormItem>
 
@@ -72,8 +72,8 @@
                     <Icon type="ios-camera" size="20"></Icon>
                 </div>
             </Upload>
-            <Modal title="View Image" v-model="visible">
-                <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">
+            <Modal title="查看图片" v-model="visible">
+                <img :src="fileImgPrefix+''+imgName" v-if="visible" style="width: 100%">
             </Modal>
         </FormItem>
 
@@ -95,10 +95,6 @@
           type:7,
         },
         defaultList: [
-          {
-            'name': 'a42bdcc1178e62b4694c830f028db5c0',
-            'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-          }
         ],
         imgName: '',
         visible: false,
@@ -115,7 +111,7 @@
         ],
         getData: {
           logo:null,
-          fnalFeedback:null,
+          finalFeedback:null,
           isSell:null,
           time:null,
           oneGenerateBean:null,
@@ -130,7 +126,7 @@
           isSell: [
             { required: true,type:'number', message: '请选择是否上架', trigger: 'change' }
           ],
-          fnalFeedback: [
+          finalFeedback: [
             { required: true,type:'number', message: '请填写最终回馈的福豆', trigger: 'blur' }
           ],
           time: [
@@ -160,7 +156,6 @@
     components: {},
     computed: {
       uploadUrl(){
-        debugger
         let root=this.$config.baseUrl.pro;
         if(process.env.NODE_ENV !== 'production'){
           root='';
@@ -186,9 +181,10 @@
        * @param file
        */
       handleRemove (file) {
+        debugger
         let vm=this;
         this._vm.$store.dispatch("handledelFile",{
-          file:file
+          file:file.name
         }).then(res=>{
           if(res.code===20000){
             debugger
@@ -240,7 +236,7 @@
        * @returns {boolean}
        */
       handleBeforeUpload () {
-        const check = this.uploadList.length <= this.accUploadNum;
+        const check = this.uploadList.length < this.accUploadNum;
         if (!check) {
           this.$Notice.warning({
             title: '超过允许上传的最大张数'
@@ -254,7 +250,14 @@
     },
     created () {
       if(this.setData!=undefined){
-        Object.assign(this.getData,this.setData)
+        Object.assign(this.getData,this.setData);
+        debugger
+        if(this.setData.logo!="暂无"){
+          this.defaultList=[{
+            name:this.setData.logo,
+            url: this.fileImgPrefix+""+this.setData.logo
+          }];
+        }
       }
     }
   }

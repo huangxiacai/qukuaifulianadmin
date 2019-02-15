@@ -135,6 +135,22 @@
             title: '法师LOGO图',
             key: 'logo',
             align: 'center',
+            render:(h,{row})=>{
+              if(row.logo!="暂无"){
+                return h('img',{
+                  style:{
+                    width:"80px",
+                    height:'80px'
+                  },
+                  attrs:{
+                    src:this.fileImgPrefix+""+row.logo
+                  }
+                })
+              }else{
+                return h('div',row.logo);
+              }
+
+            }
           },
           {
             title: '是否上架',
@@ -216,6 +232,16 @@
         ]
       }
     },
+    computed:{
+      //文件前缀
+      fileImgPrefix(){
+        let root=this.$config.imgUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root=this.$config.imgUrl.dev;
+        }
+        return root;
+      }
+    },
     methods: {
       ...mapActions([
         'handlequeryRabbis',//分页
@@ -287,9 +313,7 @@
                 ref: 'addMage',
                 props: {
                   _vm: vm,
-                  setData: row,
-                  getType: vm.getType,
-                  getStatus: vm.getStatus
+                  setData: row
                 }
               })
             ])
@@ -299,14 +323,12 @@
             let obj = this.$refs.addMage;
             obj.checkForm().then(res => {
               if (res) {
-                let {withdrawId, withdrawMoney, transferMoney, status, walletAddress} = obj.getData;
+                let {
+                  rabbiId,logo,finalFeedback,isSell,time,oneGenerateBean,twoGenerateBean,price,rabbiName
+                } = obj.getData;
                 // 发送请求
                 vm.handlesaveOrUpdateRabbi({
-                  withdrawId,
-                  withdrawMoney,
-                  transferMoney,
-                  status,
-                  walletAddress
+                  rabbiId,logo,finalFeedback,isSell,time,oneGenerateBean,twoGenerateBean,price,rabbiName
                 }).then(res => {
                   if (res.code === 20000) {
                     vm.$Message.success('修改法师成功！');
