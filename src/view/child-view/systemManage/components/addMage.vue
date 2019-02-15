@@ -184,10 +184,10 @@
         debugger
         let vm=this;
         this._vm.$store.dispatch("handledelFile",{
-          file:file.name
+          files:file.name
         }).then(res=>{
           if(res.code===20000){
-            debugger
+            vm.getData.logo=null;
             const fileList = vm.$refs.upload.fileList;
             vm.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
           }else{

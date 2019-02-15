@@ -51,19 +51,23 @@ export default {
     }
   },
   mounted () {
-    this.editor = new Editor(`#${this.editorId}`)
-    this.editor.customConfig.onchange = (html) => {
-      let text = this.editor.txt.text()
-      if (this.cache) localStorage.editorCache = html
-      this.$emit('input', this.valueType === 'html' ? html : text)
-      this.$emit('on-change', html, text)
+    let vm=this;
+    window.load=function(){
+      vm.editor = new Editor(`#${vm.editorId}`)
+      vm.editor.customConfig.onchange = (html) => {
+        let text = vm.editor.txt.text()
+        if (vm.cache) localStorage.editorCache = html
+        vm.$emit('input', vm.valueType === 'html' ? html : text)
+        vm.$emit('on-change', html, text)
+      }
+      vm.editor.customConfig.onchangeTimeout = vm.changeInterval
+      // create这个方法一定要在所有配置项之后调用
+      vm.editor.create()
+      // 如果本地有存储加载本地存储内容
+      let html = vm.value || localStorage.editorCache
+      if (html) vm.editor.txt.html(html)
     }
-    this.editor.customConfig.onchangeTimeout = this.changeInterval
-    // create这个方法一定要在所有配置项之后调用
-    this.editor.create()
-    // 如果本地有存储加载本地存储内容
-    let html = this.value || localStorage.editorCache
-    if (html) this.editor.txt.html(html)
+
   }
 }
 </script>
