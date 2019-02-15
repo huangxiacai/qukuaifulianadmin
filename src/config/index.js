@@ -18,6 +18,13 @@ export default {
     pro: 'http://prod.fuliantianxia.com'
   },
   /**
+   * 图片路线地址
+   */
+  imgUrl:{
+    dev: 'http://image.fuliantianxia.com/test',//http://test.fuliantianxia.com
+    pro: 'http://image.fuliantianxia.com/prod'
+  },
+  /**
    * @description 默认打开的首页的路由name值，默认为home
    */
   homeName: 'home',
