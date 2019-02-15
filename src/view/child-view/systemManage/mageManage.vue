@@ -236,12 +236,15 @@
         let vm = this;
         let config = {
           loading: true,
+          width:500,
           render: (h) => {
             return h('div', [
               h('h3', '添加法师'),
               h(addMage, {
                 ref: 'addMage',
-                props: {}
+                props: {
+                  _vm:vm
+                }
               })
             ])
           },
@@ -250,11 +253,10 @@
             let obj = this.$refs.addMage;
             obj.checkForm().then(res => {
               if (res) {
-                let {beanPrice, createDate} = obj.getData;
+                let getData = obj.getData;
                 // 发送请求
                 vm.handlesaveOrUpdateRabbi({
-                  beanPrice,
-                  createDate
+                  ...getData
                 }).then(res => {
                   if (res.code === 20000) {
                     vm.$Message.success('添加法师成功！');
@@ -277,6 +279,7 @@
         let vm = this;
         let config = {
           loading: true,
+          width:500,
           render: (h) => {
             return h('div', [
               h('h3', '修改法师'),

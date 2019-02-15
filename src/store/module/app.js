@@ -16,6 +16,8 @@ import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
+import { del } from '@/api/common'
+import {operUserFobBean} from "../../api/fudouManage";
 const { homeName } = config
 
 const closePage = (state, route) => {
@@ -94,6 +96,25 @@ export default {
     }
   },
   actions: {
+    /**
+     * 删除 文件
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handledelFile ({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        del({
+          ...params,
+
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
     addErrorLog ({ commit, rootState }, info) {
       if (!window.location.href.includes('error_logger_page'))
         commit('setHasReadErrorLoggerStatus', false)

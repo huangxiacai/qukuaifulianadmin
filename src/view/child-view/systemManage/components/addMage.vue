@@ -56,7 +56,9 @@
             <Upload
                     ref="upload"
                     :show-upload-list="false"
+                    :data="updateDate"
                     :default-file-list="defaultList"
+                    :with-credentials="true"
                     :on-success="handleSuccess"
                     :format="['jpg','jpeg','png']"
                     :max-size="2048"
@@ -64,7 +66,7 @@
                     :on-exceeded-size="handleMaxSize"
                     :before-upload="handleBeforeUpload"
                     type="drag"
-                    action="//jsonplaceholder.typicode.com/posts/"
+                    :action="uploadUrl"
                     style="display: inline-block;width:58px;">
                 <div style="width: 58px;height:58px;line-height: 58px;">
                     <Icon type="ios-camera" size="20"></Icon>
@@ -82,19 +84,20 @@
 
 <script>
   import { renderFormMixins } from '../../mixins/rendFormMixins'
+
   export default {
     name: 'addBannerManage',
     mixins: [renderFormMixins],
     data () {
       return {
+        accUploadNum:1,//允许上传的张数
+        updateDate:{
+          type:7,
+        },
         defaultList: [
           {
             'name': 'a42bdcc1178e62b4694c830f028db5c0',
             'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
-          },
-          {
-            'name': 'bc7521e033abdd1e92222d733590f104',
-            'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
           }
         ],
         imgName: '',
@@ -149,40 +152,98 @@
       setData: {
         type: Object,
         default: null
+      },
+      _vm:{
+
       }
     },
     components: {},
-    computed: {},
+    computed: {
+      uploadUrl(){
+        debugger
+        let root=this.$config.baseUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root='';
+        }
+        return root+"/manager/file/upload"
+      },
+      //文件前缀
+      fileImgPrefix(){
+        let root=this.$config.imgUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root=this.$config.imgUrl.dev;
+        }
+        return root;
+      }
+    },
     methods: {
       handleView (name) {
         this.imgName = name;
         this.visible = true;
       },
+      /**
+       * 删除照片
+       * @param file
+       */
       handleRemove (file) {
-        const fileList = this.$refs.upload.fileList;
-        this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+        let vm=this;
+        this._vm.$store.dispatch("handledelFile",{
+          file:file
+        }).then(res=>{
+          if(res.code===20000){
+            debugger
+            const fileList = vm.$refs.upload.fileList;
+            vm.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+          }else{
+
+          }
+        });
+
       },
+      /**
+       * 上传成功
+       * @param res
+       * @param file
+       */
       handleSuccess (res, file) {
-        file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-        file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+        if(res.code===20000){
+          this.getData.logo=res.data;
+          file.url = this.fileImgPrefix+""+res.data;
+          file.name = res.data;
+        }else{
+
+        }
+
       },
+      /**
+       * 上传格式错误
+       * @param file
+       */
       handleFormatError (file) {
         this.$Notice.warning({
-          title: 'The file format is incorrect',
+          title: '文件格式错误',
           desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
         });
       },
+      /**
+       * 超过最大尺寸
+       * @param file
+       */
       handleMaxSize (file) {
         this.$Notice.warning({
-          title: 'Exceeding file size limit',
+          title: '超过文件最大尺寸',
           desc: 'File  ' + file.name + ' is too large, no more than 2M.'
         });
       },
+      /**
+       * 上传之前的检查
+       * @returns {boolean}
+       */
       handleBeforeUpload () {
-        const check = this.uploadList.length < 5;
+        const check = this.uploadList.length <= this.accUploadNum;
         if (!check) {
           this.$Notice.warning({
-            title: 'Up to five pictures can be uploaded.'
+            title: '超过允许上传的最大张数'
           });
         }
         return check;
