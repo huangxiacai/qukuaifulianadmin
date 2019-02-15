@@ -386,7 +386,7 @@
             vm.handleisSellRabbi(
               {
                 rabbiId: row.rabbiId,
-                isSell: row.isSell
+                isSell: title=="上架"?1:2
               }
             ).then(res => {
               if (res.code === 20000) {
