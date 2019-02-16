@@ -201,6 +201,7 @@
         let vm=this;
         let config = {
           loading: true,
+          width:600,
           render: (h) => {
             return h('div', [
               h('h3', '添加轮播图'),
@@ -217,7 +218,7 @@
               if (res) {
                 let getData = obj.getData
                 // 发送请求
-                vm.handleInsertUser({
+                vm.handlesaveOrUpdateShopImage({
                   ...getData
                 }).then(res => {
                   if (res.code === 20000) {
@@ -242,6 +243,7 @@
         let vm=this;
         let config={
           title:title,
+          width:600,
           loading:true,
           content:"您确定要"+title+"此轮播图吗？",
           onOk:function(){
@@ -285,7 +287,7 @@
               if (res) {
                 let getData = obj.getData;
                 // 发送请求
-                vm.handleInsertUser({
+                vm.handlesaveOrUpdateShopImage({
                   ...getData
                 }).then(res => {
                   if (res.code === 20000) {

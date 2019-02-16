@@ -100,12 +100,7 @@
           rabbiName:null,
         },
         headBtnList: [
-          {
-            mothod: this.add,
-            type: 'primary',
-            icon: '',
-            text: '添加法师'
-          }
+
         ],
         columnsheader: [
           {

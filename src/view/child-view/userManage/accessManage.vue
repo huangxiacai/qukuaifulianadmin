@@ -48,13 +48,17 @@ import packageTableMixins from '../mixins/packageTableMixins'
 import { formatDate } from '../../../libs/util'
 import { mapActions } from 'vuex'
 import addUser from './components/addUser'
-
 export default {
   name: 'accessManage',
   mixins: [packageTableMixins],
   data () {
     return {
       title: '用户帐号过滤',
+      reqBase:{
+        status:-1,
+        currentPage: 1,
+        length: 15
+      },
       getStatus: [
         {
           label: '全部',
@@ -151,7 +155,7 @@ export default {
             return h('Button', {
               on: {
                 click: function () {
-                  vm.userUpdateUserStatus(row)
+                  vm.userUpdateUserStatus(row,result)
                 }
               }
             }, result)
@@ -184,10 +188,12 @@ export default {
           let obj = this.$refs.addUser
           obj.checkForm().then(res => {
             if (res) {
-              let getData = obj.getData
+              let {
+                phone,nickname,loginPassword,OneCommendUserId,isMd5
+              } = obj.getData
               // 发送请求
               vm.handleInsertUser({
-                ...getData
+                phone,nickname,loginPassword,OneCommendUserId,isMd5
               }).then(res => {
                 if (res.code === 20000) {
                   vm.$Message.success('添加成功！')
@@ -219,47 +225,20 @@ export default {
       }
     },
 
-    userUpdateUserStatus ({ userid, status }) {
+    userUpdateUserStatus ({ userId, status },title) {
       let vm = this
-      let title = status == 1 ? '冻结帐号' : '解冻帐号'
+      let _title = title+'帐号';
+      let _status=title=="冻结"?2:1;
       let config = {
-        title: title,
-        content: '您确定要' + title + '?',
+        title: _title,
+        content: '您确定要' + _title + '?',
         loading: true,
         onOk: function () {
           let _this = this
           vm.handleUpdateUserStatus(
             {
-              userid,
-              status
-            }
-          ).then(res => {
-            if (res.code === 20000) {
-              vm.$Message.success(title)
-              vm.$Modal.remove()
-              vm.init()
-            } else {
-              vm.$Message.error(res.message)
-              _this.buttonLoading = false
-            }
-          })
-        }
-      }
-      this.$Modal.confirm(config)
-    },
-    userUpdateUserStatus ({ userid, status }) {
-      let vm = this
-      let title = status == 1 ? '冻结帐号' : '解冻帐号'
-      let config = {
-        title: title,
-        content: '您确定要' + title + '?',
-        loading: true,
-        onOk: function () {
-          let _this = this
-          vm.handleUpdateUserStatus(
-            {
-              userid,
-              status
+              userId,
+              status:_status
             }
           ).then(res => {
             if (res.code === 20000) {
@@ -281,7 +260,7 @@ export default {
       this.handleGetqueryUsers({ ...this.reqBase }).then(res => {
         this.tableLoading = false
         if (res.code === 20000) {
-          this.tableDataList = res.data.data
+          this.tableDataList = res.data.data||[];
           this.getPageTotal = res.data.totalCount
         } else {
           this.tableDataList = []

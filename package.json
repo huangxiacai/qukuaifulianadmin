@@ -43,6 +43,7 @@
     "babel-plugin-import": "^1.11.0",
     "chai": "^4.1.2",
     "eslint-plugin-cypress": "^2.0.1",
+    "js-md5": "^0.7.3",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lint-staged": "^6.0.0",

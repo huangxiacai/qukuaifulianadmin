@@ -74,7 +74,8 @@
         reqBase: {
           type: -1,
           currentPage: 1,
-          length: 15
+          length: 15,
+          ruleType:-1
         },
         title: '天使投资福豆管理过滤',
         getRuleType:[

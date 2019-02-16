@@ -52,7 +52,6 @@ export default {
   },
   mounted () {
     let vm=this;
-    window.load=function(){
       vm.editor = new Editor(`#${vm.editorId}`)
       vm.editor.customConfig.onchange = (html) => {
         let text = vm.editor.txt.text()
@@ -66,7 +65,6 @@ export default {
       // 如果本地有存储加载本地存储内容
       let html = vm.value || localStorage.editorCache
       if (html) vm.editor.txt.html(html)
-    }
 
   }
 }

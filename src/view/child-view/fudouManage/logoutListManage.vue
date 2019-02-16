@@ -284,19 +284,22 @@
             fixed: 'right',
             render: (h, { row }) => {
               let vm = this;
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  on: {
-                    click: function () {
-                      vm.update(row)
+              if(row.status===0){
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'text',
+                      size: 'small'
+                    },
+                    on: {
+                      click: function () {
+                        vm.update(row)
+                      }
                     }
-                  }
-                }, '更新')
-              ])
+                  }, '更新')
+                ])
+              }
+
             }
           }
         ]
@@ -474,7 +477,7 @@
             let _this=this;
             vm.handleupdateAngelQuitRecord({
               recordId:row.beanLockId,
-              status:row.status
+              status:1
             }).then(res=>{
               if (res.code === 20000) {
                 vm.$Message.success('更新成功！');

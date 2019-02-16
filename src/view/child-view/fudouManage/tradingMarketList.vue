@@ -89,6 +89,44 @@
             label:'完成',
           },
         ],
+        getStatus:[
+          {
+            value:1,
+            label:'代付款',
+          },
+          {
+            value:2,
+            label:'已付款',
+          },
+          {
+            value:3,
+            label:'完成',
+          },
+          {
+            value:4,
+            label:'拒绝',
+          },
+          {
+            value:5,
+            label:'系统介入',
+          },
+          {
+            value:6,
+            label:'退回至买家',
+          },
+          {
+            value:7,
+            label:'退回至卖家',
+          },
+          {
+            value:8,
+            label:'卖家撤销',
+          },
+          {
+            value:9,
+            label:'卖家撤销',
+          }
+        ],
         startDate: null,
         endDate: null,
         filter_form: {
@@ -108,11 +146,7 @@
           // }
         ],
         columnsheader: [
-          {
-            title: '订单Id',
-            key: 'businessId',
-            align: 'center',
-          },
+
           {
             title: '用户昵称',
             key: 'postUser.nickname',
@@ -125,50 +159,181 @@
           {
             title: '用户id',
             key: 'userId',
+            width:100,
             align: 'center',
           },
           {
             title: '用户手机号',
             key: 'postUser.phone',
             align: 'center',
+            width:100,
             render:(h,{row})=>{
               return h('div',row.postUser.phone)
             }
           },
           {
+            title: '订单Id',
+            key: 'businessId',
+            align: 'center',
+            width:100,
+          },
+          {
+            title: '购买数量',
+            key: 'amount',
+            align: 'center',
+            width:100,
+          },
+          {
+            title: '支付凭证',
+            key: 'payOrder',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              if(row.payOrder!=null){
+
+              }else{
+                return h('img',{
+                  style:{
+                    width:"70px",
+                    height:"70px"
+                  },
+                  attrs:{
+                    src:row.payOrder
+                  }
+                })
+              }
+
+            }
+          },
+          {
+            title: '状态',
+            key: 'status',
+            width:100,
+            align: 'center',
+            render:(h,{row})=>{
+              let result="";
+              for(let i=0;i<this.getStatus.length;i++){
+                let list =this.getStatus[i];
+                if(list.value===row.status){
+                  result=list.label;
+                  break;
+                }
+              }
+              return h('div',result)
+            }
+          },
+          {
+            title: '申述原因',
+            key: 'appealDesc',
+            align: 'center',
+            width:100,
+          },
+          {
             title: '福豆价格',
             key: 'beanPrice',
             align: 'center',
+            width:100,
           },
           {
-            title: '正在交易市场出售的福豆',
-            key: 'amount',
+            title: '出售者的支付宝',
+            key: 'sellerUserDetail.alipayCode',
             align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.alipayCode)
+            }
           },
           {
-            title: '冻结福豆',
-            key: 'freezeAmount',
+            title: '出售者的银行卡号',
+            key: 'sellerUserDetail.bankcardCode',
             align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.bankcardCode)
+            }
           },
           {
-            title: '出让时间',
+            title: '出售者的银行卡名称',
+            key: 'sellerUserDetail.bankcardName',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.bankcardName)
+            }
+          },
+          {
+            title: '出售者手机号',
+            key: 'sellerUserDetail.phone',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.phone)
+            }
+          },
+          {
+            title: '创建时间',
             key: 'createDate',
             align: 'center',
+            width:100,
             render: (h, { row }) => {
               return h('div', formatDate('Y-m-d h:m:s', row.createDate))
             }
           },
           {
-            title: '交易完成的福豆',
-            key: 'finishAmount',
+            title: '拒绝原因',
+            key: 'rejectDesc',
             align: 'center',
+            width:100
           },
+          {
+            title: '订单详情',
+            key: 'detailNo',
+            align: 'center',
+            width:100
+          },
+          {
+            title: '操作',
+            key: '',
+            align: 'center',
+            fixed:'right',
+            width:180,
+            render: (h, { row }) => {
+              let vm = this;
+              let arr=[];
+              if(row.status==1 ||row.status==2 ||row.status==4  ||row.status==5){
+                arr.push(h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: function () {
+                      vm.backCustomer(row,"退回买家",7)
+                    }
+                  }
+                }, '退回买家'));
+                arr.push(h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: function () {
+                      vm.backCustomer(row,"退回卖家",7)
+                    }
+                  }
+                }, '退回卖家'));
+              }
+              return h('div', arr);
+            }
+          }
         ]
       }
     },
     methods: {
       ...mapActions([
-        'handlequeryBusinessLists'
+        'handlequeryBusinessDetails',
+        'handleupdateBusinessDetailStatus'//更新购入订单详情状态
       ]),
       //
       showSearchPanel () {
@@ -279,6 +444,34 @@
           businessId:null
         }
       },
+      backCustomer(row,title,status){
+        let vm = this
+        let config = {
+          title: title,
+          content: '您确定要'+title+'道具吗',
+          loading: true,
+          onOk: function () {
+            let _this = this
+            vm.handleupdateBusinessDetailStatus(
+              {
+                detailId: row.detailId,
+                status: status
+              }
+            ).then(res => {
+              if (res.code === 20000) {
+                vm.$Message.success(title + '成功')
+                vm.$Modal.remove();
+                vm.init()
+              } else {
+                vm.$Message.error(res.msg)
+                _this.buttonLoading = false
+              }
+            })
+          }
+        }
+        this.$Modal.confirm(config)
+      },
+
       sellWelfareTool (row, text) {
         let vm = this
         let config = {
@@ -356,7 +549,7 @@
       },
       init () {
         this.tableLoading = true;
-        this.handlequeryBusinessLists({ ...this.reqBase }).then(res => {
+        this.handlequeryBusinessDetails({ ...this.reqBase }).then(res => {
           this.tableLoading = false;
           if (res.code === 20000) {
             this.tableDataList = res.data.data;

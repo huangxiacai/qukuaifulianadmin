@@ -84,11 +84,6 @@ export default {
           }
         },
         {
-          title: '用户id',
-          key: 'userId',
-          align: 'center'
-        },
-        {
           title: '手机号',
           key: 'phone',
           align: 'center',

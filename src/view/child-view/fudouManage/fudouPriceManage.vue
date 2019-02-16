@@ -127,7 +127,7 @@
             key: 'createDate',
             align: 'center',
             render: (h, { row }) => {
-              return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+              return h('div', formatDate('Y-m-d', row.createDate))
             }
           },
           {
@@ -221,7 +221,8 @@
               h(addfudouPrice, {
                 ref: 'addfudouPrice',
                 props: {
-                  setData:row
+                  setData:row,
+                  edit:true
                 }
               })
             ])

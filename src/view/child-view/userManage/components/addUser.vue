@@ -18,7 +18,7 @@
                        class="setfill"></Input>
             </FormItem>
             <FormItem label="邀请人的用户id" class="qdd_layout100">
-                <Input v-model="getData.oneCommendUserId" placeholder="请填写邀请人的用户id"
+                <Input v-model="getData.OneCommendUserId" placeholder="请填写邀请人的用户id"
                        class="setfill"></Input>
             </FormItem>
 
@@ -43,7 +43,7 @@ export default {
         phone: null,
         nickname: null,
         loginPassword: null,
-        oneCommendUserId: null,
+        OneCommendUserId: null,
         isMd5: true
       },
       getRult: {

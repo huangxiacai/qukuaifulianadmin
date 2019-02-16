@@ -349,7 +349,7 @@
           this.tableLoading = false
           if (res.code === 20000) {
             debugger
-            this.tableDataList = res.data.data;
+            this.tableDataList = res.data.data||[];
             this.getPageTotal = res.data.totalCount
           } else {
             this.tableDataList = [];

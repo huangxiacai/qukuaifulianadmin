@@ -15,7 +15,7 @@ export default {
   baseUrl: {
     tempDev:'http://test.fuliantianxia.com',
     dev: '/',//http://test.fuliantianxia.com
-    pro: 'http://prod.fuliantianxia.com'
+    pro: 'http://manager.fuliantianxia.com'
   },
   /**
    * 图片路线地址

@@ -21,16 +21,16 @@
                 </Select>
             </FormItem>
 
-            <FormItem v-if="getData.ruleType==2" label="锁仓的值1" class="qdd_layout50" prop="ruleValue0">
-                <InputNumber :min="0" v-model="getData.ruleValue0" placeholder="请填写锁仓的值"
+            <FormItem v-if="getData.ruleType==2" label="多少天到期" class="qdd_layout50" prop="ruleValue0">
+                <InputNumber :min="0" v-model="getData.ruleValue0" placeholder="请填写多少天到期"
                              class="setfill" ></InputNumber>
             </FormItem>
-            <FormItem v-if="getData.ruleType==2" label="锁仓的值2" class="qdd_layout50" prop="ruleValue1">
-                <InputNumber :min="0" v-model="getData.ruleValue1" placeholder="请填写锁仓的值"
+            <FormItem v-if="getData.ruleType==2" label="多少个月释放完" class="qdd_layout50" prop="ruleValue1">
+                <InputNumber :min="0" v-model="getData.ruleValue1" placeholder="请填写多少个月释放完"
                              class="setfill" ></InputNumber>
             </FormItem>
-            <FormItem v-else label="锁仓的值" class="qdd_layout100" prop="ruleValue">
-                <InputNumber :min="0" v-model="getData.ruleValue" placeholder="请填写锁仓的值"
+            <FormItem v-else label="多少天释放完" class="qdd_layout100" prop="ruleValue">
+                <InputNumber :min="0" v-model="getData.ruleValue" placeholder="请填写多少天释放完"
                              class="setfill" ></InputNumber>
             </FormItem>
           <FormItem label="类型" class="qdd_layout100" prop="type">

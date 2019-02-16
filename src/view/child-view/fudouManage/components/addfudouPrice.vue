@@ -17,6 +17,7 @@
                 @on-clear="createClear"
                 :transfer="true"
                 @on-change="createDateChange"
+                :disabled="edit"
                 placeholder="请选择时间"
                 class="setfill"></DatePicker>
 
@@ -87,6 +88,10 @@
       setData: {
         type: Object,
         default: null
+      },
+      edit:{
+        type:Boolean,
+        default: false
       }
     },
     components: {},
