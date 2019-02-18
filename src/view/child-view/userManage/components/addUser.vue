@@ -9,17 +9,17 @@
                 <Input v-model="getData.phone" :maxlength="11" placeholder="请输入用户手机号"
                        class="setfill"></Input>
             </FormItem>
-            <FormItem label="用户昵称" class="qdd_layout100" prop="nickname">
+            <FormItem label="用户昵称(可不填，由系统生成)" class="qdd_layout100">
                 <Input v-model="getData.nickname" placeholder="请输入用户昵称"
                        class="setfill"></Input>
             </FormItem>
-            <FormItem label="登录密码" class="qdd_layout100" prop="loginPassword">
-                <Input v-model="getData.loginPassword" type='password' placeholder="请输入登录密码"
+            <FormItem label="登录密码" class="qdd_layout100">
+                <Input v-model="getData.loginPassword" placeholder="请输入登录密码"
                        class="setfill"></Input>
             </FormItem>
             <FormItem label="邀请人的用户id" class="qdd_layout100">
-                <Input v-model="getData.OneCommendUserId" placeholder="请填写邀请人的用户id"
-                       class="setfill"></Input>
+                <InputNumber v-model="getData.OneCommendUserId" placeholder="请填写邀请人的用户id"
+                       class="setfill"></InputNumber>
             </FormItem>
 
         </Form>

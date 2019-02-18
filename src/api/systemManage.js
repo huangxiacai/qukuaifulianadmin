@@ -206,7 +206,7 @@ export const isStickPost = (params) => {
     ...params
   }
   return axios.request({
-    url: systemManage.updateOrderStatus,
+    url: systemManage.isStickPost,
     data,
     method: 'post'
   })

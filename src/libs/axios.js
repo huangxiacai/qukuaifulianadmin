@@ -46,6 +46,14 @@ class HttpRequest {
   interceptors (instance, url) {
     // 请求拦截
     instance.interceptors.request.use(config => {
+
+      for(let i in config.data){
+        let key=i;
+        let value=config.data[i];
+        if(value==undefined || value==null ||value==""){
+          delete config.data[i]
+        }
+      }
       // 添加全局的loading...
       // if (!Object.keys(this.queue).length) {
       //   // Spin.show() // 不建议开启，因为界面不友好
@@ -59,6 +67,12 @@ class HttpRequest {
     instance.interceptors.response.use(res => {
       this.destroy(url);
       const {data:data } = res;
+      if(data.code===50002){
+        //删除 session状态，跳转登录页面
+        setToken('');
+        debugger
+        Router.$router.push({name:'login'});
+      }
       return data;
     }, error => {
       this.destroy(url)

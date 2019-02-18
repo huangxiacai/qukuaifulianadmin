@@ -226,13 +226,14 @@
         let vm = this;
         let config = {
           loading: true,
+          width:800,
           render: (h) => {
             return h('div', [
               h('h3', '添加商品'),
               h(addCommody, {
                 ref: 'addCommody',
                 props: {
-                  _vm:vm
+                  _vm:vm,
                 }
               })
             ])
@@ -242,10 +243,25 @@
             let obj = this.$refs.addCommody;
             obj.checkForm().then(res => {
               if (res) {
-                let getData = obj.getData;
+                let {
+                  productName,
+                  productTypeId,
+                  amount,
+                  addWelfare,
+                  productDetail,
+                  logo,
+                  image,
+                  freight} = obj.getData;
                 // 发送请求
                 vm.handlesaveProduct({
-                  ...getData
+                  productName,
+                  productTypeId,
+                  amount,
+                  addWelfare,
+                  productDetail,
+                  logo,
+                  image:image.join(','),
+                  freight
                 }).then(res => {
                   if (res.code === 20000) {
                     vm.$Message.success('添加成功！');
@@ -295,6 +311,7 @@
         let vm = this;
         let config = {
           loading: true,
+          width:800,
           render: (h) => {
             return h('div', [
               h('h3', '修改商品'),
@@ -312,10 +329,27 @@
             let obj = this.$refs.addCommody;
             obj.checkForm().then(res => {
               if (res) {
-                let getData = obj.getData;
+                let {
+                  productId,
+                  productName,
+                  productTypeId,
+                  amount,
+                  addWelfare,
+                  productDetail,
+                  logo,
+                  image,
+                  freight} = obj.getData;
                 // 发送请求
                 vm.handleupdateProduct({
-                  ...getData
+                  productId,
+                  productName,
+                  productTypeId,
+                  amount,
+                  addWelfare,
+                  productDetail,
+                  logo,
+                  image:image.length>0?image.json(','):'',
+                  freight
                 }).then(res => {
                   if (res.code === 20000) {
                     vm.$Message.success('修改成功！');
@@ -387,7 +421,11 @@
     },
     mounted() {
       //查询所有的产品分类
-      this.handlequeryAllProductType({});
+
+      if(this.productTypeData.length==0){
+        this.handlequeryAllProductType({}).then(res=>{
+        });
+      }
       this.init()
     },
     created() {

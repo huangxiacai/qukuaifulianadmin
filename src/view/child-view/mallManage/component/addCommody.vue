@@ -20,20 +20,23 @@
                 <InputNumber :max="4" :min="0" v-model="getData.amount" class="setfill"></InputNumber>
             </FormItem>
             <FormItem label="购买商品添加的福利值" class="qdd_layout50" prop="addWelfare">
-                <InputNumber :max="4" :min="0" v-model="getData.addWelfare" class="setfill"></InputNumber>
+                <InputNumber  :min="0" v-model="getData.addWelfare" class="setfill"></InputNumber>
             </FormItem>
             <FormItem label="商品LOGO图地址" class="qdd_layout50" prop="logo">
-                <Input v-model="getData.logo" placeholder="请填写商品LOGO图地址"
-                       class="setfill" ></Input>
+              <uploadFile :uploadList='uploadLogoList' :updateDate="updateDate" @handleRemove="removeLogo" @handleSuccess="uploadLogoSuccess"></uploadFile>
             </FormItem>
             <FormItem label="商品图片" class="qdd_layout50" prop="image">
-                <Input v-model="getData.image" placeholder="请填写商品图片"
-                       class="setfill" ></Input>
+              <uploadFile :uploadList='uploadimageList' :accUploadNum="5" @handleRemove="removeImage" @handleSuccess="uploadImgSuccess" :updateDate="updateDate"></uploadFile>
             </FormItem>
             <FormItem label="商品运费" class="qdd_layout50" prop="freight">
-                <InputNumber :max="4" :min="0" class="setfill"  v-model="getData.freight" placeholder="请填写商品运费"></InputNumber>
+                <InputNumber  :min="0" class="setfill"  v-model="getData.freight" placeholder="请填写商品运费"></InputNumber>
             </FormItem>
-
+          <FormItem label="商品详情" prop="productDetail" class="qdd_layout100">
+            <Input v-model="getData.productDetail"
+                   type="textarea"
+                   :autosize="{minRows: 2,maxRows: 5}"
+                   placeholder="请填写商品详情"></Input>
+          </FormItem>
         </Form>
     </div>
 
@@ -41,11 +44,19 @@
 
 <script>
   import { renderFormMixins } from '../../mixins/rendFormMixins'
+  import uploadFile from '../../comontents/uploadFile'
   export default {
     name: 'addCommody',
     mixins: [renderFormMixins],
     data () {
       return {
+        uploadLogoList:[],
+        uploadimageList:[],
+        updateDate:{
+          type:2,
+        },
+        defaultList: [
+        ],
         getStatus:[
           {
             value:0,
@@ -78,7 +89,7 @@
           addWelfare:null,
           productDetail:null,
           logo:null,
-          image:null,
+          image:[],
           freight:null
         },
         getRult: {
@@ -86,7 +97,7 @@
             { required: true, message: '请填写商品名称', trigger: 'blur' }
           ],
           productTypeId: [
-            { required: true, message: '商品分类Id', trigger: 'blur' }
+            { required: true,type:'number', message: '商品分类Id', trigger: 'change' }
           ],
           amount: [
             { required: true,type:'number', message: '请填写商品的福豆价格', trigger: 'change' }
@@ -101,7 +112,7 @@
             { required: true,message: '请填写商品LOGO图地址', trigger: 'blur' }
           ],
           image:[
-            { required: true,message: '请填写商品图片', trigger: 'blur' }
+            { required: true,type:'array',message: '请填写商品图片', trigger: 'blur' }
           ],
           freight:[{ required: true,type:'number', message: '请填写商品运费', trigger: 'change' }]
         }
@@ -121,17 +132,61 @@
         default: null
       }
     },
-    components: {},
-    computed: {},
+    components: {
+      uploadFile
+    },
     methods: {
-
+      removeLogo({res,name}){
+        if(res.code===20000){
+          this.getData.logo=null;
+        }
+      },
+      removeImage({res,name}){
+        if(res.code===20000){
+          this.getData.image.splice(name,1)
+        }
+      },
+      uploadLogoSuccess(res){
+        if(res.code===20000){
+          this.getData.logo=res.data;
+        }
+      },
+      uploadImgSuccess(res){
+        if(res.code===20000){
+          this.getData.image.push(res.data);
+        }
+      }
     },
     mounted () {
 
     },
     created () {
+      debugger
       if(this.setData!=undefined){
-        Object.assign(this.getData,this.setData)
+        Object.assign(this.getData,this.setData);
+        let arr=this.setData.image;
+        if(arr!="暂时无图"){
+          this.$set(this.getData,"image",arr.split(","));
+          for(let i in arr){
+            let list=arr[i];
+            this.uploadimageList.push({
+              name:list,
+              url:list
+            });
+          }
+        }else{
+          this.$set(this.getData,"image",[]);
+        }
+        if(this.setData.logo!="暂时无图"){
+          this.uploadLogoList.push({
+            name:this.setData.logo,
+            url:this.setData.logo
+          });
+        }else{
+          this.$set(this.getData,"logo","");
+        }
+
+
       }
     }
   }

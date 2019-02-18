@@ -89,22 +89,27 @@ export default {
         {
           title: '用户昵称',
           key: 'nickname',
-          align: 'center'
+          align: 'center',
+          width:100
         },
         {
           title: '用户id',
           key: 'userId',
-          align: 'center'
+          align: 'center',
+          width:100
+
         },
         {
           title: '手机号',
           key: 'phone',
-          align: 'center'
+          align: 'center',
+          width:100
         },
         {
           title: '平台',
           key: 'type',
           align: 'center',
+          width:100,
           render: (h, { row }) => {
             let result = ''
             if (row.type === 1) {
@@ -122,14 +127,16 @@ export default {
           title: '创建时间',
           key: 'createDate',
           align: 'center',
+          width:150,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d', row.createDate))
+            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
           }
         },
         {
           title: '状态',
           key: 'status',
           align: 'center',
+          width:100,
           render: (h, { row }) => {
             let result = ''
             if (row.status === 1) {
@@ -141,9 +148,158 @@ export default {
           }
         },
         {
+          title: '邀请码',
+          key: 'inviteCode',
+          align: 'center',
+          width:100,
+        },
+        {
+          title: '登录时间',
+          key: 'loginDate',
+          align: 'center',
+          width:150,
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d h:m:s', row.loginDate))
+          }
+        },
+        {
+          title: ' IP地址',
+          key: 'ipAddress',
+          align: 'center',
+          width:100,
+        },
+        {
+          title: '一级推荐人姓名',
+          key: 'oneCommendUser.nickname',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.oneCommendUser.nickname)
+          }
+        },
+        {
+          title: '二级推荐人姓名',
+          key: 'twoCommendUser.nickname',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.twoCommendUser.nickname)
+          }
+        },
+        {
+          title: '收货人姓名',
+          key: 'userAddress.name',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.name)
+          }
+        },
+        {
+          title: '收货人手机号',
+          key: 'userAddress.phone',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.phone)
+          }
+        },
+        {
+          title: '收货基本地址',
+          key: 'userAddress.basicAddress',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.basicAddress)
+          }
+        },
+        {
+          title: '收货详细地址',
+          key: 'userAddress.detailAddress',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.detailAddress)
+          }
+        },
+        {
+          title: '支付宝地址',
+          key: 'userAddress.alipayCode',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.alipayCode)
+          }
+        },
+        {
+          title: '银行卡',
+          key: 'userAddress.bankcardCode',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.bankcardCode)
+          }
+        },
+        {
+          title: '银行卡类型',
+          key: 'userAddress.bankcardName',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.bankcardName)
+          }
+        },
+        {
+          title: '出生年月',
+          key: 'userAddress.birthday',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.birthday)
+          }
+        },
+        {
+          title: '身份证',
+          key: 'userAddress.idcardCode',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.idcardCode)
+          }
+        },
+        {
+          title: '身份证地址',
+          key: 'userAddress.idcardAddress',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.idcardAddress)
+          }
+        },
+        {
+          title: '身份证真实姓名',
+          key: 'userAddress.realName',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.realName)
+          }
+        },
+        {
+          title: '银行卡持有人',
+          key: 'userAddress.bankcardOwner',
+          align: 'center',
+          width:100,
+          render: (h, { row }) => {
+            return h('div', row.userAddress.bankcardOwner)
+          }
+        },
+        {
           title: '操作',
           key: '',
           align: 'center',
+          width:100,
+          fixed:'right',
           render: (h, { row }) => {
             let vm = this
             let result = ''
@@ -190,7 +346,10 @@ export default {
             if (res) {
               let {
                 phone,nickname,loginPassword,OneCommendUserId,isMd5
-              } = obj.getData
+              } = obj.getData;
+              if(loginPassword==null ||loginPassword==''){
+                loginPassword='000000'
+              }
               // 发送请求
               vm.handleInsertUser({
                 phone,nickname,loginPassword,OneCommendUserId,isMd5

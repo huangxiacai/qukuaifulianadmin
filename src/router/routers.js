@@ -220,15 +220,15 @@ export default [
         },
         component: () => import('@/view/child-view/activeWelfareManagement/welfareRecord.vue')
       },
-      {
-        path: 'rechargeItemRecord',
-        name: 'rechargeItemRecord',
-        meta: {
-          title: '充值道具记录',
-          notCache: true
-        },
-        component: () => import('@/view/child-view/activeWelfareManagement/rechargeItemRecord.vue')
-      },
+      // {
+      //   path: 'rechargeItemRecord',
+      //   name: 'rechargeItemRecord',
+      //   meta: {
+      //     title: '充值道具记录',
+      //     notCache: true
+      //   },
+      //   component: () => import('@/view/child-view/activeWelfareManagement/rechargeItemRecord.vue')
+      // },
       {
         path: 'activityRecord',
         name: 'activityRecord',

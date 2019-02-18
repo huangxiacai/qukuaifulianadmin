@@ -21,7 +21,7 @@ export default {
   },
   mutations: {
     setproductTypeData(state,data){
-      if(data.code===2000){
+      if(data.code===20000){
         let arr=[];
         for(let i in data.data){
           let list=data.data[i];
@@ -65,7 +65,6 @@ export default {
       return new Promise((resolve, reject) => {
         queryAllProductType({
           ...params,
-
         }).then(res => {
           commit("setproductTypeData",res);
           resolve(res)
