@@ -161,9 +161,9 @@
               let vm = this;
               let result = '';
               if (row.isSelf === 0) {
-                result = "下架";
-              } else if (row.isSelf === 1) {
                 result = "上架";
+              } else if (row.isSelf === 1) {
+                result = "下架";
               }
               return h('div', [
                 h('Button', {
@@ -177,17 +177,17 @@
                     }
                   }
                 }, result),
-                h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  on: {
-                    click: function () {
-                      vm.del(row)
-                    }
-                  }
-                }, '删除'),
+                // h('Button', {
+                //   props: {
+                //     type: 'text',
+                //     size: 'small'
+                //   },
+                //   on: {
+                //     click: function () {
+                //       vm.del(row)
+                //     }
+                //   }
+                // }, '删除'),
                 h('Button', {
                   props: {
                     type: 'text',
@@ -252,6 +252,7 @@
                   logo,
                   image,
                   freight} = obj.getData;
+                debugger
                 // 发送请求
                 vm.handlesaveProduct({
                   productName,
@@ -289,10 +290,11 @@
           content: "您确定要" + title + "此商品吗？",
           onOk: function () {
             let _this = this;
+            let status=title=='上架'?1:0;
             // 发送请求
             vm.handleisSelfProduct({
               productId: row.productId,
-              isSelf:row.isSelf
+              isSelf:status
             }).then(res => {
               if (res.code === 20000) {
                 vm.$Message.success(title + '成功！');
@@ -339,6 +341,7 @@
                   logo,
                   image,
                   freight} = obj.getData;
+
                 // 发送请求
                 vm.handleupdateProduct({
                   productId,
@@ -348,7 +351,7 @@
                   addWelfare,
                   productDetail,
                   logo,
-                  image:image.length>0?image.json(','):'',
+                  image:image.length>0?image.join(','):'',
                   freight
                 }).then(res => {
                   if (res.code === 20000) {

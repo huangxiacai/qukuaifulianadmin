@@ -25,6 +25,7 @@
     :on-exceeded-size="handleMaxSize"
     :before-upload="handleBeforeUpload"
     type="drag"
+    :multiple="isMultiple"
     :action="uploadUrl"
     style="display: inline-block;width:58px;">
     <div style="width: 58px;height:58px;line-height: 58px;">
@@ -43,6 +44,7 @@
         mixins: [],
         data() {
             return {
+              uploadList:[],
               defaultList: [
               ],
               imgName: '',
@@ -61,11 +63,9 @@
           type:Number,
           default:1
         },
-        uploadList:{
-          type:Array,
-          default:function(){
-            return [];
-          }
+        isMultiple:{
+          type:Boolean,
+          default:false
         }
       },
         components: {},
@@ -104,8 +104,11 @@
               if(res.code===20000){
                 this.$emit("handleRemove",{res:res,name:file.name});
                 //vm.getData.logo=null;
+                debugger
                 const fileList = vm.$refs.upload.fileList;
+                vm.uploadList.splice(fileList.indexOf(file), 1);
                 vm.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+
               }else{
 
               }
@@ -121,8 +124,10 @@
             if(res.code===20000){
               this.$emit("handleSuccess",res);
               //this.getData.shopImage=res.data;
+              debugger
               file.url = this.fileImgPrefix+""+res.data;
               file.name = res.data;
+              this.uploadList.push(file);
             }else{
 
             }
@@ -133,6 +138,7 @@
            * @param file
            */
           handleFormatError (file) {
+            debugger
             this.$Notice.warning({
               title: '文件格式错误',
               desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
@@ -143,6 +149,7 @@
            * @param file
            */
           handleMaxSize (file) {
+            debugger
             this.$Notice.warning({
               title: '超过文件最大尺寸',
               desc: 'File  ' + file.name + ' is too large, no more than 2M.'
@@ -152,19 +159,28 @@
            * 上传之前的检查
            * @returns {boolean}
            */
-          handleBeforeUpload () {
+          handleBeforeUpload (file) {
+            debugger
             const check = this.uploadList.length < this.accUploadNum;
             if (!check) {
               this.$Notice.warning({
                 title: '超过允许上传的最大张数'
               });
+            }else{
+              file.status="progress";
             }
             return check;
+          },
+          init(fileList){
+            debugger
+            this.defaultList=fileList||[];
+            this.$refs.upload.fileList=this.defaultList;
+            this.uploadList = this.$refs.upload.fileList;
           }
         },
         mounted() {
           // debugger
-          // this.uploadList = this.$refs.upload.fileList;
+          //this.uploadList = this.$refs.upload.fileList;
         },
         created() {
         }

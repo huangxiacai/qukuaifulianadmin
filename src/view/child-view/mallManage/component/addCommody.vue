@@ -23,12 +23,26 @@
                 <InputNumber  :min="0" v-model="getData.addWelfare" class="setfill"></InputNumber>
             </FormItem>
             <FormItem label="商品LOGO图地址" class="qdd_layout50" prop="logo">
-              <uploadFile :uploadList='uploadLogoList' :updateDate="updateDate" @handleRemove="removeLogo" @handleSuccess="uploadLogoSuccess"></uploadFile>
+              <uploadFile
+                          ref="uploadLogoList"
+                          :updateDate="updateDate"
+                          @init="uploadLogoFileInit"
+                          :_vm="_vm"
+                          @handleRemove="removeLogo"
+                          @handleSuccess="uploadLogoSuccess"></uploadFile>
             </FormItem>
             <FormItem label="商品图片" class="qdd_layout50" prop="image">
-              <uploadFile :uploadList='uploadimageList' :accUploadNum="5" @handleRemove="removeImage" @handleSuccess="uploadImgSuccess" :updateDate="updateDate"></uploadFile>
+              <uploadFile
+                          ref="uploadimageList"
+                          :isMultiple="true"
+                          :accUploadNum="5"
+                          :_vm="_vm"
+                          @init="uploadImageFileInit"
+                          @handleRemove="removeImage"
+                          @handleSuccess="uploadImgSuccess"
+                          :updateDate="updateDate"></uploadFile>
             </FormItem>
-            <FormItem label="商品运费" class="qdd_layout50" prop="freight">
+            <FormItem label="商品运费" class="qdd_layout50" >
                 <InputNumber  :min="0" class="setfill"  v-model="getData.freight" placeholder="请填写商品运费"></InputNumber>
             </FormItem>
           <FormItem label="商品详情" prop="productDetail" class="qdd_layout100">
@@ -121,6 +135,14 @@
     computed:{
       productTypeData(){
         return this._vm.$store.state.shopManage.productTypeData
+      },
+      //文件前缀
+      fileImgPrefix(){
+        let root=this.$config.imgUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root=this.$config.imgUrl.dev;
+        }
+        return root;
       }
     },
     props: {
@@ -155,39 +177,50 @@
         if(res.code===20000){
           this.getData.image.push(res.data);
         }
+      },
+      uploadLogoFileInit(){
+
+      },
+      uploadImageFileInit(){
+
       }
     },
     mounted () {
-
-    },
-    created () {
       debugger
       if(this.setData!=undefined){
         Object.assign(this.getData,this.setData);
         let arr=this.setData.image;
         if(arr!="暂时无图"){
-          this.$set(this.getData,"image",arr.split(","));
-          for(let i in arr){
-            let list=arr[i];
+          let temparr=arr.split(",");
+          this.$set(this.getData,"image",temparr);
+          for(let i in temparr){
+            let list=temparr[i];
             this.uploadimageList.push({
               name:list,
-              url:list
+              url:this.fileImgPrefix+""+list,
+              status:'finished'
             });
           }
+          this.$refs.uploadimageList.init(this.uploadimageList);
         }else{
           this.$set(this.getData,"image",[]);
         }
         if(this.setData.logo!="暂时无图"){
           this.uploadLogoList.push({
             name:this.setData.logo,
-            url:this.setData.logo
+            url:this.fileImgPrefix+""+this.setData.logo,
+            status:'finished'
           });
+          this.$refs.uploadLogoList.init(this.uploadLogoList);
         }else{
           this.$set(this.getData,"logo","");
         }
 
 
       }
+    },
+    created () {
+
     }
   }
 </script>
