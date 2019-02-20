@@ -1,82 +1,93 @@
-
-/***购入列表****/
 <template>
-  <div style="position:relative;">
-      <searchPurchaseList ref="searchPurchaseList"></searchPurchaseList>
-    <searchPanel :title="title"
-                 @search="onSearch(filter_form)"
-                 ref="filterBase"
-                 @reset="resetConditions"
-                 :isReset="true">
-      <Form slot="formContent" inline class="ivu-row">
-        <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Input v-model="filter_form.nickName" type="text"
-                 placeholder="请填写用户昵称"></Input>
-        </FormItem>
-        <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Input v-model="filter_form.phone" :maxlength="11" type="text" icon="iphone"
-                 placeholder="请填写用户手机号"></Input>
-        </FormItem>
-        <FormItem label="开始时间:" class="ivu-col ivu-col-span-6 m-b-10">
-          <DatePicker v-model="startDate" :transfer="true" type="date" placeholder="请选择开始时间" @on-change="startDateChange" style="width: 100%"></DatePicker>
-        </FormItem>
-        <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
-          <DatePicker v-model="endDate" :transfer="true" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
-        </FormItem>
-        <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Select v-model="filter_form.type" :transfer="true" placeholder="请选择状态">
-            <Option v-for="item in getType" :value="item.value"
-                    :key="item.label">{{ item.label }}
-            </Option>
-          </Select>
-        </FormItem>
-        <FormItem label="订单Id:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Input v-model="filter_form.businessId" type="text"
-                 placeholder="请填写订单Id"></Input>
-        </FormItem>
-      </Form>
-    </searchPanel>
-    <packageTable
-      ref="contentBaseRef"
-      :columnsData="columnsheader"
-      :tableData="tableDataList"
-      :reduceheight="reduceheight"
-      :loading="tableLoading"
-      :border="true"
-      :tabletotallen="getPageTotal"
-      @pageonChange="pageonChange"
-      @showSearchPanel="showSearchPanel"
-      @getSelect="getSelectList">
-      <template slot="headLeft">
-        <Button v-for="(item,index) in headBtnList" @click="item.mothod" :key="index" class="base_btn_item"
-                :type="item.type" :icon="item.icon">
-          {{item.text}}
-        </Button>
-      </template>
-      <template slot="headRight">
+    <div>
+        <searchPanel :title="searchtitle"
+                     @search="onSearch(filter_form)"
+                     ref="filterBase"
+                     @reset="resetConditions"
+                     :isReset="true">
+            <Form slot="formContent" inline class="ivu-row">
+                <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Input v-model="filter_form.nickName" type="text"
+                           placeholder="请填写用户昵称"></Input>
+                </FormItem>
+                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Input v-model="filter_form.phone" :maxlength="11" type="text" icon="iphone"
+                           placeholder="请填写用户手机号"></Input>
+                </FormItem>
+                <FormItem label="开始时间:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <DatePicker v-model="startDate" :transfer="true" type="date" placeholder="请选择开始时间" @on-change="startDateChange" style="width: 100%"></DatePicker>
+                </FormItem>
+                <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <DatePicker v-model="endDate" :transfer="true" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
+                </FormItem>
+                <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Select v-model="filter_form.type" :transfer="true" placeholder="请选择状态">
+                        <Option v-for="item in getType" :value="item.value"
+                                :key="item.label">{{ item.label }}
+                        </Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="订单Id:" class="ivu-col ivu-col-span-6 m-b-10">
+                    <Input v-model="filter_form.businessId" type="text"
+                           placeholder="请填写订单Id"></Input>
+                </FormItem>
+            </Form>
+        </searchPanel>
+        <Modal
+                :title="title"
+                v-model="showModalStatus"
+                :width="width"
+                :styles="{top: '20px'}"
+                @on-visible-change="visibleChange"
+                :footer-hide="true"
+                :mask-closable="false">
+            <packageTable
+                    ref="contentBaseRef"
+                    :columnsData="columnsheader"
+                    :tableData="tableDataList"
+                    :reduceheight="reduceheight"
+                    :loading="tableLoading"
+                    :border="true"
+                    :tabletotallen="getPageTotal"
+                    @pageonChange="pageonChange"
+                    @showSearchPanel="showSearchPanel"
+                    @getSelect="getSelectList">
+                <template slot="headLeft">
+                    <Button v-for="(item,index) in headBtnList" @click="item.mothod" :key="index" class="base_btn_item"
+                            :type="item.type" :icon="item.icon">
+                        {{item.text}}
+                    </Button>
+                </template>
+                <template slot="headRight">
 
-      </template>
-    </packageTable>
-  </div>
+                </template>
+            </packageTable>
+        </Modal>
+    </div>
+
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import { mapActions } from 'vuex'
-  import { formatDate } from '@/libs/util'
-  import addfudouPrice from './components/addfudouPrice'
-  import searchPurchaseList from './components/searchPurchaseList'
+  import {modalTemplateMixins} from '../../mixins/modalTemplateMixins'
+  import packageTableMixins from '../../mixins/packageTableMixins'
+  import {formatDate} from '@/libs/util'
+  import {mapActions} from 'vuex'
+
   export default {
-    name: 'tradingMarketList',
-    mixins: [packageTableMixins],
+    name: "searchPurchaseList",
+    mixins:[modalTemplateMixins,packageTableMixins],
     data () {
       return {
+        reduceheight:300,
+        width:900,
         reqBase: {
           currentPage: 1,
           length: 15,
-          type:-1
+          type:-1,
+          businessId:null
         },
-        title: '交易市场列表过滤',
+        title: '购入记录列表',
+        searchtitle: '购入记录列表过滤',
         getType:[
           {
             value:-1,
@@ -93,12 +104,40 @@
         ],
         getStatus:[
           {
-            value:0,
-            label:'未完成',
+            value:1,
+            label:'代付款',
           },
           {
-            value:1,
-            label:'已完成',
+            value:2,
+            label:'已付款',
+          },
+          {
+            value:3,
+            label:'完成',
+          },
+          {
+            value:4,
+            label:'拒绝',
+          },
+          {
+            value:5,
+            label:'系统介入',
+          },
+          {
+            value:6,
+            label:'退回至买家',
+          },
+          {
+            value:7,
+            label:'退回至卖家',
+          },
+          {
+            value:8,
+            label:'卖家撤销',
+          },
+          {
+            value:9,
+            label:'卖家撤销',
           }
         ],
         startDate: null,
@@ -152,48 +191,43 @@
             width:100,
           },
           {
-            title: '福豆价格',
-            key: 'beanPrice',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '正在交易市场出售的福豆',
+            title: '购买数量',
             key: 'amount',
             align: 'center',
             width:100,
           },
-
           {
-            title: '出让时间',
-            key: 'createDate',
+            title: '支付凭证',
+            key: 'payOrder',
             align: 'center',
             width:100,
-            render: (h, { row }) => {
-              return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            render:(h,{row})=>{
+              if(row.payOrder!=null){
+
+              }else{
+                return h('img',{
+                  style:{
+                    width:"70px",
+                    height:"70px"
+                  },
+                  attrs:{
+                    src:row.payOrder
+                  }
+                })
+              }
+
             }
           },
           {
-            title: '冻结福豆',
-            key: 'freezeAmount',
-            align: 'center',
+            title: '状态',
+            key: 'status',
             width:100,
-          },
-          {
-            title: '交易完成的福豆',
-            key: 'finishAmount',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '是否完成',
-            key: 'isSuccess',
             align: 'center',
             render:(h,{row})=>{
               let result="";
               for(let i=0;i<this.getStatus.length;i++){
-                let list=this.getStatus[i];
-                if(list.value===row.isSuccess){
+                let list =this.getStatus[i];
+                if(list.value===row.status){
                   result=list.label;
                   break;
                 }
@@ -202,39 +236,123 @@
             }
           },
           {
+            title: '申述原因',
+            key: 'appealDesc',
+            align: 'center',
+            width:100,
+          },
+          {
+            title: '福豆价格',
+            key: 'beanPrice',
+            align: 'center',
+            width:100,
+          },
+          {
+            title: '出售者的支付宝',
+            key: 'sellerUserDetail.alipayCode',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.alipayCode)
+            }
+          },
+          {
+            title: '出售者的银行卡号',
+            key: 'sellerUserDetail.bankcardCode',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.bankcardCode)
+            }
+          },
+          {
+            title: '出售者的银行卡名称',
+            key: 'sellerUserDetail.bankcardName',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.bankcardName)
+            }
+          },
+          {
+            title: '出售者手机号',
+            key: 'sellerUserDetail.phone',
+            align: 'center',
+            width:100,
+            render:(h,{row})=>{
+              return h('div',row.sellerUserDetail.phone)
+            }
+          },
+          {
+            title: '创建时间',
+            key: 'createDate',
+            align: 'center',
+            width:100,
+            render: (h, { row }) => {
+              return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            }
+          },
+          {
+            title: '拒绝原因',
+            key: 'rejectDesc',
+            align: 'center',
+            width:100
+          },
+          {
+            title: '订单详情',
+            key: 'detailNo',
+            align: 'center',
+            width:100
+          },
+          {
             title: '操作',
             key: '',
             align: 'center',
             fixed:'right',
             width:180,
             render: (h, { row }) => {
-              let vm=this;
-              return h('Button', {
-                props: {
-                  type: 'text',
-                  size: 'small'
-                },
-                on: {
-                  click: function () {
-                    vm.purchaseList(row)
+              let vm = this;
+              let arr=[];
+              if(row.status==1 ||row.status==2 ||row.status==4  ||row.status==5){
+                arr.push(h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: function () {
+                      vm.backCustomer(row,"退回买家",7)
+                    }
                   }
-                }
-              }, '查看购入记录')
+                }, '退回买家'));
+                arr.push(h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: function () {
+                      vm.backCustomer(row,"退回卖家",7)
+                    }
+                  }
+                }, '退回卖家'));
+              }
+              return h('div', arr);
             }
           }
         ]
       }
     },
-    components:{
-      searchPurchaseList
-    },
+    components: {},
+    computed: {},
     methods: {
       ...mapActions([
-        'handlequeryBusinessLists',
         'handlequeryBusinessDetails',
         'handleupdateBusinessDetailStatus'//更新购入订单详情状态
       ]),
-      //
+      initParams(businessId){
+        this.reqBase.businessId=businessId;
+      },
       showSearchPanel () {
         this.$refs.filterBase.init()
       },
@@ -244,6 +362,28 @@
       endDateChange (value) {
         this.$set(this.filter_form, 'endDate', value)
       },
+
+      visibleChange(visible){
+        if(visible){
+          this.init();
+        }else{
+
+        }
+      },
+      // 重置搜索条件
+      resetConditions () {
+        this.startDate = null;
+        this.endDate = null;
+        this.filter_form = {
+          startDate: null,
+          endDate: null,
+          phone:null,
+          nickName:null,
+          type:-1,
+          businessId:null
+        }
+      },
+
       add () {
         let vm = this;
         let config = {
@@ -335,19 +475,7 @@
         this.$refs.searchPurchaseList.showModal(true);
         this.$refs.searchPurchaseList.initParams(row.row);
       },
-      // 重置搜索条件
-      resetConditions () {
-        this.startDate = null;
-        this.endDate = null;
-        this.filter_form = {
-          startDate: null,
-          endDate: null,
-          phone:null,
-          nickName:null,
-          type:-1,
-          businessId:null
-        }
-      },
+
       backCustomer(row,title,status){
         let vm = this
         let config = {
@@ -453,7 +581,7 @@
       },
       init () {
         this.tableLoading = true;
-        this.handlequeryBusinessLists({ ...this.reqBase }).then(res => {
+        this.handlequeryBusinessDetails({ ...this.reqBase }).then(res => {
           this.tableLoading = false;
           if (res.code === 20000) {
             this.tableDataList = res.data.data;
@@ -492,13 +620,8 @@
         };
         this.$Modal.confirm(config);
       }
-
     },
-    mounted () {
-      this.init()
-    },
-    created () {
-
+    mounted() {
     }
   }
 </script>
@@ -506,4 +629,3 @@
 <style scoped>
 
 </style>
-

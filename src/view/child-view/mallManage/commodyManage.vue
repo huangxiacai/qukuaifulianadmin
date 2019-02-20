@@ -252,7 +252,9 @@
                   logo,
                   image,
                   freight} = obj.getData;
-                debugger
+                if(freight==null || freight==''){
+                  freight=0;
+                }
                 // 发送请求
                 vm.handlesaveProduct({
                   productName,
@@ -341,7 +343,10 @@
                   logo,
                   image,
                   freight} = obj.getData;
-
+                //为空的时候默认为0
+                if(freight==null || freight==''){
+                  freight=0;
+                }
                 // 发送请求
                 vm.handleupdateProduct({
                   productId,

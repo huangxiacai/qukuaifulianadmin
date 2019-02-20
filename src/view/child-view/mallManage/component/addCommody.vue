@@ -17,7 +17,7 @@
                 </Select>
             </FormItem>
             <FormItem label="商品的福豆价格" class="qdd_layout50" prop="amount">
-                <InputNumber :max="4" :min="0" v-model="getData.amount" class="setfill"></InputNumber>
+                <InputNumber :min="0" v-model="getData.amount" class="setfill"></InputNumber>
             </FormItem>
             <FormItem label="购买商品添加的福利值" class="qdd_layout50" prop="addWelfare">
                 <InputNumber  :min="0" v-model="getData.addWelfare" class="setfill"></InputNumber>

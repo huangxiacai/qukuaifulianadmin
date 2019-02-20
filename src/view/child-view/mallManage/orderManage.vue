@@ -84,6 +84,12 @@ export default {
           value: 2
         }
       ],
+      reqBase: {// 请求的base参数
+        currentPage: 1,
+        length: 15,
+        status:-1,
+        payType:-1
+      },
       filter_form: {
         phone: null,
         status: -1

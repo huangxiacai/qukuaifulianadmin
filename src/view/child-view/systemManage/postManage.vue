@@ -1,5 +1,4 @@
-<script src="../../../../../faqadmin/admin/src/api/reqConfig.js"></script>/***帖子管理****/
-  <template>
+<template>
     <div style="position:relative;">
       <searchPanel :title="title"
                    @search="onSearch(filter_form)"
@@ -173,34 +172,48 @@
               width: 150,
               render: (h, {row}) => {
                 let vm = this;
-                let arr=[];
+                let delText="";
+                let delstatus=0;
+                let stickText="";
+                let stick=0;
                 if(row.isDelete===0){
-                  arr.push(h('Button', {
-                    props: {
-                      type: 'text',
-                      size: 'small'
-                    },
-                    on: {
-                      click: function () {
-                        vm.del(row)
-                      }
-                    }
-                  }, '删除'));
+                  delText="删除"
+                  delstatus=1;
+                }else if(row.isDelete===1){
+                  delText="还原";
+                  delstatus=0;
                 }
                 if(row.isStick===0){
-                  arr.push(h('Button', {
+                  stickText="置顶";
+                  stick=1;
+                }else if(row.isStick===1){
+                  stickText="取消置顶"
+                  stick=0;
+                }
+                return h('div',[
+                  h('Button', {
                     props: {
                       type: 'text',
                       size: 'small'
                     },
                     on: {
                       click: function () {
-                        vm.setTop(row)
+                        vm.del(row,delText,delstatus)
                       }
                     }
-                  }, '置顶'));
-                }
-                return h('div',arr)
+                  }, delText),
+                  h('Button', {
+                    props: {
+                      type: 'text',
+                      size: 'small'
+                    },
+                    on: {
+                      click: function () {
+                        vm.setTop(row,stickText,stick)
+                      }
+                    }
+                  }, stickText)
+                ])
 
               }
             }
@@ -379,20 +392,20 @@
          * 撤销锁仓
          * @param row
          */
-        del(row) {
+        del(row,title,status) {
           let vm = this;
           let config = {
-            title: '删除贴子',
-            content: "您确定要删除此条贴子吗？",
+            title: title,
+            content: "您确定要"+title+"此条贴子吗？",
             loading: true,
             onOk: function () {
               let _this = this;
               vm.handleisDeletePost({
                 postId: row.postId,
-                isDelete:1
+                isDelete:status
               }).then(res => {
                 if (res.code === 20000) {
-                  vm.$Message.success('删除贴子成功！');
+                  vm.$Message.success(title+'贴子成功！');
                   vm.$Modal.remove();
                   vm.init()
                 } else {
@@ -404,20 +417,20 @@
           };
           this.$Modal.confirm(config);
         },
-        setTop(row) {
+        setTop(row,title,status) {
           let vm = this;
           let config = {
-            title: '置顶帖子',
-            content: "您确定要置顶此条帖子吗？",
+            title: title,
+            content: "您确定要"+title+"此条帖子吗？",
             loading: true,
             onOk: function () {
               let _this = this;
               vm.handleisStickPost({
                 postId: row.postId,
-                isStick:1,
+                isStick:status,
               }).then(res => {
                 if (res.code === 20000) {
-                  vm.$Message.success('置顶帖子成功！');
+                  vm.$Message.success(title+'成功！');
                   vm.$Modal.remove();
                   vm.init()
                 } else {

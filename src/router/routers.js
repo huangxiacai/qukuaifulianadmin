@@ -174,6 +174,15 @@ export default [
         component: () => import('@/view/child-view/fudouManage/tradingMarketList.vue')
       },
       {
+        path: 'purchaselist',
+        name: 'purchaselist',
+        meta: {
+          title: '购入列表',
+          notCache: true
+        },
+        component: () => import('@/view/child-view/fudouManage/purchaselist.vue')
+      },
+      {
         path: 'secondaryDistributionRecord',
         name: 'secondaryDistributionRecord',
         meta: {
