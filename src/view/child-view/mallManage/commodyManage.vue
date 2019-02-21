@@ -113,6 +113,28 @@
             title: '商品LOGO图地址',
             key: 'logo',
             align: 'center',
+            render:(h,{row})=>{
+              if(row.logo===null ||row.logo=="暂时无图"){
+
+              }else{
+                return h('div',{
+                  style:{
+                    width:"70px",
+                    height:"70px"
+                  }
+                },[
+                  h('img',{
+                    style:{
+                      width:"100%",
+                      height:"100%"
+                    },
+                    attrs:{
+                      src:this.fileImgPrefix+""+row.logo
+                    }
+                  })
+                ]);
+              }
+            }
           },
           {
             title: '创建时间',
@@ -125,7 +147,29 @@
           {
             title: '商品图片',
             key: 'image',
-            align: 'center'
+            align: 'center',
+            render:(h,{row})=>{
+              if(row.image===null ||row.image=="暂时无图"){
+
+              }else{
+                return h('div',{
+                  style:{
+                    width:"70px",
+                    height:"70px"
+                  }
+                },[
+                  h('img',{
+                    style:{
+                      width:"100%",
+                      height:"100%"
+                    },
+                    attrs:{
+                      src:this.fileImgPrefix+""+row.image
+                    }
+                  })
+                ]);
+              }
+            }
           },
           {
             title: '商品运费',
@@ -212,6 +256,14 @@
     computed:{
       productTypeData(){
         return this.$store.state.shopManage.productTypeData
+      },
+      //文件前缀
+      fileImgPrefix(){
+        let root=this.$config.imgUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root=this.$config.imgUrl.dev;
+        }
+        return root;
       }
     },
     methods: {

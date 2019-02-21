@@ -202,18 +202,25 @@
             align: 'center',
             width:100,
             render:(h,{row})=>{
-              if(row.payOrder!=null){
+              if(row.payOrder===null ||row.payOrder===""){
 
               }else{
-                return h('img',{
+                return h('div',{
                   style:{
                     width:"70px",
                     height:"70px"
-                  },
-                  attrs:{
-                    src:row.payOrder
                   }
-                })
+                },[
+                  h('img',{
+                    style:{
+                      width:"100%",
+                      height:"100%"
+                    },
+                    attrs:{
+                      src:this.fileImgPrefix+""+row.payOrder
+                    }
+                  })
+                ]);
               }
 
             }
@@ -344,7 +351,16 @@
       }
     },
     components: {},
-    computed: {},
+    computed: {
+      //文件前缀
+      fileImgPrefix(){
+        let root=this.$config.imgUrl.pro;
+        if(process.env.NODE_ENV !== 'production'){
+          root=this.$config.imgUrl.dev;
+        }
+        return root;
+      }
+    },
     methods: {
       ...mapActions([
         'handlequeryBusinessDetails',
@@ -581,10 +597,11 @@
       },
       init () {
         this.tableLoading = true;
+        this.tableDataList=[];
         this.handlequeryBusinessDetails({ ...this.reqBase }).then(res => {
           this.tableLoading = false;
           if (res.code === 20000) {
-            this.tableDataList = res.data.data;
+            this.tableDataList = res.data.data||[];
             this.getPageTotal = res.data.totalCount;
           } else {
             this.tableDataList = [];

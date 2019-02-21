@@ -333,7 +333,7 @@
       //查看购入列表
       purchaseList(row){
         this.$refs.searchPurchaseList.showModal(true);
-        this.$refs.searchPurchaseList.initParams(row.row);
+        this.$refs.searchPurchaseList.initParams(row.businessId);
       },
       // 重置搜索条件
       resetConditions () {
