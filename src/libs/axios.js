@@ -50,7 +50,7 @@ class HttpRequest {
       for(let i in config.data){
         let key=i;
         let value=config.data[i];
-        if(value==undefined || value==null ||value==""){
+        if(value===undefined || value===null ||value===""){
           delete config.data[i]
         }
       }

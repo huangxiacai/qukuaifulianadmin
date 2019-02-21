@@ -2,7 +2,7 @@
     <div>
         <searchPanel :title="searchtitle"
                      @search="onSearch(filter_form)"
-                     ref="filterBase"
+                     ref="filterBase1"
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
@@ -70,6 +70,7 @@
 <script>
   import {modalTemplateMixins} from '../../mixins/modalTemplateMixins'
   import packageTableMixins from '../../mixins/packageTableMixins'
+  import searchPanel from '../../comontents/searchPanel'
   import {formatDate} from '@/libs/util'
   import {mapActions} from 'vuex'
 
@@ -78,8 +79,8 @@
     mixins:[modalTemplateMixins,packageTableMixins],
     data () {
       return {
-        reduceheight:300,
-        width:900,
+        reduceheight:150,
+        width:1000,
         reqBase: {
           currentPage: 1,
           length: 15,
@@ -343,7 +344,9 @@
         ]
       }
     },
-    components: {},
+    components: {
+      searchPanel
+    },
     computed: {},
     methods: {
       ...mapActions([
@@ -354,7 +357,8 @@
         this.reqBase.businessId=businessId;
       },
       showSearchPanel () {
-        this.$refs.filterBase.init()
+        debugger
+        //this.$refs.filterBase1.init()
       },
       startDateChange (value) {
         this.$set(this.filter_form, 'startDate', value)
@@ -367,7 +371,7 @@
         if(visible){
           this.init();
         }else{
-
+            this.tableDataList=[];
         }
       },
       // 重置搜索条件
@@ -383,7 +387,6 @@
           businessId:null
         }
       },
-
       add () {
         let vm = this;
         let config = {
@@ -584,7 +587,7 @@
         this.handlequeryBusinessDetails({ ...this.reqBase }).then(res => {
           this.tableLoading = false;
           if (res.code === 20000) {
-            this.tableDataList = res.data.data;
+            this.tableDataList = res.data.data||[];
             this.getPageTotal = res.data.totalCount;
           } else {
             this.tableDataList = [];

@@ -43,7 +43,7 @@
                           :updateDate="updateDate"></uploadFile>
             </FormItem>
             <FormItem label="商品运费" class="qdd_layout50" >
-                <InputNumber  :min="0" class="setfill"  v-model="getData.freight" placeholder="请填写商品运费"></InputNumber>
+                <InputNumber   class="setfill"  v-model="getData.freight" placeholder="请填写商品运费"></InputNumber>
             </FormItem>
           <FormItem label="商品详情" prop="productDetail" class="qdd_layout100">
             <Input v-model="getData.productDetail"
@@ -127,8 +127,7 @@
           ],
           image:[
             { required: true,type:'array',message: '请填写商品图片', trigger: 'blur' }
-          ],
-          freight:[{ required: true,type:'number', message: '请填写商品运费', trigger: 'change' }]
+          ]
         }
       }
     },
