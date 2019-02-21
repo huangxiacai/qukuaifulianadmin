@@ -127,8 +127,7 @@
           ],
           image:[
             { required: true,type:'array',message: '请填写商品图片', trigger: 'blur' }
-          ],
-          freight:[{ required: true,type:'number', message: '请填写商品运费', trigger: 'change' }]
+          ]
         }
       }
     },

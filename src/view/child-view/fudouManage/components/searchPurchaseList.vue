@@ -2,7 +2,7 @@
     <div>
         <searchPanel :title="searchtitle"
                      @search="onSearch(filter_form)"
-                     ref="filterBase"
+                     ref="filterBase1"
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
@@ -70,6 +70,7 @@
 <script>
   import {modalTemplateMixins} from '../../mixins/modalTemplateMixins'
   import packageTableMixins from '../../mixins/packageTableMixins'
+  import searchPanel from '../../comontents/searchPanel'
   import {formatDate} from '@/libs/util'
   import {mapActions} from 'vuex'
 
@@ -78,8 +79,8 @@
     mixins:[modalTemplateMixins,packageTableMixins],
     data () {
       return {
-        reduceheight:300,
-        width:900,
+        reduceheight:150,
+        width:1000,
         reqBase: {
           currentPage: 1,
           length: 15,
@@ -350,6 +351,7 @@
         ]
       }
     },
+<<<<<<< HEAD
     components: {},
     computed: {
       //文件前缀
@@ -361,6 +363,12 @@
         return root;
       }
     },
+=======
+    components: {
+      searchPanel
+    },
+    computed: {},
+>>>>>>> 55a55bc74a01b174717c6222f7ac44ddd18843c7
     methods: {
       ...mapActions([
         'handlequeryBusinessDetails',
@@ -370,7 +378,8 @@
         this.reqBase.businessId=businessId;
       },
       showSearchPanel () {
-        this.$refs.filterBase.init()
+        debugger
+        //this.$refs.filterBase1.init()
       },
       startDateChange (value) {
         this.$set(this.filter_form, 'startDate', value)
@@ -383,7 +392,7 @@
         if(visible){
           this.init();
         }else{
-
+            this.tableDataList=[];
         }
       },
       // 重置搜索条件
@@ -399,7 +408,6 @@
           businessId:null
         }
       },
-
       add () {
         let vm = this;
         let config = {
