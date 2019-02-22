@@ -40,17 +40,17 @@ export default {
       localStorage.clear();
       sessionStorage.clear();
       this.handleLogin({ userName, password }).then(res => {
-        if(res===20000){
+        if(res.code===20000){
           setUserNameCookie(userName);
           //设置当前帐号
-          vm.getUserInfo().then(res => {
+          vm.getUserInfo({}).then(r => {
             vm.$refs.loginForm.loginLoading=false;//重置loading 状态
             vm.$router.push({
               name: vm.$config.homeName
             })
           })
         }else{
-          vm.$Message.error(vm.errorCode[res]);
+          vm.$Message.error(res.msg);
           vm.$refs.loginForm.loginLoading=false;//重置loading 状态
         }
 

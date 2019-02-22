@@ -351,8 +351,6 @@
         ]
       }
     },
-<<<<<<< HEAD
-    components: {},
     computed: {
       //文件前缀
       fileImgPrefix(){
@@ -363,12 +361,9 @@
         return root;
       }
     },
-=======
     components: {
       searchPanel
     },
-    computed: {},
->>>>>>> 55a55bc74a01b174717c6222f7ac44ddd18843c7
     methods: {
       ...mapActions([
         'handlequeryBusinessDetails',
