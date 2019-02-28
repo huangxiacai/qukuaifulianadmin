@@ -13,16 +13,16 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    tempDev:'http://test.fuliantianxia.com',
-    dev: '/',//http://test.fuliantianxia.com
-    pro: 'http://manager.fuliantianxia.cn',
-    //pro: 'http://manager.fuliantianxia.com'
+    tempDev: 'http://test.fuliantianxia.com',
+    dev: '/', // http://test.fuliantianxia.com
+    // pro: 'http://manager.fuliantianxia.cn',
+    pro: 'http://manager.fuliantianxia.com'
   },
   /**
    * 图片路线地址
    */
-  imgUrl:{
-    dev: 'http://image.fuliantianxia.com/test',//http://test.fuliantianxia.com
+  imgUrl: {
+    dev: 'http://image.fuliantianxia.com/test', // http://test.fuliantianxia.com
     pro: 'http://image.fuliantianxia.com/prod'
   },
   /**
@@ -41,9 +41,9 @@ export default {
   /**
    * client 配置
    */
-  client:{
-    ClientSeckey:'JUVxAqRrb7Db6ih3Yt2MzuaoR',
-    client_id:'cmcc_1_cid'
+  client: {
+    ClientSeckey: 'JUVxAqRrb7Db6ih3Yt2MzuaoR',
+    client_id: 'cmcc_1_cid'
   }
 
 }
