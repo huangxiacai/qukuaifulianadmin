@@ -485,7 +485,6 @@ export default {
                       phone: list.postUser.phone,
                       amount: list.amount,
                       freezeAmount: list.freezeAmount,
-
                       finishAmount: list.finishAmount,
                       createDate: formatDate('Y-m-d h:m:s', list.createDate),
                       ruleType: vm.getRuleTypeLabel(list.ruleType),
@@ -496,7 +495,7 @@ export default {
                   vm.$Message.success('导出成功！')
                   vm.$Modal.remove()
                   vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
-                    filename: 'userFudou',
+                    filename: 'angelInvestFudouManage',
                     columns: vm.columnsheader,
                     data: _arr
                   })

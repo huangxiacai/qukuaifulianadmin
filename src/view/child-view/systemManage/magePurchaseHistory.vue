@@ -113,6 +113,11 @@
             }
           },
           {
+            title: '用户id',
+            key: 'userId',
+            align: 'center',
+          },
+          {
             title: '用户手机号',
             key: 'postUser.phone',
             align: 'center',
@@ -121,11 +126,7 @@
               return h('div',row.postUser.phone);
             }
           },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center',
-          },
+
           {
             title: '法师名称',
             key: 'rabbi.rabbiName',

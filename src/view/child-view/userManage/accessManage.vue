@@ -6,9 +6,9 @@
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
-                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
+                <FormItem label="用户手机号或用户ID:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Input v-model="filter_form.phone" type="text" icon="iphone"
-                           placeholder="请填写用户手机号"></Input>
+                           placeholder="请填写用户手机号或者用户ID"></Input>
                 </FormItem>
                 <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Select v-model="filter_form.status" placeholder="请选择状态">
@@ -102,6 +102,7 @@ export default {
           title: '用户昵称',
           key: 'nickname',
           align: 'center',
+          fixed:'left',
           width: 100
         },
         {
@@ -116,6 +117,15 @@ export default {
           key: 'phone',
           align: 'center',
           width: 100
+        },
+        {
+          title: '身份证号',
+          key: 'userDetail.idcardCode',
+          align: 'center',
+          width: 100,
+          render:(h,{row})=>{
+            return h('div',row.userDetail.idcardCode);
+          }
         },
         {
           title: '平台',
@@ -464,6 +474,7 @@ export default {
                       nickname: list.nickname,
                       userId: list.userId,
                       phone: list.phone,
+                      "userDetail.idcardCode":list.userDetail.idcardCode,
                       type: vm.getTypeLabel(list.type),
                       createDate: formatDate('Y-m-d h:m:s', list.createDate),
                       status: vm.getStatusLabel(list.status),
@@ -489,7 +500,7 @@ export default {
                   vm.$Message.success('导出成功！')
                   vm.$Modal.remove()
                   vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
-                    filename: 'welfare',
+                    filename: 'accessManage',
                     columns: vm.columnsheader,
                     data: _arr
                   })

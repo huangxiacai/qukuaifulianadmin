@@ -96,6 +96,11 @@ export default {
           }
         },
         {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
           title: '手机号',
           key: 'phone',
           align: 'center',
@@ -103,11 +108,7 @@ export default {
             return h('div', row.postUser.phone)
           }
         },
-        {
-          title: '用户id',
-          key: 'userId',
-          align: 'center'
-        },
+
         {
           title: '随身福袋数量',
           key: 'suishenBean',

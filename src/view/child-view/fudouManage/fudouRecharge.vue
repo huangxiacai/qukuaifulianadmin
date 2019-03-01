@@ -41,7 +41,10 @@
                 </Button>
             </template>
             <template slot="headRight">
-
+                <Button v-for="(item,index) in headBtnRightList" @click="item.mothod" :key="index" class="base_btn_item"
+                        :type="item.type" :icon="item.icon">
+                    {{item.text}}
+                </Button>
             </template>
         </packageTable>
     </div>
@@ -52,6 +55,7 @@
   import {mapActions} from 'vuex'
   import addRecharge from './components/addRecharge'
   import {formatDate} from '@/libs/util'
+  import exportConponents from '../comontents/exportConponents'
   export default {
     name: 'fudouRecharge',
     mixins: [packageTableMixins],
@@ -108,6 +112,14 @@
             text: '充值'
           }
         ],
+        headBtnRightList: [
+          {
+            mothod: this.exprotData,
+            type: 'primary',
+            icon: '',
+            text: '导出'
+          }
+        ],
         columnsheader: [
           {
             title: '用户昵称',
@@ -116,6 +128,11 @@
             render: (h, { row }) => {
               return h('div', row.postUser.nickname)
             }
+          },
+          {
+            title: '用户id',
+            key: 'userId',
+            align: 'center',
           },
           {
             title: '手机号',
@@ -342,6 +359,90 @@
           endDate: null,
           nickName: null
         }
+      },
+      exprotData () {
+        debugger
+        let vm = this
+        let config = {
+          loading: true,
+          render: (h) => {
+            return h('div', [
+              h('h3', '导出数据'),
+              h(exportConponents, {
+                ref: 'exportConponents',
+                props: {
+
+                }
+              })
+            ])
+          },
+          onOk: function () {
+            let _this = this
+            let obj = this.$refs.exportConponents
+            obj.checkForm().then(res => {
+              if (res) {
+                debugger
+                let { startDate, endDate } = obj.formModel
+                vm.handlequerySystemFobBeanRecords({
+                  currentPage: 1,
+                  length: vm.getPageTotal,
+                  startDate,
+                  endDate
+                }).then(res => {
+                  if (res.code === 20000) {
+                    let allData = res.data.data
+                    let _arr = []
+                    for (let i in allData) {
+                      let list = allData[i]
+                      _arr.push({
+                        nickname: list.postUser.nickname,
+                        userId: list.userId,
+                        phone: list.postUser.phone,
+                        amount:list.amount,
+                        type:vm.getTypeLabel(list.type),
+                        status:vm.getStatusLabel(list.status),
+                        createDate:formatDate('Y-m-d', list.createDate)
+                      })
+                    }
+                    vm.$Message.success('导出成功！')
+                    vm.$Modal.remove()
+                    vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
+                      filename: 'fudouRecharge',
+                      columns: vm.columnsheader,
+                      data: _arr
+                    })
+                  }
+                })
+              } else {
+                _this.buttonLoading = false
+              }
+            })
+          }
+        }
+        this.$Modal.confirm(config)
+      },
+      getTypeLabel(value){
+        let result="";
+        for(let i=0;i<this.getType.length;i++){
+          let list=this.getType[i];
+          if(value===list.value){
+            result=list.label;
+            break;
+          }
+        }
+        return result;
+      },
+      getStatusLabel(value){
+        let vm=this;
+        let result="";
+        for(let i=0;i<vm.getStatus.length;i++){
+          let list=vm.getStatus[i];
+          if(value==list.value){
+            result=list.label;
+            break;
+          }
+        }
+        return result;
       },
       init() {
         this.tableLoading = true;

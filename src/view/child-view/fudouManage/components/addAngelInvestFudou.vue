@@ -29,6 +29,10 @@
                 <InputNumber :min="0" v-model="getData.ruleValue1" placeholder="请填写多少个月释放完"
                              class="setfill" ></InputNumber>
             </FormItem>
+            <FormItem v-else-if="getData.ruleType==1" label="多少个月释放完" class="qdd_layout100" prop="ruleValue">
+                <InputNumber :min="0" v-model="getData.ruleValue" placeholder="请填写多少个月释放完"
+                             class="setfill" ></InputNumber>
+            </FormItem>
             <FormItem v-else label="多少天释放完" class="qdd_layout100" prop="ruleValue">
                 <InputNumber :min="0" v-model="getData.ruleValue" placeholder="请填写多少天释放完"
                              class="setfill" ></InputNumber>
