@@ -50,6 +50,30 @@
 
             </template>
         </packageTable>
+      <Modal v-model="showModal"
+             :title="titleModal"
+
+             @on-visible-change="visibleChange"
+             @on-ok="modelOk"
+             width="1000">
+        <Form :ref="refName"
+              :model="getData"
+              :rules="getRult"
+              label-position="top"
+              class="show_area" inline>
+          <FormItem label="用户手机号" class="qdd_layout100" prop="noticeTitle">
+            <Input v-model="getData.noticeTitle"  placeholder="请输入公告标题"
+                   class="setfill"></Input>
+          </FormItem>
+          <FormItem label="公告内容" prop="noticeContent" class="qdd_layout100">
+            <Editor ref="editor" v-model="getData.noticeContent" cache='false' @on-change="handleChange"/></Editor>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <Button @click="cancel">取消</Button>
+          <Button type="primary" :loading="modalLoading" @click="modelOk">添加</Button>
+        </div>
+      </Modal>
     </div>
 </template>
 
@@ -58,12 +82,28 @@
   import {mapActions} from 'vuex'
   import {formatDate} from '@/libs/util'
   import addNotice from './components/addNotice'
-
+  import Editor from '_c/editor'
   export default {
     name: 'mageManage',
     mixins: [packageTableMixins],
     data() {
       return {
+        modalLoading:false,
+        titleModal:'添加公告',
+        showModal:false,
+        getData:{
+          noticeTitle:null,
+          noticeContent:null
+        },
+        getRult:{
+          noticeTitle:[
+            { required: true, message: '请填写公告标题', trigger: 'blur' }
+          ],
+          noticeContent:[
+            { required: true, message: '请填写公告内容', trigger: 'change' }
+          ]
+        },
+        refName:'refName',
         reqBase: {},
         title: '公告管理过滤',
         getStatus: [
@@ -156,6 +196,9 @@
         ]
       }
     },
+    components:{
+      Editor
+    },
     computed:{
       //文件前缀
       fileImgPrefix(){
@@ -182,92 +225,126 @@
       endDateChange(value) {
         this.$set(this.filter_form, 'endDate', value)
       },
-      add() {
-        let vm = this;
-        let config = {
-          loading: true,
-          width:900,
-          render: (h) => {
-            return h('div', [
-              h('h3', '添加公告'),
-              h(addNotice, {
-                ref: 'addNotice',
-                props: {
-                  _vm:vm
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addNotice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let getData = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateNotice({
-                  ...getData
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('添加公告成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
+      handleChange(html, text){
+        this.$set(this.getData, 'noticeContent', html);
+      },
+      visibleChange(b){
+        if(b){
+
+        }else{
+          this.showModal=false;
+        }
+      },
+      cancel(){
+        this.showModal=false;
+      },
+      modelOk(){
+        this.$refs[this.refName].validate((valid) => {
+          debugger
+          if(valid){
+            this.handlesaveOrUpdateNotice({
+              
+            }).then(res=>{
+              if(res.code===20000){
+
+              }else{
+                this.buttonLoading=false;
+                this.modalLoading=false;
               }
-            })
+            });
+          }else{
+            this.buttonLoading=false;
+            this.modalLoading=false;
           }
-        };
-        this.$Modal.confirm(config)
+        });
+      },
+      add() {
+        this.showModal=true;
+        // let vm = this;
+        // let config = {
+        //   loading: true,
+        //   width:900,
+        //   render: (h) => {
+        //     return h('div', [
+        //       h('h3', '添加公告'),
+        //       h(addNotice, {
+        //         ref: 'addNotice',
+        //         props: {
+        //           _vm:vm
+        //         }
+        //       })
+        //     ])
+        //   },
+        //   onOk: function () {
+        //     let _this = this;
+        //     let obj = this.$refs.addNotice;
+        //     obj.checkForm().then(res => {
+        //       if (res) {
+        //         let getData = obj.getData;
+        //         // 发送请求
+        //         vm.handlesaveOrUpdateNotice({
+        //           ...getData
+        //         }).then(res => {
+        //           if (res.code === 20000) {
+        //             vm.$Message.success('添加公告成功！');
+        //             vm.$Modal.remove();
+        //             vm.init()
+        //           } else {
+        //             vm.$Message.error(res.msg);
+        //             _this.buttonLoading = false
+        //           }
+        //         })
+        //       } else {
+        //         _this.buttonLoading = false
+        //       }
+        //     })
+        //   }
+        // };
+        // this.$Modal.confirm(config)
       },
       edit(row) {
-        let vm = this;
-        let config = {
-          loading: true,
-          width:500,
-          render: (h) => {
-            return h('div', [
-              h('h3', '修改公告'),
-              h(addNotice, {
-                ref: 'addNotice',
-                props: {
-                  _vm: vm,
-                  setData: row
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addNotice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let getData = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateRabbi({
-                  ...getData
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('修改公告成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
+        // let vm = this;
+        // let config = {
+        //   loading: true,
+        //   width:500,
+        //   render: (h) => {
+        //     return h('div', [
+        //       h('h3', '修改公告'),
+        //       h(addNotice, {
+        //         ref: 'addNotice',
+        //         props: {
+        //           _vm: vm,
+        //           setData: row
+        //         }
+        //       })
+        //     ])
+        //   },
+        //   onOk: function () {
+        //     let _this = this;
+        //     let obj = this.$refs.addNotice;
+        //     obj.checkForm().then(res => {
+        //       if (res) {
+        //         let getData = obj.getData;
+        //         // 发送请求
+        //         vm.handlesaveOrUpdateRabbi({
+        //           ...getData
+        //         }).then(res => {
+        //           if (res.code === 20000) {
+        //             vm.$Message.success('修改公告成功！');
+        //             vm.$Modal.remove();
+        //             vm.init()
+        //           } else {
+        //             vm.$Message.error(res.msg);
+        //             _this.buttonLoading = false
+        //           }
+        //         })
+        //       } else {
+        //         _this.buttonLoading = false
+        //       }
+        //     })
+        //   }
+        // };
+        // this.$Modal.confirm(config)
       },
       // 重置搜索条件
       resetConditions() {
@@ -364,6 +441,26 @@
 </script>
 
 <style scoped>
+  .setfill {
+    width: 100%;
+  }
 
+  .show_area {
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .qdd_layout50, .qdd_layout100 {
+    margin-bottom: 18px;
+  }
+
+  .qdd_layout50 {
+    width: calc(50% - 12px)
+  }
+
+  .qdd_layout100 {
+    width: calc(100% - 12px)
+  }
 </style>
 
