@@ -6,9 +6,9 @@
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
-                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
+                <FormItem label="用户手机号或用户ID:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Input v-model="filter_form.phone" type="text" icon="iphone"
-                           placeholder="请填写用户手机号"></Input>
+                           placeholder="请填写用户手机号或者用户ID"></Input>
                 </FormItem>
                 <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Select v-model="filter_form.status" placeholder="请选择状态">
@@ -37,7 +37,10 @@
                 </Button>
             </template>
             <template slot="headRight">
-
+                <Button v-for="(item,index) in headBtnRightList" @click="item.mothod" :key="index" class="base_btn_item"
+                        :type="item.type" :icon="item.icon">
+                    {{item.text}}
+                </Button>
             </template>
         </packageTable>
     </div>
@@ -48,14 +51,15 @@ import packageTableMixins from '../mixins/packageTableMixins'
 import { formatDate } from '../../../libs/util'
 import { mapActions } from 'vuex'
 import addUser from './components/addUser'
+import exportConponents from '../comontents/exportConponents'
 export default {
   name: 'accessManage',
   mixins: [packageTableMixins],
   data () {
     return {
       title: '用户帐号过滤',
-      reqBase:{
-        status:-1,
+      reqBase: {
+        status: -1,
         currentPage: 1,
         length: 15
       },
@@ -85,31 +89,49 @@ export default {
           text: '新增'
         }
       ],
+      headBtnRightList: [
+        {
+          mothod: this.exprotData,
+          type: 'primary',
+          icon: '',
+          text: '导出'
+        }
+      ],
       columnsheader: [
         {
           title: '用户昵称',
           key: 'nickname',
           align: 'center',
-          width:100
+          fixed: 'left',
+          width: 100
         },
         {
           title: '用户id',
           key: 'userId',
           align: 'center',
-          width:100
+          width: 100
 
         },
         {
           title: '手机号',
           key: 'phone',
           align: 'center',
-          width:100
+          width: 100
+        },
+        {
+          title: '身份证号',
+          key: 'userDetail.idcardCode',
+          align: 'center',
+          width: 100,
+          render: (h, { row }) => {
+            return h('div', row.userDetail.idcardCode)
+          }
         },
         {
           title: '平台',
           key: 'type',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             let result = ''
             if (row.type === 1) {
@@ -127,7 +149,7 @@ export default {
           title: '创建时间',
           key: 'createDate',
           align: 'center',
-          width:150,
+          width: 150,
           render: (h, { row }) => {
             return h('div', formatDate('Y-m-d h:m:s', row.createDate))
           }
@@ -136,7 +158,7 @@ export default {
           title: '状态',
           key: 'status',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             let result = ''
             if (row.status === 1) {
@@ -151,13 +173,13 @@ export default {
           title: '邀请码',
           key: 'inviteCode',
           align: 'center',
-          width:100,
+          width: 100
         },
         {
           title: '登录时间',
           key: 'loginDate',
           align: 'center',
-          width:150,
+          width: 150,
           render: (h, { row }) => {
             return h('div', formatDate('Y-m-d h:m:s', row.loginDate))
           }
@@ -166,13 +188,13 @@ export default {
           title: ' IP地址',
           key: 'ipAddress',
           align: 'center',
-          width:100,
+          width: 100
         },
         {
           title: '一级推荐人姓名',
           key: 'oneCommendUser.nickname',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.oneCommendUser.nickname)
           }
@@ -181,7 +203,7 @@ export default {
           title: '二级推荐人姓名',
           key: 'twoCommendUser.nickname',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.twoCommendUser.nickname)
           }
@@ -190,7 +212,7 @@ export default {
           title: '收货人姓名',
           key: 'userAddress.name',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.name)
           }
@@ -199,7 +221,7 @@ export default {
           title: '收货人手机号',
           key: 'userAddress.phone',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.phone)
           }
@@ -208,7 +230,7 @@ export default {
           title: '收货基本地址',
           key: 'userAddress.basicAddress',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.basicAddress)
           }
@@ -217,7 +239,7 @@ export default {
           title: '收货详细地址',
           key: 'userAddress.detailAddress',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.detailAddress)
           }
@@ -226,7 +248,7 @@ export default {
           title: '支付宝地址',
           key: 'userAddress.alipayCode',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.alipayCode)
           }
@@ -235,7 +257,7 @@ export default {
           title: '银行卡',
           key: 'userAddress.bankcardCode',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.bankcardCode)
           }
@@ -244,7 +266,7 @@ export default {
           title: '银行卡类型',
           key: 'userAddress.bankcardName',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.bankcardName)
           }
@@ -253,7 +275,7 @@ export default {
           title: '出生年月',
           key: 'userAddress.birthday',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.birthday)
           }
@@ -262,7 +284,7 @@ export default {
           title: '身份证',
           key: 'userAddress.idcardCode',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.idcardCode)
           }
@@ -271,7 +293,7 @@ export default {
           title: '身份证地址',
           key: 'userAddress.idcardAddress',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.idcardAddress)
           }
@@ -280,7 +302,7 @@ export default {
           title: '身份证真实姓名',
           key: 'userAddress.realName',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.realName)
           }
@@ -289,7 +311,7 @@ export default {
           title: '银行卡持有人',
           key: 'userAddress.bankcardOwner',
           align: 'center',
-          width:100,
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.userAddress.bankcardOwner)
           }
@@ -298,8 +320,8 @@ export default {
           title: '操作',
           key: '',
           align: 'center',
-          width:100,
-          fixed:'right',
+          width: 100,
+          fixed: 'right',
           render: (h, { row }) => {
             let vm = this
             let result = ''
@@ -311,7 +333,7 @@ export default {
             return h('Button', {
               on: {
                 click: function () {
-                  vm.userUpdateUserStatus(row,result)
+                  vm.userUpdateUserStatus(row, result)
                 }
               }
             }, result)
@@ -345,14 +367,14 @@ export default {
           obj.checkForm().then(res => {
             if (res) {
               let {
-                phone,nickname,loginPassword,OneCommendUserId,isMd5
-              } = obj.getData;
-              if(loginPassword==null ||loginPassword==''){
-                loginPassword='000000'
+                phone, nickname, loginPassword, OneCommendUserId, isMd5
+              } = obj.getData
+              if (loginPassword == null || loginPassword == '') {
+                loginPassword = '000000'
               }
               // 发送请求
               vm.handleInsertUser({
-                phone,nickname,loginPassword,OneCommendUserId,isMd5
+                phone, nickname, loginPassword, OneCommendUserId, isMd5
               }).then(res => {
                 if (res.code === 20000) {
                   vm.$Message.success('添加成功！')
@@ -384,10 +406,10 @@ export default {
       }
     },
 
-    userUpdateUserStatus ({ userId, status },title) {
+    userUpdateUserStatus ({ userId, status }, title) {
       let vm = this
-      let _title = title+'帐号';
-      let _status=title=="冻结"?2:1;
+      let _title = title + '帐号'
+      let _status = title == '冻结' ? 2 : 1
       let config = {
         title: _title,
         content: '您确定要' + _title + '?',
@@ -397,7 +419,7 @@ export default {
           vm.handleUpdateUserStatus(
             {
               userId,
-              status:_status
+              status: _status
             }
           ).then(res => {
             if (res.code === 20000) {
@@ -413,13 +435,111 @@ export default {
       }
       this.$Modal.confirm(config)
     },
+    exprotData () {
+      debugger
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '导出数据'),
+            h(exportConponents, {
+              ref: 'exportConponents',
+              props: {
 
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.exportConponents
+          obj.checkForm().then(res => {
+            if (res) {
+              debugger
+              let { startDate, endDate } = obj.formModel
+              vm.handleGetqueryUsers({
+                status: -1,
+                currentPage: 1,
+                length: vm.getPageTotal,
+                startDate,
+                endDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  let allData = res.data.data
+                  let _arr = []
+                  for (let i in allData) {
+                    let list = allData[i]
+                    _arr.push({
+                      nickname: list.nickname,
+                      userId: list.userId,
+                      phone: list.phone,
+                      'userDetail.idcardCode': list.userDetail.idcardCode,
+                      type: vm.getTypeLabel(list.type),
+                      createDate: formatDate('Y-m-d h:m:s', list.createDate),
+                      status: vm.getStatusLabel(list.status),
+                      inviteCode: list.inviteCode,
+                      loginDate: formatDate('Y-m-d h:m:s', list.loginDate),
+                      ipAddress: list.ipAddress,
+                      'oneCommendUser.nickname': list.oneCommendUser.nickname,
+                      'twoCommendUser.nickname': list.twoCommendUser.nickname,
+                      'userAddress.name': list.userAddress.name,
+                      'userAddress.phone': list.userAddress.phone,
+                      'userAddress.basicAddress': list.userAddress.basicAddress,
+                      'userAddress.detailAddress': list.userAddress.detailAddress,
+                      'userAddress.alipayCode': list.userAddress.alipayCode,
+                      'userAddress.bankcardCode': list.userAddress.bankcardCode,
+                      'userAddress.bankcardName': list.userAddress.bankcardName,
+                      'userAddress.birthday': list.userAddress.birthday,
+                      'userAddress.idcardCode': list.userAddress.idcardCode,
+                      'userAddress.idcardAddress': list.userAddress.idcardAddress,
+                      'userAddress.realName': list.userAddress.realName,
+                      'userAddress.bankcardOwner': list.userAddress.bankcardOwner
+                    })
+                  }
+                  vm.$Message.success('导出成功！')
+                  vm.$Modal.remove()
+                  vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
+                    filename: 'accessManage',
+                    columns: vm.columnsheader,
+                    data: _arr
+                  })
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    getTypeLabel (value) {
+      let result = ''
+      if (value === 1) {
+        result = '后台'
+      } else if (value === 2) {
+        result = '安卓'
+      } else if (value === 3) {
+        result = 'ios'
+      }
+      return result
+    },
+    getStatusLabel (value) {
+      let result = ''
+      if (value === 1) {
+        result = '正常'
+      } else if (value === 2) {
+        result = '冻结'
+      }
+      return result
+    },
     init () {
       this.tableLoading = true
       this.handleGetqueryUsers({ ...this.reqBase }).then(res => {
         this.tableLoading = false
         if (res.code === 20000) {
-          this.tableDataList = res.data.data||[];
+          this.tableDataList = res.data.data || []
           this.getPageTotal = res.data.totalCount
         } else {
           this.tableDataList = []

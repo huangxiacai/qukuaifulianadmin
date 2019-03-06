@@ -47,7 +47,10 @@
         </Button>
       </template>
       <template slot="headRight">
-
+          <Button v-for="(item,index) in headBtnRightList" @click="item.mothod" :key="index" class="base_btn_item"
+                  :type="item.type" :icon="item.icon">
+              {{item.text}}
+          </Button>
       </template>
     </packageTable>
   </div>
@@ -57,6 +60,7 @@
 import packageTableMixins from '../mixins/packageTableMixins'
 import { mapActions } from 'vuex'
 import { formatDate } from '@/libs/util'
+import exportConponents from '../comontents/exportConponents'
 export default {
   name: 'welfareRecord',
   mixins: [packageTableMixins],
@@ -109,6 +113,14 @@ export default {
       },
       headBtnList: [
 
+      ],
+      headBtnRightList: [
+        {
+          mothod: this.exprotData,
+          type: 'primary',
+          icon: '',
+          text: '导出'
+        }
       ],
       columnsheader: [
         {
@@ -196,7 +208,79 @@ export default {
         nickName: null
       }
     },
+    getTypeLabel (value) {
+      let vm = this
+      let result = ''
+      for (let s = 0; s < vm.getStatus.length; s++) {
+        let list = vm.getStatus[s]
+        if (list.value === value) {
+          result = list.label
+          break
+        }
+      }
+      return result
+    },
+    exprotData () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '导出数据'),
+            h(exportConponents, {
+              ref: 'exportConponents',
+              props: {
 
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.exportConponents
+          obj.checkForm().then(res => {
+            if (res) {
+              debugger
+              let { startDate, endDate } = obj.formModel
+              vm.handleQueryWelfareRecords({
+                type: -1,
+                currentPage: 1,
+                length: vm.getPageTotal,
+                startDate,
+                endDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  let allData = res.data.data
+                  let _arr = []
+                  for (let i in allData) {
+                    let list = allData[i]
+                    _arr.push({
+                      nickname: list.postUser.nickname,
+                      userId: list.userId,
+                      phone: list.postUser.phone,
+                      welfareValue: list.welfareValue,
+                      type: vm.getTypeLabel(list.type),
+                      createDate: formatDate('Y-m-d h:m:s', list.createDate),
+                      desc: list.desc
+                    })
+                  }
+                  vm.$Message.success('导出成功！')
+                  vm.$Modal.remove()
+                  vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
+                    filename: 'welfare',
+                    columns: vm.columnsheader,
+                    data: _arr
+                  })
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
     init () {
       this.tableLoading = true
       this.handleQueryWelfareRecords({ ...this.reqBase }).then(res => {

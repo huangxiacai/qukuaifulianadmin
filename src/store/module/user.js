@@ -1,9 +1,9 @@
-import {login, logout, getUserInfo, userEditPass, userSendVcode,userRecoverPass} from '../../api/user'
-import {setToken, getToken} from '@/libs/util'
+import { login, logout, getUserInfo, userEditPass, userSendVcode, userRecoverPass } from '../../api/user'
+import { setToken, getToken } from '@/libs/util'
 import md5 from 'js-md5'
 import config from '../../config/index'
 import adminIcon from '@/assets/images/logo-min.png'
-import {setUserNameCookie} from "../../libs/util";
+import { setUserNameCookie } from '../../libs/util'
 
 export default {
   state: {
@@ -15,56 +15,55 @@ export default {
     hasGetInfo: false
   },
   mutations: {
-    setAvator(state, avatorPath) {
+    setAvator (state, avatorPath) {
       state.avatorImgPath = avatorPath
     },
-    setUserId(state, id) {
+    setUserId (state, id) {
       state.userId = id
     },
-    setUserName(state, name) {
-      state.userName = name;
-      setUserNameCookie(name);
+    setUserName (state, name) {
+      state.userName = name
+      setUserNameCookie(name)
     },
-    setAccess(state, access) {
-      state.access = access;
+    setAccess (state, access) {
+      state.access = access
     },
-    setToken(state, token) {
+    setToken (state, token) {
       state.token = token
       setToken(token)
     },
-    setHasGetInfo(state, status) {
+    setHasGetInfo (state, status) {
       state.hasGetInfo = status
     }
   },
   actions: {
     // 登录
-    handleLogin({commit}, {userName, password}) {
+    handleLogin ({ commit }, { userName, password }) {
       return new Promise((resolve, reject) => {
         debugger
         login({
-          username:userName,
-          password:password
+          username: userName,
+          password: password
         }).then(res => {
           if (res.code === 20000) {
-            resolve(res.code)
+            resolve(res)
           } else {
-            resolve(res.code)
+            resolve(res)
           }
-
         }).catch(err => {
           reject(err)
         })
       })
     },
     // 退出登录
-    handleLogOut({state, commit}) {
+    handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('setToken', '')
-          commit('setAccess', []);
-          commit("setUserName",'');
-          localStorage.clear();
-          sessionStorage.clear();
+          commit('setAccess', [])
+          commit('setUserName', '')
+          localStorage.clear()
+          sessionStorage.clear()
           resolve()
         }).catch(err => {
           reject(err)
@@ -76,18 +75,18 @@ export default {
       })
     },
     // 获取用户相关信息
-    getUserInfo({state, commit}) {
+    getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
           getUserInfo().then(res => {
-            const data = res.data;
-            //状态机缓存用户基本信息
-            commit('setAvator', adminIcon);
-            commit('setToken', data.username);
-            commit('setUserName', data.username);
-            commit('setUserId', data.userId);//保存user id
-            commit('setAccess', 'admin');
-            commit('setHasGetInfo', true);
+            const data = res.data
+            // 状态机缓存用户基本信息
+            commit('setAvator', adminIcon)
+            commit('setToken', data.username)
+            commit('setUserName', data.username)
+            commit('setUserId', data.userId)// 保存user id
+            commit('setAccess', 'admin')
+            commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {
             reject(err)
@@ -104,7 +103,7 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleUserEditPass({state, commit}, params) {
+    handleUserEditPass ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         userEditPass({
           ...params,
@@ -113,8 +112,8 @@ export default {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 发送验证码
@@ -123,22 +122,22 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleSendVcode({state, commit}, params) {
+    handleSendVcode ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
-        let getCurrTime = Math.round(new Date().getTime() / 1000);//获取当前时间 秒
-        let access_secret = config.client.ClientSeckey;//ClientSeckey
+        let getCurrTime = Math.round(new Date().getTime() / 1000)// 获取当前时间 秒
+        let access_secret = config.client.ClientSeckey// ClientSeckey
         userSendVcode({
-          "client_id": config.client.client_id,
-          "req_time": getCurrTime,
-          "client_signkey": md5(access_secret + "" + getCurrTime),
-          new_pass:params.new_pass,
+          'client_id': config.client.client_id,
+          'req_time': getCurrTime,
+          'client_signkey': md5(access_secret + '' + getCurrTime),
+          new_pass: params.new_pass,
           ...params
         }).then(res => {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     },
     /**
      * 找回密码
@@ -147,24 +146,24 @@ export default {
      * @param params
      * @returns {Promise<any>}
      */
-    handleRecoverPass({state, commit}, params){
+    handleRecoverPass ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
-        let getCurrTime = Math.round(new Date().getTime() / 1000);//获取当前时间 秒
-        let access_secret = config.client.ClientSeckey;//ClientSeckey
+        let getCurrTime = Math.round(new Date().getTime() / 1000)// 获取当前时间 秒
+        let access_secret = config.client.ClientSeckey// ClientSeckey
 
         userRecoverPass({
-          "client_id": config.client.client_id,
-          "req_time": getCurrTime,
-          country_code:'china',
-          "client_signkey": md5(access_secret + "" + getCurrTime),
+          'client_id': config.client.client_id,
+          'req_time': getCurrTime,
+          country_code: 'china',
+          'client_signkey': md5(access_secret + '' + getCurrTime),
           ...params,
-          new_pass:md5(params.new_pass),
+          new_pass: md5(params.new_pass)
         }).then(res => {
           resolve(res)
         }).catch(err => {
           reject(err)
-        });
-      });
+        })
+      })
     }
   }
 }
