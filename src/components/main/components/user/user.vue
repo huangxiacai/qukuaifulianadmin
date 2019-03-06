@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions([
       'handleLogOut',
-      'handleUserEditPass'
+      'handleUserEditPass',
     ]),
     handleClick (name) {
       switch (name) {
@@ -80,14 +80,16 @@ export default {
             if(res){
               let {old_pass,new_pass} =obj.editPassFormModel;
               //发送请求
-              vm.handleUserEditPass({old_pass:md5(old_pass),new_pass:md5(new_pass)}).then(res=>{
-                if(res.status===0){
+              vm.handleUserEditPass({
+                oldPassword:old_pass,
+                newPassword:new_pass
+              }).then(res=>{
+                if(res.code===20000){
                   vm.$Message.success("修改成功！");
                   //关闭模态框
                   this.$Modal.remove();
-
                 }else{
-                  vm.$Message.error(res.message);
+                  vm.$Message.error(res.msg);
                   _this.tableLoading = false;
                 }
               });

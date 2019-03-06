@@ -30,6 +30,7 @@ export const activeWelfareManage = {
 export const common={
   upload:'manager/file/upload',//上传文件
   delete:'manager/file/delete',//删除文件
+  updatePassword:'manager/user/updatePassword',//修改后台登录密码
 };
 /**
  * 商品管理

@@ -46,9 +46,9 @@ export default {
           password:password
         }).then(res => {
           if (res.code === 20000) {
-            resolve(res.code)
+            resolve(res)
           } else {
-            resolve(res.code)
+            resolve(res)
           }
 
         }).catch(err => {
