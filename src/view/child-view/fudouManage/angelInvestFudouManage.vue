@@ -192,7 +192,7 @@ export default {
           key: 'createDate',
           align: 'center',
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
           }
         },
         {
@@ -486,7 +486,7 @@ export default {
                       amount: list.amount,
                       freezeAmount: list.freezeAmount,
                       finishAmount: list.finishAmount,
-                      createDate: formatDate('Y-m-d h:m:s', list.createDate),
+                      createDate: formatDate('Y-m-d H:i:s', list.createDate),
                       ruleType: vm.getRuleTypeLabel(list.ruleType),
                       ruleValue: vm.getRuleValueLabel(list.ruleType, list.ruleValue),
                       type: vm.getTypeLabel(list.type)

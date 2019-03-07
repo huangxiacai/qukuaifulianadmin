@@ -66,7 +66,7 @@ export default {
           value: 2
         },
         {
-          label: '已发货',
+          label: '已收货',
           value: 3
         }
       ],
@@ -169,7 +169,7 @@ export default {
             let result = ''
             for (let i = 0; i < vm.deliverGoodsStatus.length; i++) {
               let list = vm.deliverGoodsStatus[i]
-              if (list.value == row.payType) {
+              if (list.value == row.status) {
                 result = list.label
                 break
               }
@@ -189,7 +189,9 @@ export default {
           align: 'center',
           width: 100,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d', row.deliveryDate))
+            if(row.deliveryDate!==null &&　row.deliveryDate!=""){
+              return h('div', formatDate('Y-m-d H:i:s', row.deliveryDate))
+            }
           }
         },
         {
@@ -198,7 +200,10 @@ export default {
           align: 'center',
           width: 100,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d', row.createDate))
+            if(row.createDate!=null){
+              return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+            }
+
           }
         },
         {

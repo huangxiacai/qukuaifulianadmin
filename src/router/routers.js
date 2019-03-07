@@ -81,6 +81,15 @@ export default [
         },
         component: () => import('@/view/child-view/userManage/userFudou.vue')
       },
+      {
+        path: 'userAchievement',
+        name: 'userAchievement',
+        meta: {
+          title: '用户业绩',
+          notCache: true
+        },
+        component: () => import('@/view/child-view/userManage/userAchievement.vue')
+      },
     ]
   },
   {

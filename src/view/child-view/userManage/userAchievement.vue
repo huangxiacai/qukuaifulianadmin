@@ -20,13 +20,6 @@
         <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
           <DatePicker v-model="endDate" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
         </FormItem>
-        <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Select v-model="filter_form.type" placeholder="请选择状态">
-            <Option v-for="item in getStatus" :value="item.value"
-                    :key="item.label">{{ item.label }}
-            </Option>
-          </Select>
-        </FormItem>
       </Form>
     </searchPanel>
     <packageTable
@@ -59,54 +52,42 @@
 <script>
 import packageTableMixins from '../mixins/packageTableMixins'
 import { mapActions } from 'vuex'
-import { formatDate } from '@/libs/util'
+import { formatDate } from '../../../libs/util'
 import exportConponents from '../comontents/exportConponents'
 export default {
-  name: 'welfareRecord',
+  name: 'userAchievement',
   mixins: [packageTableMixins],
   data () {
     return {
-      reqBase: {
-        type: -1,
-        currentPage: 1,
-        length: 15
-      },
-      title: '福利值记录过滤',
+      title: '用户福豆过滤',
       getStatus: [
         {
-          label: '全部',
-          value: -1
-        },
-        {
-          label: '注册认证',
-          value: 0
-        },
-        {
-          label: '邀请',
+          label: '待付款',
           value: 1
         },
         {
-          label: '功德捐赠',
+          label: '付款完成',
           value: 2
+        }
+      ],
+      getType:[
+        {
+          label: '支付宝',
+          value: 0
         },
         {
-          label: '购买商品',
-          value: 3
+          label: '微信',
+          value: 1
         },
         {
-          label: '活跃度转换',
-          value: 4
-        },
-        {
-          label: '购买道具',
-          value: 5
+          label: '银行卡',
+          value: 2
         }
       ],
       startDate: null,
       endDate: null,
       filter_form: {
         phone: null,
-        type: -1,
         startDate: null,
         endDate: null,
         nickName: null
@@ -127,6 +108,8 @@ export default {
           title: '用户昵称',
           key: 'nickname',
           align: 'center',
+          fixed: 'left',
+          width:100,
           render: (h, { row }) => {
             return h('div', row.postUser.nickname)
           }
@@ -134,57 +117,91 @@ export default {
         {
           title: '用户id',
           key: 'userId',
+          width:100,
           align: 'center'
         },
         {
           title: '手机号',
           key: 'phone',
           align: 'center',
+          width:100,
           render: (h, { row }) => {
             return h('div', row.postUser.phone)
           }
         },
+
         {
-          title: '福利值',
-          key: 'welfareValue',
+          title: '订单号',
+          key: 'rechargeOrderNo',
+          width:100,
           align: 'center'
         },
         {
-          title: '福利值来源',
-          key: 'type',
+          title: '付款方式',
+          key: 'rechargeType',
           align: 'center',
-          render: (h, { row }) => {
-            let vm = this
-            let result = ''
-            for (let s = 0; s < vm.getStatus.length; s++) {
-              let list = vm.getStatus[s]
-              if (list.value === row.type) {
-                result = list.label
-                break
+          width:100,
+          render:(h,{row})=>{
+            let result="";
+            for(let i=0;i<this.getType.length;i++){
+              let list=this.getType[i];
+              if(list.value===row.rechargeType){
+                result=list.label;
+                break;
               }
             }
-            return h('div', result)
+            return h('div',result);
           }
         },
         {
-          title: '福利值获得时间',
+          title: '付款状态',
+          key: 'status',
+          align: 'center',
+          width:100,
+          render:(h,{row})=>{
+            let result="";
+            for(let i=0;i<this.getStatus.length;i++){
+              let list=this.getStatus[i];
+              if(list.value===row.status){
+                result=list.label;
+                break;
+              }
+            }
+            return h('div',result);
+          }
+        },
+        {
+          title: '支付时间',
           key: 'createDate',
           align: 'center',
+          width: 150,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+            if(row.createDate){
+              return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+            }
           }
         },
         {
-          title: '备注',
-          key: 'desc',
+          title: '支付金额(元)',
+          key: 'money',
+          width:100,
           align: 'center'
+        },
+        {
+          title: '购买道具名称',
+          key: 'welfareTool.toolName',
+          align: 'center',
+          render:(h,{row})=>{
+            return h('div',row.welfareTool.toolName);
+          }
         }
       ]
     }
   },
   methods: {
     ...mapActions([
-      'handleQueryWelfareRecords'
+      'handleQueryUserBeans',
+      'handleQuerySales'
     ]),
     //
     showSearchPanel () {
@@ -202,25 +219,13 @@ export default {
       this.endDate = null
       this.filter_form = {
         phone: null,
-        type: -1,
         startDate: null,
         endDate: null,
         nickName: null
       }
     },
-    getTypeLabel (value) {
-      let vm = this
-      let result = ''
-      for (let s = 0; s < vm.getStatus.length; s++) {
-        let list = vm.getStatus[s]
-        if (list.value === value) {
-          result = list.label
-          break
-        }
-      }
-      return result
-    },
     exprotData () {
+      debugger
       let vm = this
       let config = {
         loading: true,
@@ -242,8 +247,7 @@ export default {
             if (res) {
               debugger
               let { startDate, endDate } = obj.formModel
-              vm.handleQueryWelfareRecords({
-                type: -1,
+              vm.handleQueryUserBeans({
                 currentPage: 1,
                 length: vm.getPageTotal,
                 startDate,
@@ -258,16 +262,21 @@ export default {
                       nickname: list.postUser.nickname,
                       userId: list.userId,
                       phone: list.postUser.phone,
-                      welfareValue: list.welfareValue,
-                      type: vm.getTypeLabel(list.type),
-                      createDate: formatDate('Y-m-d H:i:s', list.createDate),
-                      desc: list.desc
+                      suishenBean: list.suishenBean,
+                      fubaoBean: list.fubaoBean,
+                      rewardBean: list.rewardBean,
+                      angelBean: list.angelBean,
+                      unlockBean: list.unlockBean,
+                      commuityBean: list.commuityBean,
+                      legalBean: list.legalBean,
+                      freezeBean: list.freezeBean,
+                      deductBean: list.deductBean
                     })
                   }
                   vm.$Message.success('导出成功！')
                   vm.$Modal.remove()
                   vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
-                    filename: 'welfare',
+                    filename: 'userFudou',
                     columns: vm.columnsheader,
                     data: _arr
                   })
@@ -283,10 +292,11 @@ export default {
     },
     init () {
       this.tableLoading = true
-      this.handleQueryWelfareRecords({ ...this.reqBase }).then(res => {
+      this.handleQuerySales({ ...this.reqBase }).then(res => {
         this.tableLoading = false
         if (res.code === 20000) {
-          this.tableDataList = res.data.data
+          debugger
+          this.tableDataList = res.data.data||[];
           this.getPageTotal = res.data.totalCount
         } else {
           this.tableDataList = []

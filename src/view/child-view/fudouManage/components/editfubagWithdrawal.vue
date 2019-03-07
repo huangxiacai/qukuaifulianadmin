@@ -101,7 +101,7 @@
     },
     created () {
       if(this.setData!=undefined){
-        let dataTime=formatDate('Y-m-d h:m:s',this.setData.createDate);
+        let dataTime=formatDate('Y-m-d H:i:s',this.setData.createDate);
         Object.assign(this.getData,this.setData);
         this.$set(this.getData,"createDateTemp",dataTime);
         this.$set(this.getData,"createDate",dataTime)

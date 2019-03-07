@@ -164,7 +164,7 @@ export default {
           key: 'createDate',
           align: 'center',
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
           }
         },
         {
@@ -254,7 +254,7 @@ export default {
                       phone: list.postUser.phone,
                       activeValue: list.activeValue,
                       type: vm.getTypeLabel(list.type),
-                      createDate: formatDate('Y-m-d h:m:s', list.createDate),
+                      createDate: formatDate('Y-m-d H:i:s', list.createDate),
                       recordDesc: list.recordDesc
                     })
                   }

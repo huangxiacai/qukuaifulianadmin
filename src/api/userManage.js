@@ -185,3 +185,13 @@ export const insertUser=(params)=>{
     method: 'post'
   })
 };
+export const querySales=(params)=>{
+  const data = {
+    ...params
+  };
+  return axios.request({
+    url: userManage.querySales,
+    data,
+    method: 'post'
+  })
+};
