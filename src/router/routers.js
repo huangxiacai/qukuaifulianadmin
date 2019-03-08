@@ -81,6 +81,15 @@ export default [
         },
         component: () => import('@/view/child-view/userManage/userFudou.vue')
       },
+      {
+        path: 'userAchievement',
+        name: 'userAchievement',
+        meta: {
+          title: '用户业绩',
+          notCache: true
+        },
+        component: () => import('@/view/child-view/userManage/userAchievement.vue')
+      }
     ]
   },
   {
@@ -208,7 +217,7 @@ export default [
           notCache: true
         },
         component: () => import('@/view/child-view/fudouManage/withdrawalIMRecord.vue')
-      },
+      }
     ]
   },
   {
@@ -255,7 +264,7 @@ export default [
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/welfareItemManage.vue')
-      },
+      }
     ]
   },
   {
@@ -302,7 +311,7 @@ export default [
           notCache: true
         },
         component: () => import('@/view/child-view/mallManage/mallBannerManage.vue')
-      },
+      }
     ]
   },
   {
@@ -367,7 +376,7 @@ export default [
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/magePurchaseHistory.vue')
-      },
+      }
     ]
   },
   {
@@ -414,6 +423,6 @@ export default [
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
-  },
+  }
 
 ]

@@ -56,327 +56,325 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import { mapActions } from 'vuex'
-  import { formatDate } from '@/libs/util'
-  import editwithdrawalmRecord from './components/editwithdrawalmRecord'
-  export default {
-    name: 'withdrawalIMRecord',
-    mixins: [packageTableMixins],
-    data () {
-      return {
-        reqBase: {
-          currentPage: 1,
-          length: 15
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+import { formatDate } from '@/libs/util'
+import editwithdrawalmRecord from './components/editwithdrawalmRecord'
+export default {
+  name: 'withdrawalIMRecord',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      reqBase: {
+        currentPage: 1,
+        length: 15
+      },
+      title: '随身福袋提到IM钱包记录过滤',
+      getStatus: [
+        {
+          value: -1,
+          label: '全部'
         },
-        title: '随身福袋提到IM钱包记录过滤',
-        getStatus:[
-          {
-            value:-1,
-            label:'全部',
-          },
-          {
-            value:0,
-            label:'审核中',
-          },
-          {
-            value:1,
-            label:'提现完成',
-          },
-          {
-            value:2,
-            label:'审核失败',
-          }
-        ],
-        getType:[
-          {
-            value:1,
-            label:'支付宝',
-          },
-          {
-            value:2,
-            label:'银行卡',
-          }
-        ],
+        {
+          value: 0,
+          label: '审核中'
+        },
+        {
+          value: 1,
+          label: '提现完成'
+        },
+        {
+          value: 2,
+          label: '审核失败'
+        }
+      ],
+      getType: [
+        {
+          value: 1,
+          label: '支付宝'
+        },
+        {
+          value: 2,
+          label: '银行卡'
+        }
+      ],
+      startDate: null,
+      endDate: null,
+      filter_form: {
         startDate: null,
         endDate: null,
-        filter_form: {
-          startDate: null,
-          endDate: null,
-          phone:null,
-          nickName:null,
-          status:-1
+        phone: null,
+        nickName: null,
+        status: -1
+      },
+      headBtnList: [
+        // {
+        //   mothod: this.add,
+        //   type: 'primary',
+        //   icon: '',
+        //   text: '添加福豆价格'
+        // }
+      ],
+      columnsheader: [
+        {
+          title: '用户昵称',
+          key: 'postUser.nickname',
+          align: 'center',
+          width: 150,
+          render: (h, { row }) => {
+            return h('div', row.postUser.nickname)
+          }
         },
-        headBtnList: [
-          // {
-          //   mothod: this.add,
-          //   type: 'primary',
-          //   icon: '',
-          //   text: '添加福豆价格'
-          // }
-        ],
-        columnsheader: [
-          {
-            title: '用户昵称',
-            key: 'postUser.nickname',
-            align: 'center',
-            width:150,
-            render:(h,{row})=>{
-              return h('div',row.postUser.nickname)
-            }
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            align: 'center',
-          },
-          {
-            title: '用户手机号',
-            key: 'postUser.phone',
-            align: 'center',
-            render:(h,{row})=>{
-              return h('div',row.postUser.phone)
-            }
-          },
-          {
-            title: '提现金额',
-            key: 'withdrawMoney',
-            align: 'center',
-          },
-          {
-            title: '到账金额',
-            key: 'transferMoney',
-            align: 'center',
-          },
-          {
-            title: '提现申请时间',
-            key: 'createDate',
-            align: 'center',
-            render: (h, { row }) => {
-              return h('div', formatDate('Y-m-d h:m:s', row.createDate))
-            }
-          },
-          {
-            title: '钱包地址',
-            key: 'walletAddress',
-            align: 'center',
-          },
-          {
-            title: '提现状态',
-            key: 'status',
-            align: 'center',
-            render:(h,{row})=>{
-              let vm=this;
-              let result="";
-              for(let i=0;i<this.getStatus.length;i++){
-                let list=vm.getStatus[i];
-                if(row.status===list.value){
-                  result=list.label;
-                  break;
-                }
+        {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
+          title: '用户手机号',
+          key: 'postUser.phone',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.postUser.phone)
+          }
+        },
+        {
+          title: '提现金额',
+          key: 'withdrawMoney',
+          align: 'center'
+        },
+        {
+          title: '到账金额',
+          key: 'transferMoney',
+          align: 'center'
+        },
+        {
+          title: '提现申请时间',
+          key: 'createDate',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+          }
+        },
+        {
+          title: '钱包地址',
+          key: 'walletAddress',
+          align: 'center'
+        },
+        {
+          title: '提现状态',
+          key: 'status',
+          align: 'center',
+          render: (h, { row }) => {
+            let vm = this
+            let result = ''
+            for (let i = 0; i < this.getStatus.length; i++) {
+              let list = vm.getStatus[i]
+              if (row.status === list.value) {
+                result = list.label
+                break
               }
-              return h('div',result)
             }
-          },
-          {
-            title: '操作',
-            key: '',
-            align: 'center',
-            fixed:'right',
-            width:100,
-            render: (h, { row }) => {
-              let vm = this;
-              if(row.status!=1 ||row.status!=2){
-                return h('Button', {
-                  props: {
-                    type: 'text',
-                    size: 'small'
-                  },
-                  on: {
-                    click: function () {
-                      vm.edit(row)
-                    }
+            return h('div', result)
+          }
+        },
+        {
+          title: '操作',
+          key: '',
+          align: 'center',
+          fixed: 'right',
+          width: 100,
+          render: (h, { row }) => {
+            let vm = this
+            if (row.status != 1 || row.status != 2) {
+              return h('Button', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                on: {
+                  click: function () {
+                    vm.edit(row)
                   }
-                }, '修改')
-              }
-
+                }
+              }, '修改')
             }
           }
-        ]
+        }
+      ]
+    }
+  },
+  methods: {
+    ...mapActions([
+      'handlequeryWithdrawSuishens', // 分页
+      'handleupdateWithdrawSuishen'// 修改提现记录
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
+    add () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '添加福豆价格'),
+            h(addfudouPrice, {
+              ref: 'addfudouPrice',
+              props: {
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addfudouPrice
+          obj.checkForm().then(res => {
+            if (res) {
+              let { beanPrice, createDate } = obj.getData
+              // 发送请求
+              vm.handlesaveOrUpdateBeanPrice({
+                beanPrice,
+                createDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('添加锁仓记录成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    edit (row) {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '修改IM提现'),
+            h(editwithdrawalmRecord, {
+              ref: 'editwithdrawalmRecord',
+              props: {
+                _vm: vm,
+                setData: row,
+                getType: vm.getType,
+                getStatus: vm.getStatus
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.editwithdrawalmRecord
+          obj.checkForm().then(res => {
+            if (res) {
+              let { withdrawId, withdrawMoney, transferMoney, status, walletAddress } = obj.getData
+              // 发送请求
+              vm.handleupdateWithdrawSuishen({
+                withdrawId,
+                withdrawMoney,
+                transferMoney,
+                status,
+                walletAddress
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('修改IM提现成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    // 重置搜索条件
+    resetConditions () {
+      this.startDate = null
+      this.endDate = null
+      this.filter_form = {
+        startDate: null,
+        endDate: null,
+        phone: null,
+        nickName: null,
+        status: -1
       }
     },
-    methods: {
-      ...mapActions([
-        'handlequeryWithdrawSuishens',//分页
-        'handleupdateWithdrawSuishen'//修改提现记录
-      ]),
-      //
-      showSearchPanel () {
-        this.$refs.filterBase.init()
-      },
-      startDateChange (value) {
-        this.$set(this.filter_form, 'startDate', value)
-      },
-      endDateChange (value) {
-        this.$set(this.filter_form, 'endDate', value)
-      },
-      add () {
-        let vm = this;
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '添加福豆价格'),
-              h(addfudouPrice, {
-                ref: 'addfudouPrice',
-                props: {
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addfudouPrice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let {beanPrice,createDate} = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateBeanPrice({
-                  beanPrice,
-                  createDate
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('添加锁仓记录成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      edit(row){
-        let vm = this;
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '修改IM提现'),
-              h(editwithdrawalmRecord, {
-                ref: 'editwithdrawalmRecord',
-                props: {
-                  _vm:vm,
-                  setData:row,
-                  getType:vm.getType,
-                  getStatus:vm.getStatus
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.editwithdrawalmRecord;
-            obj.checkForm().then(res => {
-              if (res) {
-                let {withdrawId,withdrawMoney,transferMoney,status,walletAddress}= obj.getData;
-                // 发送请求
-                vm.handleupdateWithdrawSuishen({
-                  withdrawId,
-                  withdrawMoney,
-                  transferMoney,
-                  status,
-                  walletAddress
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('修改IM提现成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      // 重置搜索条件
-      resetConditions () {
-        this.startDate = null;
-        this.endDate = null;
-        this.filter_form = {
-          startDate: null,
-          endDate: null,
-          phone:null,
-          nickName:null,
-          status:-1
-        }
-      },
 
-      init () {
-        this.tableLoading = true;
-        this.handlequeryWithdrawSuishens({ ...this.reqBase }).then(res => {
-          this.tableLoading = false;
-          if (res.code === 20000) {
-            this.tableDataList = res.data.data;
-            this.getPageTotal = res.data.totalCount;
-          } else {
-            this.tableDataList = [];
-            this.getPageTotal = 0
-          }
-        })
-      },
-      /**
+    init () {
+      this.tableLoading = true
+      this.handlequeryWithdrawSuishens({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
+        }
+      })
+    },
+    /**
        * 撤销锁仓
        * @param row
        */
-      del(row){
-        let vm=this;
-        let config={
-          title:'撤销锁仓',
-          content:"您确定要撤销这边锁仓吗？",
-          loading:true,
-          onOk:function(){
-            let _this=this;
-            vm.handlecancelBeanLock({
-              beanLockId:row.beanLockId
-            }).then(res=>{
-              if (res.code === 20000) {
-                vm.$Message.success('撤销锁仓成功！');
-                vm.$Modal.remove();
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg)
-                _this.buttonLoading = false
-              }
-            });
-          }
-        };
-        this.$Modal.confirm(config);
+    del (row) {
+      let vm = this
+      let config = {
+        title: '撤销锁仓',
+        content: '您确定要撤销这边锁仓吗？',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handlecancelBeanLock({
+            beanLockId: row.beanLockId
+          }).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success('撤销锁仓成功！')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
       }
-
-    },
-    mounted () {
-      this.init()
-    },
-    created () {
-
+      this.$Modal.confirm(config)
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>
 
 </style>
-

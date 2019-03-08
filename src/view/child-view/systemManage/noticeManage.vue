@@ -50,320 +50,369 @@
 
             </template>
         </packageTable>
+      <Modal v-model="showModal"
+             :title="titleModal"
+             @on-visible-change="visibleChange"
+             width="1000">
+        <Form :ref="refName"
+              :model="getData"
+              :rules="getRult"
+              label-position="top"
+              class="show_area" inline>
+          <FormItem label="公告标题" class="qdd_layout100" prop="noticeTitle">
+            <Input v-model="getData.noticeTitle"  placeholder="请输入公告标题"
+                   class="setfill"></Input>
+          </FormItem>
+          <FormItem label="公告内容" prop="noticeContent" class="qdd_layout100">
+            <Editor ref="editor"
+                    :value="getData.noticeContent"
+                    :cache='cache'
+                    @on-change="handleChange"></Editor>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <Button @click="cancel">取消</Button>
+          <Button type="primary" :loading="modalLoading" @click="modelOk">添加</Button>
+        </div>
+      </Modal>
     </div>
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import {mapActions} from 'vuex'
-  import {formatDate} from '@/libs/util'
-  import addNotice from './components/addNotice'
-
-  export default {
-    name: 'mageManage',
-    mixins: [packageTableMixins],
-    data() {
-      return {
-        reqBase: {},
-        title: '公告管理过滤',
-        getStatus: [
-          {
-            value: 0,
-            label: '正常',
-          },
-          {
-            value: 1,
-            label: '到期',
-          },
-          {
-            value: 2,
-            label: '删除',
-          }
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+import { formatDate } from '@/libs/util'
+import addNotice from './components/addNotice'
+import Editor from '_c/editor'
+export default {
+  name: 'mageManage',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      cache: false,
+      modalLoading: false,
+      titleModal: '添加公告',
+      showModal: false,
+      getData: {
+        noticeTitle: null,
+        noticeContent: null
+      },
+      getRult: {
+        noticeTitle: [
+          { required: true, message: '请填写公告标题', trigger: 'blur' }
         ],
-        getType: [
-          {
-            value: 1,
-            label: '支付宝',
-          },
-          {
-            value: 2,
-            label: '银行卡',
-          }
-        ],
+        noticeContent: [
+          { required: true, message: '请填写公告内容', trigger: 'change' }
+        ]
+      },
+      refName: 'refName',
+      reqBase: {},
+      title: '公告管理过滤',
+      getStatus: [
+        {
+          value: 0,
+          label: '正常'
+        },
+        {
+          value: 1,
+          label: '到期'
+        },
+        {
+          value: 2,
+          label: '删除'
+        }
+      ],
+      getType: [
+        {
+          value: 1,
+          label: '支付宝'
+        },
+        {
+          value: 2,
+          label: '银行卡'
+        }
+      ],
+      startDate: null,
+      endDate: null,
+      filter_form: {
         startDate: null,
         endDate: null,
-        filter_form: {
-          startDate: null,
-          endDate: null,
-          phone: null,
-          nickName: null,
-          rabbiName:null,
+        phone: null,
+        nickName: null,
+        rabbiName: null
+      },
+      headBtnList: [
+        {
+          mothod: this.add,
+          type: 'primary',
+          icon: '',
+          text: '添加公告'
+        }
+      ],
+      columnsheader: [
+
+        {
+          title: '公告标题',
+          key: 'noticeTitle',
+          align: 'center'
         },
-        headBtnList: [
-          {
-            mothod: this.add,
-            type: 'primary',
-            icon: '',
-            text: '添加公告'
+        {
+          title: '公告内容',
+          key: 'noticeContent',
+          align: 'center'
+        },
+        {
+          title: '创建时间',
+          key: 'createDate',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
           }
-        ],
-        columnsheader: [
-
-          {
-            title: '公告标题',
-            key: 'noticeTitle',
-            align: 'center'
-          },
-          {
-            title: '公告内容',
-            key: 'noticeContent',
-            align: 'center'
-          },
-          {
-            title: '创建时间',
-            key: 'createDate',
-            align: 'center',
-            render: (h, {row}) => {
-              return h('div', formatDate('Y-m-d', row.createDate))
-            }
-          },
-          {
-            title: '操作',
-            key: '',
-            align: 'center',
-            fixed: 'right',
-            width: 150,
-            render: (h, {row}) => {
-              let vm = this;
-              if(row.status===0){
-                return h('div', [
-                  h('Button', {
-                    props: {
-                      type: 'text',
-                      size: 'small'
-                    },
-                    on: {
-                      click: function () {
-                        vm.del(row)
-                      }
-                    }
-                  }, '删除')
-                ]);
-              }
-
-            }
+        },
+        {
+          title: '操作',
+          key: '',
+          align: 'center',
+          fixed: 'right',
+          width: 150,
+          render: (h, { row }) => {
+            let vm = this
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                on: {
+                  click: function () {
+                    vm.edit(row)
+                  }
+                }
+              }, '修改'),
+              h('Button', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                on: {
+                  click: function () {
+                    vm.del(row)
+                  }
+                }
+              }, '删除')
+            ])
           }
-        ]
+        }
+      ]
+    }
+  },
+  components: {
+    Editor
+  },
+  computed: {
+    // 文件前缀
+    fileImgPrefix () {
+      let root = this.$config.imgUrl.pro
+      if (process.env.NODE_ENV !== 'production') {
+        root = this.$config.imgUrl.dev
+      }
+      return root
+    }
+  },
+  methods: {
+    ...mapActions([
+      'handlequeryNotices', // 分页
+      'handlesaveOrUpdateNotice', // del
+      'handledeleteNotice'
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
+    handleChange (html, text) {
+      this.$set(this.getData, 'noticeContent', html)
+    },
+    visibleChange (b) {
+      if (b) {
+        if (this.getData.noticeContent != null) {
+          this.$refs.editor.setHtml(this.getData.noticeContent)
+          this.handleChange(this.getData.noticeContent)
+        } else {
+          this.$refs.editor.setHtml('')
+          this.handleChange('')
+        }
+      } else {
+        this.showModal = false
+        this.getData = {
+          noticeTitle: null,
+          noticeContent: null
+        }
       }
     },
-    computed:{
-      //文件前缀
-      fileImgPrefix(){
-        let root=this.$config.imgUrl.pro;
-        if(process.env.NODE_ENV !== 'production'){
-          root=this.$config.imgUrl.dev;
-        }
-        return root;
-      }
+    cancel () {
+      this.showModal = false
     },
-    methods: {
-      ...mapActions([
-        'handlequeryNotices',//分页
-        'handlesaveOrUpdateNotice',//del
-        'handledeleteNotice'
-      ]),
-      //
-      showSearchPanel() {
-        this.$refs.filterBase.init()
-      },
-      startDateChange(value) {
-        this.$set(this.filter_form, 'startDate', value)
-      },
-      endDateChange(value) {
-        this.$set(this.filter_form, 'endDate', value)
-      },
-      add() {
-        let vm = this;
-        let config = {
-          loading: true,
-          width:900,
-          render: (h) => {
-            return h('div', [
-              h('h3', '添加公告'),
-              h(addNotice, {
-                ref: 'addNotice',
-                props: {
-                  _vm:vm
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addNotice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let getData = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateNotice({
-                  ...getData
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('添加公告成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      edit(row) {
-        let vm = this;
-        let config = {
-          loading: true,
-          width:500,
-          render: (h) => {
-            return h('div', [
-              h('h3', '修改公告'),
-              h(addNotice, {
-                ref: 'addNotice',
-                props: {
-                  _vm: vm,
-                  setData: row
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addNotice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let getData = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateRabbi({
-                  ...getData
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('修改公告成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      // 重置搜索条件
-      resetConditions() {
-        this.startDate = null;
-        this.endDate = null;
-        this.filter_form = {
-          startDate: null,
-          endDate: null,
-          phone: null,
-          nickName: null,
-          rabbiName:null,
+    // 保存公告
+    saveNotice (params, text) {
+      let vm = this
+      this.handlesaveOrUpdateNotice({
+        ...params
+      }).then(res => {
+        this.modalLoading = false
+        if (res.code === 20000) {
+          this.showModal = false
+          this.init()
+          this.$Message.success(text + '公告成功')
+        } else {
+          this.$Message.error(res.msg)
         }
-      },
-
-      init() {
-        this.tableLoading = true;
-        this.handlequeryNotices({...this.reqBase}).then(res => {
-          this.tableLoading = false;
-          if (res.code === 20000) {
-            this.tableDataList = res.data.data||[];
-            this.getPageTotal = res.data.totalCount;
-          } else {
-            this.tableDataList = [];
-            this.getPageTotal = 0
-          }
-        })
-      },
-      //上架或者下载
-      changeMageStatus(row, title) {
+      })
+    },
+    modelOk () {
+      this.$refs[this.refName].validate((valid) => {
         debugger
-        let vm = this;
-        let config = {
-          title: title + '法师',
-          content: "您确定要" + title + "法师吗？",
-          loading: true,
-          onOk: function () {
-            let _this = this;
-            vm.handleisSellRabbi(
-              {
-                rabbiId: row.rabbiId,
-                isSell: title=="上架"?1:2
-              }
-            ).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success(title + '法师成功！');
-                vm.$Modal.remove();
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg);
-                _this.buttonLoading = false
-              }
-            });
+        if (valid) {
+          this.modalLoading = true
+          if (this.getData.noticeId != undefined) {
+            this.saveNotice(this.getData, '修改')
+            this.titleModal = '修改公告'
+          } else {
+            this.titleModal = '添加公告'
+            this.saveNotice(this.getData, '添加')
           }
-        };
-        this.$Modal.confirm(config);
-      },
-      /**
+        } else {
+        }
+      })
+    },
+    add () {
+      this.showModal = true
+    },
+    edit (row) {
+      this.showModal = true
+      this.$set(this.getData, 'noticeId', row.noticeId)
+      this.$set(this.getData, 'noticeContent', row.noticeContent)
+      this.$set(this.getData, 'noticeTitle', row.noticeTitle)
+    },
+    // 重置搜索条件
+    resetConditions () {
+      this.startDate = null
+      this.endDate = null
+      this.filter_form = {
+        startDate: null,
+        endDate: null,
+        phone: null,
+        nickName: null,
+        rabbiName: null
+      }
+    },
+
+    init () {
+      this.tableLoading = true
+      this.handlequeryNotices({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data || []
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
+        }
+      })
+    },
+    // 上架或者下载
+    changeMageStatus (row, title) {
+      debugger
+      let vm = this
+      let config = {
+        title: title + '法师',
+        content: '您确定要' + title + '法师吗？',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handleisSellRabbi(
+            {
+              rabbiId: row.rabbiId,
+              isSell: title == '上架' ? 1 : 2
+            }
+          ).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success(title + '法师成功！')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    /**
        * 撤销锁仓
        * @param row
        */
-      del(row) {
-        let vm = this;
-        let config = {
-          title: '删除公告',
-          content: "您确定要删除此条公告吗？",
-          loading: true,
-          onOk: function () {
-            let _this = this;
-            vm.handledeleteNotice({
-              noticeId: row.noticeId
-            }).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success('删除公告成功！');
-                vm.$Modal.remove();
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg);
-                _this.buttonLoading = false
-              }
-            });
-          }
-        };
-        this.$Modal.confirm(config);
+    del (row) {
+      let vm = this
+      let config = {
+        title: '删除公告',
+        content: '您确定要删除此条公告吗？',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handledeleteNotice({
+            noticeId: row.noticeId
+          }).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success('删除公告成功！')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
       }
-
-    },
-    mounted() {
-      this.init()
-    },
-    created() {
-
+      this.$Modal.confirm(config)
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>
+  .setfill {
+    width: 100%;
+  }
 
+  .show_area {
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .qdd_layout50, .qdd_layout100 {
+    margin-bottom: 18px;
+  }
+
+  .qdd_layout50 {
+    width: calc(50% - 12px)
+  }
+
+  .qdd_layout100 {
+    width: calc(100% - 12px)
+  }
 </style>
-

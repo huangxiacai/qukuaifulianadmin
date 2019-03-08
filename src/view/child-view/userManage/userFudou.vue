@@ -37,7 +37,10 @@
         </Button>
       </template>
       <template slot="headRight">
-
+          <Button v-for="(item,index) in headBtnRightList" @click="item.mothod" :key="index" class="base_btn_item"
+                  :type="item.type" :icon="item.icon">
+              {{item.text}}
+          </Button>
       </template>
     </packageTable>
   </div>
@@ -46,6 +49,7 @@
 <script>
 import packageTableMixins from '../mixins/packageTableMixins'
 import { mapActions } from 'vuex'
+import exportConponents from '../comontents/exportConponents'
 export default {
   name: 'userFudou',
   mixins: [packageTableMixins],
@@ -73,6 +77,14 @@ export default {
       headBtnList: [
 
       ],
+      headBtnRightList: [
+        {
+          mothod: this.exprotData,
+          type: 'primary',
+          icon: '',
+          text: '导出'
+        }
+      ],
       columnsheader: [
         {
           title: '用户昵称',
@@ -84,6 +96,11 @@ export default {
           }
         },
         {
+          title: '用户id',
+          key: 'userId',
+          align: 'center'
+        },
+        {
           title: '手机号',
           key: 'phone',
           align: 'center',
@@ -91,6 +108,7 @@ export default {
             return h('div', row.postUser.phone)
           }
         },
+
         {
           title: '随身福袋数量',
           key: 'suishenBean',
@@ -155,7 +173,72 @@ export default {
         status: -1
       }
     },
+    exprotData () {
+      debugger
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '导出数据'),
+            h(exportConponents, {
+              ref: 'exportConponents',
+              props: {
 
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.exportConponents
+          obj.checkForm().then(res => {
+            if (res) {
+              debugger
+              let { startDate, endDate } = obj.formModel
+              vm.handleQueryUserBeans({
+                currentPage: 1,
+                length: vm.getPageTotal,
+                startDate,
+                endDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  let allData = res.data.data
+                  let _arr = []
+                  for (let i in allData) {
+                    let list = allData[i]
+                    _arr.push({
+                      nickname: list.postUser.nickname,
+                      userId: list.userId,
+                      phone: list.postUser.phone,
+                      suishenBean: list.suishenBean,
+                      fubaoBean: list.fubaoBean,
+                      rewardBean: list.rewardBean,
+                      angelBean: list.angelBean,
+                      unlockBean: list.unlockBean,
+                      commuityBean: list.commuityBean,
+                      legalBean: list.legalBean,
+                      freezeBean: list.freezeBean,
+                      deductBean: list.deductBean
+                    })
+                  }
+                  vm.$Message.success('导出成功！')
+                  vm.$Modal.remove()
+                  vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
+                    filename: 'userFudou',
+                    columns: vm.columnsheader,
+                    data: _arr
+                  })
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
     init () {
       this.tableLoading = true
       this.handleQueryUserBeans({ ...this.reqBase }).then(res => {
