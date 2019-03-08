@@ -11,7 +11,8 @@ export const userManage = {
   queryUserValues: 'manager/user/queryUserValues', // 分页查询用户福利值活跃度
   queryUserBeans: 'manager/user/queryUserBeans', // 分页查询用户的福豆数量
   insertUser: 'manager/user/insertUser', // 添加用户到管理
-  querySales: 'manager/fobBean/querySales'// 用户业绩
+  querySales: 'manager/fobBean/querySales',// 充值列表
+  queryUserRecords:"manager/user/queryUserRecords",//用户业绩
 }
 /**
  * 福利值活跃度管理
