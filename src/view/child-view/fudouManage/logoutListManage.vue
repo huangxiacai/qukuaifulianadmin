@@ -454,10 +454,10 @@ export default {
       this.handlequeryAngelQuitRecords({ ...this.reqBase }).then(res => {
         this.tableLoading = false
         if (res.code === 20000) {
-          this.tableDataList = res.data.data
+          this.tableDataList = res.data.data||[];
           this.getPageTotal = res.data.totalCount
         } else {
-          this.tableDataList = []
+          this.tableDataList = [];
           this.getPageTotal = 0
         }
       })

@@ -6,7 +6,7 @@
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
-                <FormItem label="用户手机号或用户ID:" class="ivu-col ivu-col-span-6 m-b-10">
+                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Input v-model="filter_form.phone" type="text" icon="iphone"
                            placeholder="请填写用户手机号"></Input>
                 </FormItem>

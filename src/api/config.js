@@ -100,4 +100,15 @@ export const systemManage = {
   isStickPost: 'manager/system/isStickPost', // 是否置顶帖子
   queryUserRabbis: 'manager/system/queryUserRabbis', // 分页查询用户购买的法师
   deleteUserRabbi: 'manager/system/deleteUserRabbi'// 删除用户法师
+};
+/**
+ *
+ * @type {{}}
+ */
+export const homeIndex={
+  querySomeConstants:'manager/index/querySomeConstants',//包括每日新增用户量、每日新增业绩
+  querySystemTotalBean:'manager/index/querySystemTotalBean',//获取查询用户各个分类的总钱包福豆【新加】
+  queryIMSuccessTotalBean:'manager/index/queryIMSuccessTotalBean',//获取查询所有提现的IMTOKEN钱包总数量【新加】
+  querySystemRecoryTotalBean:'manager/index/querySystemRecoryTotalBean',//获取查询系统回收的总数量
 }
+

@@ -23,7 +23,7 @@ export default {
   props: {
     left: {
       type: Number,
-      default: 36
+      default: 25
     },
     color: {
       type: String,

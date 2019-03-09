@@ -10,12 +10,9 @@
           <Input v-model="filter_form.phone" type="text" icon="iphone"
                  placeholder="请填写用户手机号"></Input>
         </FormItem>
-        <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Select v-model="filter_form.status" placeholder="请选择状态">
-            <Option v-for="item in getStatus" :value="item.value"
-                    :key="item.label">{{ item.label }}
-            </Option>
-          </Select>
+        <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Input v-model="filter_form.nickName" type="text"
+                 placeholder="请填写用户昵称"></Input>
         </FormItem>
       </Form>
     </searchPanel>
@@ -72,7 +69,7 @@ export default {
       ],
       filter_form: {
         phone: null,
-        status: -1
+        nickName: null
       },
       headBtnList: [
 
@@ -170,10 +167,11 @@ export default {
     resetConditions () {
       this.filter_form = {
         phone: null,
-        status: -1
+        nickName: null
       }
     },
     exprotData () {
+      debugger
       debugger
       let vm = this
       let config = {

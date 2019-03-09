@@ -445,6 +445,7 @@ export default {
     },
     exprotData () {
       debugger
+      let temp=[55,56,57,58,59,60,61,62,64];
       let vm = this
       let config = {
         loading: true,
@@ -470,17 +471,19 @@ export default {
                 type: -1,
                 ruleType: -1,
                 currentPage: 1,
-                length: vm.getPageTotal,
+                length: vm.getPageTotal+temp.length,
                 startDate,
                 endDate
               }).then(res => {
                 if (res.code === 20000) {
                   let allData = res.data.data
                   let _arr = [];
-                  let temp=[55,56,57,58,59,60,61,62,64];
+
                   for (let i in allData) {
                     let list = allData[i];
-                    if(!temp.indexOf(list.beanLockId)>-1){
+                    if(temp.indexOf(list.beanLockId)>-1){
+                      console.log(list);
+                    }else{
                       _arr.push({
                         nickname: list.postUser.nickname,
                         userId: list.userId,
