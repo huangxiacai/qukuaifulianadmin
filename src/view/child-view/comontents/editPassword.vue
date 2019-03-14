@@ -25,7 +25,7 @@
     mixins:[renderFormMixins],
     data() {
       const validatePass = (rule, value, callback) => {
-        let regu =/^([A-Za-z0-9]){6,12}$/;
+        let regu =/^([\d\D]){6,12}$/;
         let re = new RegExp(regu);
         if (value === '') {
           callback(new Error('密码长度为6-12位'));
@@ -41,7 +41,7 @@
         }
       };
       const validatePassCheck = (rule, value, callback) => {
-        let regu =/^([A-Za-z0-9]){6,12}$/;
+        let regu =/^([\d\D]){6,12}$/;
         let re = new RegExp(regu);
         if (value === '') {
           callback(new Error('请再次输入新密码'));
@@ -68,7 +68,7 @@
         editPassFormRules:{
           old_pass:[
             { required: true, message: '原密码不能为空', trigger: 'change' },
-            { pattern: /^([A-Za-z0-9]){6,12}$/, message: '密码长度为6-12位', trigger: 'change' }
+            { pattern: /^([\d\D]){6,12}$/, message: '密码长度为6-12位', trigger: 'change' }
           ],
           new_pass: [
             {required: true, validator: validatePass, trigger: 'change' }

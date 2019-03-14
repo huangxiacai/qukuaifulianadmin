@@ -4,7 +4,7 @@ import md5 from 'js-md5'
 import config from '../../config/index'
 import adminIcon from '@/assets/images/logo-min.png'
 import {setUserNameCookie} from "../../libs/util";
-
+import cookie from 'js-cookie'
 export default {
   state: {
     userName: '',
@@ -59,20 +59,24 @@ export default {
     // 退出登录
     handleLogOut({state, commit}) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', []);
-          commit("setUserName",'');
-          localStorage.clear();
-          sessionStorage.clear();
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
+        // logout(state.token).then(() => {
+        //   commit('setToken', '')
+        //   commit('setAccess', []);
+        //   commit("setUserName",'');
+        //   localStorage.clear();
+        //   sessionStorage.clear();
+        //   resolve()
+        // }).catch(err => {
+        //   reject(err)
+        // })
         // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
-        // commit('setToken', '')
-        // commit('setAccess', [])
-        // resolve()
+        commit('setToken', '');
+        commit('setAccess', []);
+        localStorage.clear();
+        sessionStorage.clear();
+        cookie.remove("SYS_USER_LOGIN_PREFIX_");
+        cookie.remove("userName");
+        resolve()
       })
     },
     // 获取用户相关信息

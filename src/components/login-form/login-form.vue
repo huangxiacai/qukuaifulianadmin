@@ -36,7 +36,7 @@ export default {
       default: () => {
         return [
           { required: true, message: '密码不能为空', trigger: 'change' },
-          {message: '密码长度为6-12位',pattern:/^([A-Za-z0-9]){6,12}$/, trigger: 'change'}
+          {message: '密码长度为6-12位',pattern:/^([\d\D]){6,12}$/, trigger: 'change'}
         ]
       }
     }
