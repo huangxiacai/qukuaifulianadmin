@@ -17,7 +17,8 @@ import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
 import { del } from '@/api/common'
-import {operUserFobBean} from "../../api/fudouManage";
+import {operUserFobBean, queryBeanProductRecords} from "../../api/fudouManage";
+import {querySomeConstants,querySystemTotalBean,queryIMSuccessTotalBean,querySystemRecoryTotalBean} from '../../api/homeIndex'
 const { homeName } = config
 
 const closePage = (state, route) => {
@@ -129,6 +130,82 @@ export default {
       saveErrorLogger(info).then(() => {
         commit('addError', data)
       })
-    }
+    },
+    /**
+     * 包括每日新增用户量、每日新增业绩
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlequerySomeConstants({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        querySomeConstants({
+          ...params,
+
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 获取查询用户各个分类的总钱包福豆
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlequerySystemTotalBean({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        querySystemTotalBean({
+          ...params,
+
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 获取查询所有提现的IMTOKEN钱包总数量
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlequeryIMSuccessTotalBean({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryIMSuccessTotalBean({
+          ...params,
+
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 获取查询系统回收的总数量
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlequerySystemRecoryTotalBean({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        querySystemRecoryTotalBean({
+          ...params,
+
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
   }
 }

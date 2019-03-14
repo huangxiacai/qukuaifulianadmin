@@ -6,9 +6,9 @@
                      @reset="resetConditions"
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
-                <FormItem label="用户手机号或用户ID:" class="ivu-col ivu-col-span-6 m-b-10">
+                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Input v-model="filter_form.phone" type="text" icon="iphone"
-                           placeholder="请填写用户手机号或者用户ID"></Input>
+                           placeholder="请填写用户手机号"></Input>
                 </FormItem>
                 <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
                     <Select v-model="filter_form.status" placeholder="请选择状态">
@@ -17,6 +17,20 @@
                         </Option>
                     </Select>
                 </FormItem>
+              <FormItem label="排序字段:" class="ivu-col ivu-col-span-6 m-b-10">
+                <Select v-model="filter_form.orderField" placeholder="请选择排序字段">
+                  <Option v-for="item in getOrderField" :value="item.value"
+                          :key="item.label">{{ item.label }}
+                  </Option>
+                </Select>
+              </FormItem>
+              <FormItem label="排序方式:" class="ivu-col ivu-col-span-6 m-b-10">
+                <Select v-model="filter_form.orderWay" placeholder="请选择排序方式">
+                  <Option v-for="item in getOrderWay" :value="item.value"
+                          :key="item.label">{{ item.label }}
+                  </Option>
+                </Select>
+              </FormItem>
             </Form>
         </searchPanel>
         <packageTable
@@ -63,6 +77,26 @@ export default {
         currentPage: 1,
         length: 15
       },
+      getOrderField: [
+        {
+          label: '用户Id',
+          value: 'user_id'
+        },
+        {
+          label: '用户注册时间',
+          value: 'create_date'
+        }
+      ],
+      getOrderWay: [
+        {
+          label: '降序',
+          value: 'DESC'
+        },
+        {
+          label: '升序',
+          value: 'ASC'
+        }
+      ],
       getStatus: [
         {
           label: '全部',
@@ -79,7 +113,9 @@ export default {
       ],
       filter_form: {
         phone: null,
-        status: -1
+        status: -1,
+        orderWay: 'DESC',
+        orderField: 'create_date'
       },
       headBtnList: [
         {
@@ -102,7 +138,7 @@ export default {
           title: '用户昵称',
           key: 'nickname',
           align: 'center',
-          fixed:'left',
+          fixed: 'left',
           width: 100
         },
         {
@@ -123,8 +159,8 @@ export default {
           key: 'userDetail.idcardCode',
           align: 'center',
           width: 100,
-          render:(h,{row})=>{
-            return h('div',row.userDetail.idcardCode);
+          render: (h, { row }) => {
+            return h('div', row.userDetail.idcardCode)
           }
         },
         {
@@ -151,7 +187,7 @@ export default {
           align: 'center',
           width: 150,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
           }
         },
         {
@@ -181,7 +217,7 @@ export default {
           align: 'center',
           width: 150,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d h:m:s', row.loginDate))
+            return h('div', formatDate('Y-m-d H:i:s', row.loginDate))
           }
         },
         {
@@ -402,7 +438,9 @@ export default {
     resetConditions () {
       this.filter_form = {
         phone: null,
-        status: -1
+        status: -1,
+        orderWay: 'DESC',
+        orderField: 'create_date'
       }
     },
 
@@ -474,12 +512,12 @@ export default {
                       nickname: list.nickname,
                       userId: list.userId,
                       phone: list.phone,
-                      "userDetail.idcardCode":list.userDetail.idcardCode,
+                      'userDetail.idcardCode': list.userDetail.idcardCode,
                       type: vm.getTypeLabel(list.type),
-                      createDate: formatDate('Y-m-d h:m:s', list.createDate),
+                      createDate: formatDate('Y-m-d H:i:s', list.createDate),
                       status: vm.getStatusLabel(list.status),
                       inviteCode: list.inviteCode,
-                      loginDate: formatDate('Y-m-d h:m:s', list.loginDate),
+                      loginDate: formatDate('Y-m-d H:i:s', list.loginDate),
                       ipAddress: list.ipAddress,
                       'oneCommendUser.nickname': list.oneCommendUser.nickname,
                       'twoCommendUser.nickname': list.twoCommendUser.nickname,

@@ -15,7 +15,7 @@ export default {
   baseUrl: {
     tempDev: 'http://test.fuliantianxia.com',
     dev: '/', // http://test.fuliantianxia.com
-     //pro: 'http://manager.fuliantianxia.cn',
+    //pro: 'http://manager.fuliantianxia.cn',
     pro: 'http://manager.fuliantianxia.com'
   },
   /**

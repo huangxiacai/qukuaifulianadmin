@@ -8,7 +8,7 @@
       </Input>
     </FormItem>
     <FormItem prop="password">
-      <Input type="password" v-model="form.password" :maxlength="12" placeholder="请输入密码">
+      <Input type="password" v-model="form.password" :maxlength="20" placeholder="请输入密码">
         <span slot="prepend">
           <Icon :size="14" type="md-lock"></Icon>
         </span>
@@ -35,8 +35,7 @@ export default {
       type: Array,
       default: () => {
         return [
-          { required: true, message: '密码不能为空', trigger: 'change' },
-          {message: '密码长度为6-12位',pattern:/^([\d\D]){6,12}$/, trigger: 'change'}
+          { required: true, message: '密码不能为空', trigger: 'change' }
         ]
       }
     }

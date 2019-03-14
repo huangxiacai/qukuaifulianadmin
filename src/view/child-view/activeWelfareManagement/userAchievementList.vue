@@ -6,13 +6,19 @@
                  @reset="resetConditions"
                  :isReset="true">
       <Form slot="formContent" inline class="ivu-row">
+        <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Input v-model="filter_form.nickName" type="text"
+                 placeholder="请填写用户昵称"></Input>
+        </FormItem>
         <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
           <Input v-model="filter_form.phone" type="text" icon="iphone"
                  placeholder="请填写用户手机号"></Input>
         </FormItem>
-        <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
-          <Input v-model="filter_form.nickName" type="text"
-                 placeholder="请填写用户昵称"></Input>
+        <FormItem label="开始时间:" class="ivu-col ivu-col-span-6 m-b-10">
+          <DatePicker v-model="startDate" type="date" placeholder="请选择开始时间" @on-change="startDateChange" style="width: 100%"></DatePicker>
+        </FormItem>
+        <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
+          <DatePicker v-model="endDate" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
         </FormItem>
       </Form>
     </searchPanel>
@@ -46,41 +52,56 @@
 <script>
 import packageTableMixins from '../mixins/packageTableMixins'
 import { mapActions } from 'vuex'
+import { formatDate } from '../../../libs/util'
 import exportConponents from '../comontents/exportConponents'
 export default {
-  name: 'userFudou',
+  name: 'userAchievementList',
   mixins: [packageTableMixins],
   data () {
     return {
       title: '用户福豆过滤',
       getStatus: [
         {
-          label: '全部',
-          value: -1
-        },
-        {
-          label: '正常',
+          label: '待付款',
           value: 1
         },
         {
-          label: '冻结',
+          label: '付款完成',
           value: 2
         }
       ],
+      getType: [
+        {
+          label: '支付宝',
+          value: 0
+        },
+        {
+          label: '微信',
+          value: 1
+        },
+        {
+          label: '银行卡',
+          value: 2
+        }
+      ],
+      startDate: null,
+      endDate: null,
       filter_form: {
         phone: null,
+        startDate: null,
+        endDate: null,
         nickName: null
       },
       headBtnList: [
 
       ],
       headBtnRightList: [
-        {
-          mothod: this.exprotData,
-          type: 'primary',
-          icon: '',
-          text: '导出'
-        }
+        // {
+        //   mothod: this.exprotData,
+        //   type: 'primary',
+        //   icon: '',
+        //   text: '导出'
+        // }
       ],
       columnsheader: [
         {
@@ -88,6 +109,7 @@ export default {
           key: 'nickname',
           align: 'center',
           fixed: 'left',
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.postUser.nickname)
           }
@@ -95,83 +117,114 @@ export default {
         {
           title: '用户id',
           key: 'userId',
+          width: 100,
           align: 'center'
         },
         {
           title: '手机号',
           key: 'phone',
           align: 'center',
+          width: 100,
           render: (h, { row }) => {
             return h('div', row.postUser.phone)
           }
         },
 
         {
-          title: '随身福袋数量',
-          key: 'suishenBean',
+          title: '订单号',
+          key: 'rechargeOrderNo',
+          width: 100,
           align: 'center'
         },
         {
-          title: '福报福袋',
-          key: 'fubaoBean',
+          title: '付款方式',
+          key: 'rechargeType',
+          align: 'center',
+          width: 100,
+          render: (h, { row }) => {
+            let result = ''
+            for (let i = 0; i < this.getType.length; i++) {
+              let list = this.getType[i]
+              if (list.value === row.rechargeType) {
+                result = list.label
+                break
+              }
+            }
+            return h('div', result)
+          }
+        },
+        {
+          title: '付款状态',
+          key: 'status',
+          align: 'center',
+          width: 100,
+          render: (h, { row }) => {
+            let result = ''
+            for (let i = 0; i < this.getStatus.length; i++) {
+              let list = this.getStatus[i]
+              if (list.value === row.status) {
+                result = list.label
+                break
+              }
+            }
+            return h('div', result)
+          }
+        },
+        {
+          title: '支付时间',
+          key: 'createDate',
+          align: 'center',
+          width: 150,
+          render: (h, { row }) => {
+            if (row.createDate) {
+              return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+            }
+          }
+        },
+        {
+          title: '支付金额(元)',
+          key: 'money',
+          width: 100,
           align: 'center'
         },
         {
-          title: '奖励福豆',
-          key: 'rewardBean',
-          align: 'center'
-        },
-        {
-          title: '天使投资福豆',
-          key: 'angelBean',
-          align: 'center'
-        },
-        {
-          title: '可解锁福豆',
-          key: 'unlockBean',
-          align: 'center'
-        },
-        {
-          title: '社区福袋',
-          key: 'commuityBean',
-          align: 'center'
-        },
-        {
-          title: '法币福袋',
-          key: 'legalBean',
-          align: 'center'
-        },
-        {
-          title: '冻结的福袋',
-          key: 'freezeBean',
-          align: 'center'
-        },
-        {
-          title: '被系统扣除的福豆',
-          key: 'deductBean',
-          align: 'center'
+          title: '购买道具名称',
+          key: 'welfareTool.toolName',
+          align: 'center',
+          render: (h, { row }) => {
+            return h('div', row.welfareTool.toolName)
+          }
         }
       ]
     }
   },
   methods: {
     ...mapActions([
-      'handleQueryUserBeans'
+      'handleQueryUserBeans',
+      'handleQuerySales'
     ]),
     //
     showSearchPanel () {
       this.$refs.filterBase.init()
     },
-
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
     // 重置搜索条件
     resetConditions () {
+      this.startDate = null
+      this.endDate = null
       this.filter_form = {
         phone: null,
+        startDate: null,
+        endDate: null,
         nickName: null
       }
     },
     exprotData () {
-      debugger
       debugger
       let vm = this
       let config = {
@@ -239,11 +292,11 @@ export default {
     },
     init () {
       this.tableLoading = true
-      this.handleQueryUserBeans({ ...this.reqBase }).then(res => {
+      this.handleQuerySales({ ...this.reqBase }).then(res => {
         this.tableLoading = false
         if (res.code === 20000) {
           debugger
-          this.tableDataList = res.data.data
+          this.tableDataList = res.data.data || []
           this.getPageTotal = res.data.totalCount
         } else {
           this.tableDataList = []

@@ -29,95 +29,94 @@
 </template>
 
 <script>
-  import { renderFormMixins } from '../../mixins/rendFormMixins'
-  import { formatDate } from '@/libs/util'
-  export default {
-    name: 'addCommody',
-    mixins: [renderFormMixins],
-    data () {
-      return {
-        getStatus:[
-          {
-            value:0,
-            label:'上架',
-          },
-          {
-            value:1,
-            label:'下架',
-          }
-        ],
-        getType:[
-          {
-            value:0,
-            label:'跳转',
-          },
-          {
-            value:1,
-            label:'不跳转',
-          }
-        ],
-        currPoint: {}, // 当前point
-        modal_loading: false,
-        dbmap: null, // 地图对象
-        mapModel: false,
-        meetingTime: null,
-        getData: {
-          beanPrice:null,
-          createDate:null,
-          createDateTemp:null
+import { renderFormMixins } from '../../mixins/rendFormMixins'
+import { formatDate } from '@/libs/util'
+export default {
+  name: 'addCommody',
+  mixins: [renderFormMixins],
+  data () {
+    return {
+      getStatus: [
+        {
+          value: 0,
+          label: '上架'
         },
-        getRult: {
-          beanPrice: [
-            { required: true,type:'number', message: '请填写福豆价格', trigger: 'change' }
-          ],
-          createDateTemp: [
-            { required: true,type:'date', message: '请选择时间', trigger: 'change' }
-          ],
+        {
+          value: 1,
+          label: '下架'
         }
-      }
-    },
-    computed:{
-      productTypeData(){
-        return this._vm.$store.state.shopManage.productTypeData
-      }
-    },
-    props: {
-      _vm:{
-
+      ],
+      getType: [
+        {
+          value: 0,
+          label: '跳转'
+        },
+        {
+          value: 1,
+          label: '不跳转'
+        }
+      ],
+      currPoint: {}, // 当前point
+      modal_loading: false,
+      dbmap: null, // 地图对象
+      mapModel: false,
+      meetingTime: null,
+      getData: {
+        beanPrice: null,
+        createDate: null,
+        createDateTemp: null
       },
-      setData: {
-        type: Object,
-        default: null
-      },
-      edit:{
-        type:Boolean,
-        default: false
-      }
-    },
-    components: {},
-    computed: {},
-    methods: {
-      createClear(){
-        this.$set(this.getData,"createDate","");
-        this.$set(this.getData,"createDateTemp","")
-      },
-      createDateChange(value){
-        this.$set(this.getData,"createDate",value)
-      }
-    },
-    mounted () {
-
-
-    },
-    created () {
-      if(this.setData!=undefined){
-        let dataTime=formatDate('Y-m-d h:m:s',this.setData.createDate);
-        Object.assign(this.getData,this.setData);
-        this.$set(this.getData,"createDateTemp",dataTime);
-        this.$set(this.getData,"createDate",dataTime)
+      getRult: {
+        beanPrice: [
+          { required: true, type: 'number', message: '请填写福豆价格', trigger: 'change' }
+        ],
+        createDateTemp: [
+          { required: true, type: 'date', message: '请选择时间', trigger: 'change' }
+        ]
       }
     }
+  },
+  computed: {
+    productTypeData () {
+      return this._vm.$store.state.shopManage.productTypeData
+    }
+  },
+  props: {
+    _vm: {
+
+    },
+    setData: {
+      type: Object,
+      default: null
+    },
+    edit: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {},
+  computed: {},
+  methods: {
+    createClear () {
+      this.$set(this.getData, 'createDate', '')
+      this.$set(this.getData, 'createDateTemp', '')
+    },
+    createDateChange (value) {
+      this.$set(this.getData, 'createDate', value)
+    }
+  },
+  mounted () {
+
+  },
+  created () {
+    if (this.setData != undefined) {
+      let dataTime = formatDate('Y-m-d H:i:s', this.setData.createDate)
+      Object.assign(this.getData, this.setData)
+      this.$set(this.getData, 'createDateTemp', dataTime)
+      this.$set(this.getData, 'createDate', dataTime)
+    }
   }
+}
 </script>
 
 <style scoped>

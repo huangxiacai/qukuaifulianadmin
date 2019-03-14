@@ -45,7 +45,7 @@ module.exports = {
     port: 89,
     https: false,
     hotOnly: false,
-    proxy:"http://test.fuliantianxia.com",
+    proxy:"http://manager.fuliantianxia.com",
     // proxy: {
     //   '/api': {
     //     target: "http://test.fuliantianxia.com/api",

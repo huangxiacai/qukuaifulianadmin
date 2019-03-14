@@ -1,5 +1,5 @@
 import axios from '@/libs/api.request'
-import { userManage ,common} from './config'
+import { userManage, common } from './config'
 
 /**
  * 登录
@@ -74,7 +74,7 @@ export const userRecoverPass = (params) => {
     method: 'post',
     data
   })
-};
+}
 /**
  * 用户修改密码
  * @param params
@@ -90,3 +90,20 @@ export const userEditPass = (params) => {
     data
   })
 }
+/**
+ * 业绩
+ * @param params
+ * @returns {*}
+ */
+export const queryUserRecords = (params) => {
+  let data = {
+    ...params
+  }
+  return axios.request({
+    url: common.queryUserRecords,
+    method: 'post',
+    data
+  })
+}
+
+

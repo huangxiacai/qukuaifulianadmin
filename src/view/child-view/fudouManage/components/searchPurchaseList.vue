@@ -1,69 +1,71 @@
 <template>
-    <div>
-        <searchPanel :title="searchtitle"
-                     @search="onSearch(filter_form)"
-                     ref="filterBase1"
-                     @reset="resetConditions"
-                     :isReset="true">
-            <Form slot="formContent" inline class="ivu-row">
-                <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Input v-model="filter_form.nickName" type="text"
-                           placeholder="请填写用户昵称"></Input>
-                </FormItem>
-                <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Input v-model="filter_form.phone" :maxlength="11" type="text" icon="iphone"
-                           placeholder="请填写用户手机号"></Input>
-                </FormItem>
-                <FormItem label="开始时间:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <DatePicker v-model="startDate" :transfer="true" type="date" placeholder="请选择开始时间" @on-change="startDateChange" style="width: 100%"></DatePicker>
-                </FormItem>
-                <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <DatePicker v-model="endDate" :transfer="true" type="date" placeholder="请选择结束时间" @on-change="endDateChange" style="width: 100%"></DatePicker>
-                </FormItem>
-                <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Select v-model="filter_form.type" :transfer="true" placeholder="请选择状态">
-                        <Option v-for="item in getType" :value="item.value"
-                                :key="item.label">{{ item.label }}
-                        </Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="订单Id:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Input v-model="filter_form.businessId" type="text"
-                           placeholder="请填写订单Id"></Input>
-                </FormItem>
-            </Form>
-        </searchPanel>
-        <Modal
-                :title="title"
-                v-model="showModalStatus"
-                :width="width"
-                :styles="{top: '20px'}"
-                @on-visible-change="visibleChange"
-                :footer-hide="true"
-                :mask-closable="false">
-            <packageTable
-                    ref="contentBaseRef"
-                    :columnsData="columnsheader"
-                    :tableData="tableDataList"
-                    :reduceheight="reduceheight"
-                    :loading="tableLoading"
-                    :border="true"
-                    :tabletotallen="getPageTotal"
-                    @pageonChange="pageonChange"
-                    @showSearchPanel="showSearchPanel"
-                    @getSelect="getSelectList">
-                <template slot="headLeft">
-                    <Button v-for="(item,index) in headBtnList" @click="item.mothod" :key="index" class="base_btn_item"
-                            :type="item.type" :icon="item.icon">
-                        {{item.text}}
-                    </Button>
-                </template>
-                <template slot="headRight">
+  <div>
+    <searchPanel :title="searchtitle"
+                 @search="onSearch(filter_form)"
+                 ref="filterBase1"
+                 @reset="resetConditions"
+                 :isReset="true">
+      <Form slot="formContent" inline class="ivu-row">
+        <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Input v-model="filter_form.nickName" type="text"
+                 placeholder="请填写用户昵称"></Input>
+        </FormItem>
+        <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Input v-model="filter_form.phone" :maxlength="11" type="text" icon="iphone"
+                 placeholder="请填写用户手机号"></Input>
+        </FormItem>
+        <FormItem label="开始时间:" class="ivu-col ivu-col-span-6 m-b-10">
+          <DatePicker v-model="startDate" :transfer="true" type="date" placeholder="请选择开始时间"
+                      @on-change="startDateChange" style="width: 100%"></DatePicker>
+        </FormItem>
+        <FormItem label="结束时间:" class="ivu-col ivu-col-span-6 m-b-10">
+          <DatePicker v-model="endDate" :transfer="true" type="date" placeholder="请选择结束时间" @on-change="endDateChange"
+                      style="width: 100%"></DatePicker>
+        </FormItem>
+        <FormItem label="状态:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Select v-model="filter_form.type" :transfer="true" placeholder="请选择状态">
+            <Option v-for="item in getType" :value="item.value"
+                    :key="item.label">{{ item.label }}
+            </Option>
+          </Select>
+        </FormItem>
+        <FormItem label="订单Id:" class="ivu-col ivu-col-span-6 m-b-10">
+          <Input v-model="filter_form.businessId" type="text"
+                 placeholder="请填写订单Id"></Input>
+        </FormItem>
+      </Form>
+    </searchPanel>
+    <Modal
+      :title="title"
+      v-model="showModalStatus"
+      :width="width"
+      :styles="{top: '20px'}"
+      @on-visible-change="visibleChange"
+      :footer-hide="true"
+      :mask-closable="false">
+      <packageTable
+        ref="contentBaseRef"
+        :columnsData="columnsheader"
+        :tableData="tableDataList"
+        :reduceheight="reduceheight"
+        :loading="tableLoading"
+        :border="true"
+        :tabletotallen="getPageTotal"
+        @pageonChange="pageonChange"
+        @showSearchPanel="showSearchPanel"
+        @getSelect="getSelectList">
+        <template slot="headLeft">
+          <Button v-for="(item,index) in headBtnList" @click="item.mothod" :key="index" class="base_btn_item"
+                  :type="item.type" :icon="item.icon">
+            {{item.text}}
+          </Button>
+        </template>
+        <template slot="headRight">
 
-                </template>
-            </packageTable>
-        </Modal>
-    </div>
+        </template>
+      </packageTable>
+    </Modal>
+  </div>
 
 </template>
 
@@ -296,7 +298,7 @@ export default {
           align: 'center',
           width: 100,
           render: (h, { row }) => {
-            return h('div', formatDate('Y-m-d h:m:s', row.createDate))
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
           }
         },
         {
@@ -411,8 +413,7 @@ export default {
             h('h3', '添加福豆价格'),
             h(addfudouPrice, {
               ref: 'addfudouPrice',
-              props: {
-              }
+              props: {}
             })
           ])
         },

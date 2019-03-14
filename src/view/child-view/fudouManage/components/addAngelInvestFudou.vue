@@ -50,75 +50,75 @@
 </template>
 
 <script>
-  import { renderFormMixins } from '../../mixins/rendFormMixins'
-  export default {
-    name: 'addAngelInvestFudou',
-    mixins: [renderFormMixins],
-    data () {
-      return {
-        getData: {
-          userId:null,
-          amount:null,
-          ruleType:null,
-          ruleValue:null,
-          ruleValue0:null,
-          ruleValue1:null,
-          type:null,
-        },
-        getRult: {
-          userId: [
-            { required: true,type:'number', message: '请输入用户Id', trigger: 'change' }
-          ],
-          amount: [
-            { required: true,type:'number', message: '请输入锁仓数量', trigger: 'change' }
-          ],
-          ruleType: [
-            { required: true,type:'number', message: '请选择锁仓规则', trigger: 'change' }
-          ],
-          ruleValue: [
-            { required: true,type:'number', message: '请填写锁仓的值', trigger: 'change' }
-          ],
-          ruleValue0: [
-            { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
-          ],
-          ruleValue1: [
-            { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
-          ],
-          type: [
-            { required: true,type:'number',message: '请填写锁仓的值', trigger: 'change' }
-          ]
-        }
-      }
-    },
-    props: {
-      setData: {
-        type: Object,
-        default: null
+import { renderFormMixins } from '../../mixins/rendFormMixins'
+export default {
+  name: 'addAngelInvestFudou',
+  mixins: [renderFormMixins],
+  data () {
+    return {
+      getData: {
+        userId: null,
+        amount: null,
+        ruleType: null,
+        ruleValue: null,
+        ruleValue0: null,
+        ruleValue1: null,
+        type: null
       },
-      getStatus:{
-
-      },
-      getType:{
-
-      },
-      getRuleType:{
-
-      }
-    },
-    components: {},
-    computed: {},
-    methods: {
-
-    },
-    mounted () {
-
-    },
-    created () {
-      if(this.setData!=undefined){
-        Object.assign(this.getData,this.setData)
+      getRult: {
+        userId: [
+          { required: true, type: 'number', message: '请输入用户Id', trigger: 'change' }
+        ],
+        amount: [
+          { required: true, type: 'number', message: '请输入锁仓数量', trigger: 'change' }
+        ],
+        ruleType: [
+          { required: true, type: 'number', message: '请选择锁仓规则', trigger: 'change' }
+        ],
+        ruleValue: [
+          { required: true, type: 'number', message: '请填写锁仓的值', trigger: 'change' }
+        ],
+        ruleValue0: [
+          { required: true, type: 'number', message: '请填写锁仓的值', trigger: 'change' }
+        ],
+        ruleValue1: [
+          { required: true, type: 'number', message: '请填写锁仓的值', trigger: 'change' }
+        ],
+        type: [
+          { required: true, type: 'number', message: '请填写锁仓的值', trigger: 'change' }
+        ]
       }
     }
+  },
+  props: {
+    setData: {
+      type: Object,
+      default: null
+    },
+    getStatus: {
+
+    },
+    getType: {
+
+    },
+    getRuleType: {
+
+    }
+  },
+  components: {},
+  computed: {},
+  methods: {
+
+  },
+  mounted () {
+
+  },
+  created () {
+    if (this.setData != undefined) {
+      Object.assign(this.getData, this.setData)
+    }
   }
+}
 </script>
 
 <style scoped>

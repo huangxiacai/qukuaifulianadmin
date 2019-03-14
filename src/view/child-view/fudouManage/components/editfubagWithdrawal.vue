@@ -38,76 +38,75 @@
 </template>
 
 <script>
-  import { renderFormMixins } from '../../mixins/rendFormMixins'
-  import { formatDate } from '@/libs/util'
-  export default {
-    name: 'addCommody',
-    mixins: [renderFormMixins],
-    data () {
-      return {
+import { renderFormMixins } from '../../mixins/rendFormMixins'
+import { formatDate } from '@/libs/util'
+export default {
+  name: 'addCommody',
+  mixins: [renderFormMixins],
+  data () {
+    return {
 
-        getData: {
-          withdrawMoney:null,
-          transferMoney:null,
-          status:null,
-          type:null
-        },
-        getRult: {
-          withdrawMoney: [
-            { required: true,type:'number', message: '请填写提现金额', trigger: 'change' }
-          ],
-          transferMoney: [
-            { required: true,type:'number', message: '请填写到账金额', trigger: 'change' }
-          ],
-          status: [
-            { required: true,type:'number', message: '请选择状态', trigger: 'change' }
-          ],
-          type: [
-            { required: true,type:'number', message: '请选择提现方式', trigger: 'change' }
-          ],
-        }
-      }
-    },
-    computed:{
-      productTypeData(){
-        return this._vm.$store.state.shopManage.productTypeData
-      }
-    },
-    props: {
-      _vm:{
-
+      getData: {
+        withdrawMoney: null,
+        transferMoney: null,
+        status: null,
+        type: null
       },
-      setData: {
-        type: Object,
-        default: null
-      },
-      getType:{},
-      getStatus:{}
-    },
-    components: {},
-    computed: {},
-    methods: {
-      createClear(){
-        this.$set(this.getData,"createDate","");
-        this.$set(this.getData,"createDateTemp","")
-      },
-      createDateChange(value){
-        this.$set(this.getData,"createDate",value)
-      }
-    },
-    mounted () {
-
-
-    },
-    created () {
-      if(this.setData!=undefined){
-        let dataTime=formatDate('Y-m-d h:m:s',this.setData.createDate);
-        Object.assign(this.getData,this.setData);
-        this.$set(this.getData,"createDateTemp",dataTime);
-        this.$set(this.getData,"createDate",dataTime)
+      getRult: {
+        withdrawMoney: [
+          { required: true, type: 'number', message: '请填写提现金额', trigger: 'change' }
+        ],
+        transferMoney: [
+          { required: true, type: 'number', message: '请填写到账金额', trigger: 'change' }
+        ],
+        status: [
+          { required: true, type: 'number', message: '请选择状态', trigger: 'change' }
+        ],
+        type: [
+          { required: true, type: 'number', message: '请选择提现方式', trigger: 'change' }
+        ]
       }
     }
+  },
+  computed: {
+    productTypeData () {
+      return this._vm.$store.state.shopManage.productTypeData
+    }
+  },
+  props: {
+    _vm: {
+
+    },
+    setData: {
+      type: Object,
+      default: null
+    },
+    getType: {},
+    getStatus: {}
+  },
+  components: {},
+  computed: {},
+  methods: {
+    createClear () {
+      this.$set(this.getData, 'createDate', '')
+      this.$set(this.getData, 'createDateTemp', '')
+    },
+    createDateChange (value) {
+      this.$set(this.getData, 'createDate', value)
+    }
+  },
+  mounted () {
+
+  },
+  created () {
+    if (this.setData != undefined) {
+      let dataTime = formatDate('Y-m-d H:i:s', this.setData.createDate)
+      Object.assign(this.getData, this.setData)
+      this.$set(this.getData, 'createDateTemp', dataTime)
+      this.$set(this.getData, 'createDate', dataTime)
+    }
   }
+}
 </script>
 
 <style scoped>

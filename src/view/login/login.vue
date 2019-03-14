@@ -23,7 +23,7 @@
 import LoginForm from '_c/login-form'
 import { mapActions } from 'vuex'
 import backPass from './backPass'
-import {setUserNameCookie} from '@/libs/util'
+import { setUserNameCookie } from '@/libs/util'
 export default {
   components: {
     LoginForm,
@@ -36,29 +36,28 @@ export default {
       'handleGetAreaManageList'
     ]),
     handleSubmit ({ userName, password }) {
-      let vm=this;
-      localStorage.clear();
-      sessionStorage.clear();
+      let vm = this
+      localStorage.clear()
+      sessionStorage.clear()
       this.handleLogin({ userName, password }).then(res => {
         debugger
-        if(res.code===20000){
-          setUserNameCookie(userName);
-          //设置当前帐号
+        if (res.code === 20000) {
+          setUserNameCookie(userName)
+          // 设置当前帐号
           vm.getUserInfo().then(res => {
-            vm.$refs.loginForm.loginLoading=false;//重置loading 状态
+            vm.$refs.loginForm.loginLoading = false// 重置loading 状态
             vm.$router.push({
               name: vm.$config.homeName
             })
           })
-        }else{
-          vm.$Message.error(res.msg);
-          vm.$refs.loginForm.loginLoading=false;//重置loading 状态
+        } else {
+          vm.$Message.error(res.msg)
+          vm.$refs.loginForm.loginLoading = false// 重置loading 状态
         }
-
       })
     },
-    backPassWord(){
-      this.$refs.backPass.showModal(true);
+    backPassWord () {
+      this.$refs.backPass.showModal(true)
     }
   }
 }

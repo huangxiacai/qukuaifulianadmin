@@ -18,7 +18,7 @@
 import './user.less'
 import { mapActions } from 'vuex'
 import editPass from '../../../../view/child-view/comontents/editPassword'
-import {setToken, getToken,getUserName} from '@/libs/util'
+import { setToken, getToken, getUserName } from '@/libs/util'
 import md5 from 'js-md5'
 export default {
   name: 'User',
@@ -28,15 +28,15 @@ export default {
       default: ''
     }
   },
-  computed:{
-    userName() {
-      return getUserName();
-    },
+  computed: {
+    userName () {
+      return getUserName()
+    }
   },
   methods: {
     ...mapActions([
       'handleLogOut',
-      'handleUserEditPass',
+      'handleUserEditPass'
     ]),
     handleClick (name) {
       switch (name) {
@@ -45,61 +45,60 @@ export default {
             this.$router.push({
               name: 'login'
             })
-          });
-          break;
+          })
+          break
         case 'editPass':
-          this.editPassWord();
-          break;
+          this.editPassWord()
+          break
       }
     },
     /**
      * 修改密码调用
      */
-    editPassWord(){
-      let vm=this;
-      let config={
-        loading:true,
-        render:(h)=>{
-          return h('div',[
-            h('h3',{
-              slot:'title'
-            },'修改密码'),
-            h(editPass,{
-              ref:'editPass',
-              props:{
+    editPassWord () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', {
+              slot: 'title'
+            }, '修改密码'),
+            h(editPass, {
+              ref: 'editPass',
+              props: {
 
               }
             })
-          ]);
-
+          ])
         },
-        onOk:function(){
-          let _this=this;
-          let obj=this.$refs.editPass;
-          obj.checkForm().then(res=>{
-            if(res){
-              let {old_pass,new_pass} =obj.editPassFormModel;
-              //发送请求
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.editPass
+          obj.checkForm().then(res => {
+            if (res) {
+              let { old_pass, new_pass } = obj.editPassFormModel
+              // 发送请求
               vm.handleUserEditPass({
-                oldPassword:old_pass,
-                newPassword:new_pass
-              }).then(res=>{
-                if(res.code===20000){
-                  vm.$Message.success("修改成功！");
-                  //关闭模态框
-                  this.$Modal.remove();
-                }else{
-                  vm.$Message.error(res.msg);
-                  _this.tableLoading = false;
+                oldPassword: old_pass,
+                newPassword: new_pass
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('修改成功！')
+                  // 关闭模态框
+                  this.$Modal.remove()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.tableLoading = false
                 }
-              });
-            }else{
-              _this.buttonLoading=false;
+              })
+            } else {
+              _this.buttonLoading = false
             }
-          });
+          })
         }
-      };
-      this.$Modal.confirm(config);
+      }
+      this.$Modal.confirm(config)
     }
   }
 }

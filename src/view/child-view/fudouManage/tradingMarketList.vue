@@ -61,449 +61,448 @@
 </template>
 
 <script>
-  import packageTableMixins from '../mixins/packageTableMixins'
-  import { mapActions } from 'vuex'
-  import { formatDate } from '@/libs/util'
-  import addfudouPrice from './components/addfudouPrice'
-  import searchPurchaseList from './components/searchPurchaseList'
-  export default {
-    name: 'tradingMarketList',
-    mixins: [packageTableMixins],
-    data () {
-      return {
-        reqBase: {
-          currentPage: 1,
-          length: 15,
-          type:-1
+import packageTableMixins from '../mixins/packageTableMixins'
+import { mapActions } from 'vuex'
+import { formatDate } from '@/libs/util'
+import addfudouPrice from './components/addfudouPrice'
+import searchPurchaseList from './components/searchPurchaseList'
+export default {
+  name: 'tradingMarketList',
+  mixins: [packageTableMixins],
+  data () {
+    return {
+      reqBase: {
+        currentPage: 1,
+        length: 15,
+        type: -1
+      },
+      title: '交易市场列表过滤',
+      getType: [
+        {
+          value: -1,
+          label: '全部'
         },
-        title: '交易市场列表过滤',
-        getType:[
-          {
-            value:-1,
-            label:'全部',
-          },
-          {
-            value:0,
-            label:'未完成',
-          },
-          {
-            value:1,
-            label:'完成',
-          },
-        ],
-        getStatus:[
-          {
-            value:0,
-            label:'未完成',
-          },
-          {
-            value:1,
-            label:'已完成',
-          }
-        ],
+        {
+          value: 0,
+          label: '未完成'
+        },
+        {
+          value: 1,
+          label: '完成'
+        }
+      ],
+      getStatus: [
+        {
+          value: 0,
+          label: '未完成'
+        },
+        {
+          value: 1,
+          label: '已完成'
+        }
+      ],
+      startDate: null,
+      endDate: null,
+      filter_form: {
         startDate: null,
         endDate: null,
-        filter_form: {
-          startDate: null,
-          endDate: null,
-          phone:null,
-          nickName:null,
-          type:-1,
-          businessId:null
+        phone: null,
+        nickName: null,
+        type: -1,
+        businessId: null
+      },
+      headBtnList: [
+        // {
+        //   mothod: this.add,
+        //   type: 'primary',
+        //   icon: '',
+        //   text: '添加福豆价格'
+        // }
+      ],
+      columnsheader: [
+
+        {
+          title: '用户昵称',
+          key: 'postUser.nickname',
+          align: 'center',
+          width: 150,
+          render: (h, { row }) => {
+            return h('div', row.postUser.nickname)
+          }
         },
-        headBtnList: [
-          // {
-          //   mothod: this.add,
-          //   type: 'primary',
-          //   icon: '',
-          //   text: '添加福豆价格'
-          // }
-        ],
-        columnsheader: [
+        {
+          title: '用户id',
+          key: 'userId',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '用户手机号',
+          key: 'postUser.phone',
+          align: 'center',
+          width: 100,
+          render: (h, { row }) => {
+            return h('div', row.postUser.phone)
+          }
+        },
+        {
+          title: '订单Id',
+          key: 'businessId',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '福豆价格',
+          key: 'beanPrice',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '正在交易市场出售的福豆',
+          key: 'amount',
+          align: 'center',
+          width: 100
+        },
 
-          {
-            title: '用户昵称',
-            key: 'postUser.nickname',
-            align: 'center',
-            width:150,
-            render:(h,{row})=>{
-              return h('div',row.postUser.nickname)
+        {
+          title: '出让时间',
+          key: 'createDate',
+          align: 'center',
+          width: 100,
+          render: (h, { row }) => {
+            return h('div', formatDate('Y-m-d H:i:s', row.createDate))
+          }
+        },
+        {
+          title: '冻结福豆',
+          key: 'freezeAmount',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '交易完成的福豆',
+          key: 'finishAmount',
+          align: 'center',
+          width: 100
+        },
+        {
+          title: '是否完成',
+          key: 'isSuccess',
+          align: 'center',
+          render: (h, { row }) => {
+            let result = ''
+            for (let i = 0; i < this.getStatus.length; i++) {
+              let list = this.getStatus[i]
+              if (list.value === row.isSuccess) {
+                result = list.label
+                break
+              }
             }
-          },
-          {
-            title: '用户id',
-            key: 'userId',
-            width:100,
-            align: 'center',
-          },
-          {
-            title: '用户手机号',
-            key: 'postUser.phone',
-            align: 'center',
-            width:100,
-            render:(h,{row})=>{
-              return h('div',row.postUser.phone)
-            }
-          },
-          {
-            title: '订单Id',
-            key: 'businessId',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '福豆价格',
-            key: 'beanPrice',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '正在交易市场出售的福豆',
-            key: 'amount',
-            align: 'center',
-            width:100,
-          },
-
-          {
-            title: '出让时间',
-            key: 'createDate',
-            align: 'center',
-            width:100,
-            render: (h, { row }) => {
-              return h('div', formatDate('Y-m-d h:m:s', row.createDate))
-            }
-          },
-          {
-            title: '冻结福豆',
-            key: 'freezeAmount',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '交易完成的福豆',
-            key: 'finishAmount',
-            align: 'center',
-            width:100,
-          },
-          {
-            title: '是否完成',
-            key: 'isSuccess',
-            align: 'center',
-            render:(h,{row})=>{
-              let result="";
-              for(let i=0;i<this.getStatus.length;i++){
-                let list=this.getStatus[i];
-                if(list.value===row.isSuccess){
-                  result=list.label;
-                  break;
+            return h('div', result)
+          }
+        },
+        {
+          title: '操作',
+          key: '',
+          align: 'center',
+          fixed: 'right',
+          width: 180,
+          render: (h, { row }) => {
+            let vm = this
+            return h('Button', {
+              props: {
+                type: 'text',
+                size: 'small'
+              },
+              on: {
+                click: function () {
+                  vm.purchaseList(row)
                 }
               }
-              return h('div',result)
-            }
-          },
-          {
-            title: '操作',
-            key: '',
-            align: 'center',
-            fixed:'right',
-            width:180,
-            render: (h, { row }) => {
-              let vm=this;
-              return h('Button', {
-                props: {
-                  type: 'text',
-                  size: 'small'
-                },
-                on: {
-                  click: function () {
-                    vm.purchaseList(row)
-                  }
-                }
-              }, '查看购入记录')
-            }
+            }, '查看购入记录')
           }
-        ]
+        }
+      ]
+    }
+  },
+  components: {
+    searchPurchaseList
+  },
+  methods: {
+    ...mapActions([
+      'handlequeryBusinessLists',
+      'handlequeryBusinessDetails',
+      'handleupdateBusinessDetailStatus'// 更新购入订单详情状态
+    ]),
+    //
+    showSearchPanel () {
+      this.$refs.filterBase.init()
+    },
+    startDateChange (value) {
+      this.$set(this.filter_form, 'startDate', value)
+    },
+    endDateChange (value) {
+      this.$set(this.filter_form, 'endDate', value)
+    },
+    add () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '添加福豆价格'),
+            h(addfudouPrice, {
+              ref: 'addfudouPrice',
+              props: {
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addfudouPrice
+          obj.checkForm().then(res => {
+            if (res) {
+              let { beanPrice, createDate } = obj.getData
+              // 发送请求
+              vm.handlesaveOrUpdateBeanPrice({
+                beanPrice,
+                createDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('添加锁仓记录成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    edit (row) {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '修改福豆价格'),
+            h(addfudouPrice, {
+              ref: 'addfudouPrice',
+              props: {
+                setData: row
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addfudouPrice
+          obj.checkForm().then(res => {
+            if (res) {
+              let { beanPrice, createDate, priceId } = obj.getData
+              // 发送请求
+              vm.handlesaveOrUpdateBeanPrice({
+                beanPrice,
+                createDate,
+                priceId
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('修改锁仓记录成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    // 查看购入列表
+    purchaseList (row) {
+      this.$refs.searchPurchaseList.showModal(true)
+      this.$refs.searchPurchaseList.initParams(row.businessId)
+    },
+    // 重置搜索条件
+    resetConditions () {
+      this.startDate = null
+      this.endDate = null
+      this.filter_form = {
+        startDate: null,
+        endDate: null,
+        phone: null,
+        nickName: null,
+        type: -1,
+        businessId: null
       }
     },
-    components:{
-      searchPurchaseList
+    backCustomer (row, title, status) {
+      let vm = this
+      let config = {
+        title: title,
+        content: '您确定要' + title + '道具吗',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handleupdateBusinessDetailStatus(
+            {
+              detailId: row.detailId,
+              status: status
+            }
+          ).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success(title + '成功')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
     },
-    methods: {
-      ...mapActions([
-        'handlequeryBusinessLists',
-        'handlequeryBusinessDetails',
-        'handleupdateBusinessDetailStatus'//更新购入订单详情状态
-      ]),
-      //
-      showSearchPanel () {
-        this.$refs.filterBase.init()
-      },
-      startDateChange (value) {
-        this.$set(this.filter_form, 'startDate', value)
-      },
-      endDateChange (value) {
-        this.$set(this.filter_form, 'endDate', value)
-      },
-      add () {
-        let vm = this;
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '添加福豆价格'),
-              h(addfudouPrice, {
-                ref: 'addfudouPrice',
-                props: {
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addfudouPrice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let {beanPrice,createDate} = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateBeanPrice({
-                  beanPrice,
-                  createDate
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('添加锁仓记录成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      edit(row){
-        let vm = this;
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '修改福豆价格'),
-              h(addfudouPrice, {
-                ref: 'addfudouPrice',
-                props: {
-                  setData:row
-                }
-              })
-            ])
-          },
-          onOk: function () {
-            let _this = this;
-            let obj = this.$refs.addfudouPrice;
-            obj.checkForm().then(res => {
-              if (res) {
-                let {beanPrice,createDate,priceId} = obj.getData;
-                // 发送请求
-                vm.handlesaveOrUpdateBeanPrice({
-                  beanPrice,
-                  createDate,
-                  priceId
-                }).then(res => {
-                  if (res.code === 20000) {
-                    vm.$Message.success('修改锁仓记录成功！');
-                    vm.$Modal.remove();
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg);
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      //查看购入列表
-      purchaseList(row){
-        this.$refs.searchPurchaseList.showModal(true);
-        this.$refs.searchPurchaseList.initParams(row.businessId);
-      },
-      // 重置搜索条件
-      resetConditions () {
-        this.startDate = null;
-        this.endDate = null;
-        this.filter_form = {
-          startDate: null,
-          endDate: null,
-          phone:null,
-          nickName:null,
-          type:-1,
-          businessId:null
-        }
-      },
-      backCustomer(row,title,status){
-        let vm = this
-        let config = {
-          title: title,
-          content: '您确定要'+title+'道具吗',
-          loading: true,
-          onOk: function () {
-            let _this = this
-            vm.handleupdateBusinessDetailStatus(
-              {
-                detailId: row.detailId,
-                status: status
-              }
-            ).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success(title + '成功')
-                vm.$Modal.remove();
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg)
-                _this.buttonLoading = false
-              }
-            })
-          }
-        }
-        this.$Modal.confirm(config)
-      },
 
-      sellWelfareTool (row, text) {
-        let vm = this
-        let config = {
-          title: text + '道具',
-          content: '您确定要' + text + '' + row.toolName + '道具吗',
-          loading: true,
-          onOk: function () {
-            let _this = this
-            vm.handleIsSellWelfareTool(
-              {
-                toolId: row.toolIdt,
-                isSell: row.isSell
-              }
-            ).then(res => {
-              if (res.code === 20000) {
-                vm.$Message.success(text + '成功')
-                vm.$Modal.remove()
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg)
-                _this.buttonLoading = false
+    sellWelfareTool (row, text) {
+      let vm = this
+      let config = {
+        title: text + '道具',
+        content: '您确定要' + text + '' + row.toolName + '道具吗',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handleIsSellWelfareTool(
+            {
+              toolId: row.toolIdt,
+              isSell: row.isSell
+            }
+          ).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success(text + '成功')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    // 修改道具
+    editWelfareTool (row) {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '修改福利值道具'),
+            h(suWelfareTool, {
+              ref: 'suWelfareTool',
+              props: {
+                setData: row
               }
             })
-          }
-        }
-        this.$Modal.confirm(config)
-      },
-      // 修改道具
-      editWelfareTool (row) {
-        let vm = this
-        let config = {
-          loading: true,
-          render: (h) => {
-            return h('div', [
-              h('h3', '修改福利值道具'),
-              h(suWelfareTool, {
-                ref: 'suWelfareTool',
-                props: {
-                  setData: row
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.suWelfareTool
+          obj.checkForm().then(res => {
+            if (res) {
+              let { toolName, price, addWelfare, isSell, toolId } = obj.getData
+              // 发送请求
+              vm.handleSaveOrUpdateWelfareTool({
+                toolName,
+                price,
+                addWelfare,
+                isSell,
+                toolId
+              }).then(res => {
+                debugger
+                if (res.code === 20000) {
+                  vm.$Message.success('修改成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
                 }
               })
-            ])
-          },
-          onOk: function () {
-            let _this = this
-            let obj = this.$refs.suWelfareTool
-            obj.checkForm().then(res => {
-              if (res) {
-                let { toolName, price, addWelfare, isSell, toolId } = obj.getData
-                // 发送请求
-                vm.handleSaveOrUpdateWelfareTool({
-                  toolName,
-                  price,
-                  addWelfare,
-                  isSell,
-                  toolId
-                }).then(res => {
-                  debugger
-                  if (res.code === 20000) {
-                    vm.$Message.success('修改成功！')
-                    vm.$Modal.remove()
-                    vm.init()
-                  } else {
-                    vm.$Message.error(res.msg)
-                    _this.buttonLoading = false
-                  }
-                })
-              } else {
-                _this.buttonLoading = false
-              }
-            })
-          }
-        };
-        this.$Modal.confirm(config)
-      },
-      init () {
-        this.tableLoading = true;
-        this.handlequeryBusinessLists({ ...this.reqBase }).then(res => {
-          this.tableLoading = false;
-          if (res.code === 20000) {
-            this.tableDataList = res.data.data;
-            this.getPageTotal = res.data.totalCount;
-          } else {
-            this.tableDataList = [];
-            this.getPageTotal = 0
-          }
-        })
-      },
-      /**
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    init () {
+      this.tableLoading = true
+      this.handlequeryBusinessLists({ ...this.reqBase }).then(res => {
+        this.tableLoading = false
+        if (res.code === 20000) {
+          this.tableDataList = res.data.data
+          this.getPageTotal = res.data.totalCount
+        } else {
+          this.tableDataList = []
+          this.getPageTotal = 0
+        }
+      })
+    },
+    /**
        * 撤销锁仓
        * @param row
        */
-      del(row){
-        let vm=this;
-        let config={
-          title:'撤销锁仓',
-          content:"您确定要撤销这边锁仓吗？",
-          loading:true,
-          onOk:function(){
-            let _this=this;
-            vm.handlecancelBeanLock({
-              beanLockId:row.beanLockId
-            }).then(res=>{
-              if (res.code === 20000) {
-                vm.$Message.success('撤销锁仓成功！');
-                vm.$Modal.remove();
-                vm.init()
-              } else {
-                vm.$Message.error(res.msg)
-                _this.buttonLoading = false
-              }
-            });
-          }
-        };
-        this.$Modal.confirm(config);
+    del (row) {
+      let vm = this
+      let config = {
+        title: '撤销锁仓',
+        content: '您确定要撤销这边锁仓吗？',
+        loading: true,
+        onOk: function () {
+          let _this = this
+          vm.handlecancelBeanLock({
+            beanLockId: row.beanLockId
+          }).then(res => {
+            if (res.code === 20000) {
+              vm.$Message.success('撤销锁仓成功！')
+              vm.$Modal.remove()
+              vm.init()
+            } else {
+              vm.$Message.error(res.msg)
+              _this.buttonLoading = false
+            }
+          })
+        }
       }
-
-    },
-    mounted () {
-      this.init()
-    },
-    created () {
-
+      this.$Modal.confirm(config)
     }
+
+  },
+  mounted () {
+    this.init()
+  },
+  created () {
+
   }
+}
 </script>
 
 <style scoped>
 
 </style>
-

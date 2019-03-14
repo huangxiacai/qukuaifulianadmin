@@ -1,4 +1,4 @@
-import { insertUser, getqueryUsers, updateUserStatus, queryUserValues, queryUserBeans } from '../../api/userManage'
+import { insertUser,queryUserRecords, getqueryUsers, querySales, updateUserStatus, queryUserValues, queryUserBeans } from '../../api/userManage'
 import { setToken, getToken } from '@/libs/util'
 
 export default {
@@ -19,7 +19,7 @@ export default {
     handleInsertUser ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         insertUser({
-          ...params,
+          ...params
 
         }).then(res => {
           resolve(res)
@@ -56,7 +56,7 @@ export default {
     handleUpdateUserStatus ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         updateUserStatus({
-          ...params,
+          ...params
 
         }).then(res => {
           resolve(res)
@@ -94,6 +94,44 @@ export default {
     handleQueryUserBeans ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryUserBeans({
+          ...params,
+          access_token: getToken()
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 用户业绩
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handleQuerySales ({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        querySales({
+          ...params,
+          access_token: getToken()
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 用户业绩
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlequeryUserRecords ({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        queryUserRecords({
           ...params,
           access_token: getToken()
         }).then(res => {
