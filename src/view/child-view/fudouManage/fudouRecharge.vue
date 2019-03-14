@@ -8,7 +8,7 @@
                      :isReset="true">
             <Form slot="formContent" inline class="ivu-row">
                 <FormItem label="用户昵称:" class="ivu-col ivu-col-span-6 m-b-10">
-                    <Input v-model="filter_form.nickName" type="text"
+                    <Input v-model="filter_form.nickname" type="text"
                            placeholder="请填写用户昵称"></Input>
                 </FormItem>
                 <FormItem label="用户手机号:" class="ivu-col ivu-col-span-6 m-b-10">
@@ -193,7 +193,7 @@ export default {
         phone: null,
         startDate: null,
         endDate: null,
-        nickName: null
+        nickname: null
       }
     }
   },
@@ -357,7 +357,7 @@ export default {
         phone: null,
         startDate: null,
         endDate: null,
-        nickName: null
+        nickname: null
       }
     },
     exprotData () {
