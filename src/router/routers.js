@@ -264,6 +264,15 @@ export default [
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/welfareItemManage.vue')
+      },
+      {
+        path: 'userAchievementList',
+        name: 'userAchievementList',
+        meta: {
+          title: '充值列表',
+          notCache: true
+        },
+        component: () => import('@/view/child-view/activeWelfareManagement/userAchievementList.vue')
       }
     ]
   },

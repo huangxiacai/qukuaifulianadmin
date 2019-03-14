@@ -476,23 +476,26 @@ export default {
               }).then(res => {
                 if (res.code === 20000) {
                   let allData = res.data.data
-                  let _arr = []
+                  let _arr = [];
+                  let temp=[55,56,57,58,59,60,61,62,64];
                   for (let i in allData) {
-                    let list = allData[i]
-                    _arr.push({
-                      nickname: list.postUser.nickname,
-                      userId: list.userId,
-                      phone: list.postUser.phone,
-                      amount: list.amount,
-                      freezeAmount: list.freezeAmount,
-                      finishAmount: list.finishAmount,
-                      createDate: formatDate('Y-m-d H:i:s', list.createDate),
-                      ruleType: vm.getRuleTypeLabel(list.ruleType),
-                      ruleValue: vm.getRuleValueLabel(list.ruleType, list.ruleValue),
-                      type: vm.getTypeLabel(list.type)
-                    })
+                    let list = allData[i];
+                    if(!temp.indexOf(list.beanLockId)>-1){
+                      _arr.push({
+                        nickname: list.postUser.nickname,
+                        userId: list.userId,
+                        phone: list.postUser.phone,
+                        amount: list.amount,
+                        freezeAmount: list.freezeAmount,
+                        finishAmount: list.finishAmount,
+                        createDate: formatDate('Y-m-d H:i:s', list.createDate),
+                        ruleType: vm.getRuleTypeLabel(list.ruleType),
+                        ruleValue: vm.getRuleValueLabel(list.ruleType, list.ruleValue),
+                        type: vm.getTypeLabel(list.type)
+                      })
+                    }
                   }
-                  vm.$Message.success('导出成功！')
+                  vm.$Message.success('导出成功！');
                   vm.$Modal.remove()
                   vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
                     filename: 'angelInvestFudouManage',
@@ -512,12 +515,22 @@ export default {
     init () {
       this.tableLoading = true
       this.handlequeryBeanLocks({ ...this.reqBase }).then(res => {
-        this.tableLoading = false
+        this.tableLoading = false;
+        this.tableDataList=[];
         if (res.code === 20000) {
-          this.tableDataList = res.data.data
-          this.getPageTotal = res.data.totalCount
+          let arr=[];
+          let temp=[55,56,57,58,59,60,61,62,64];
+          for(let i in res.data.data||[]){
+            let list=res.data.data[i];
+            if(temp.indexOf(list.beanLockId)>-1){
+            }else{
+              arr.push(list);
+            }
+          }
+          this.tableDataList = arr;
+          this.getPageTotal = res.data.totalCount-temp.length;
         } else {
-          this.tableDataList = []
+          this.tableDataList = [];
           this.getPageTotal = 0
         }
       })

@@ -195,3 +195,13 @@ export const querySales = (params) => {
     method: 'post'
   })
 }
+export const queryUserRecords = (params) => {
+  const data = {
+    ...params
+  }
+  return axios.request({
+    url: userManage.queryUserRecords,
+    data,
+    method: 'post'
+  })
+}

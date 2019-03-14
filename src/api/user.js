@@ -90,3 +90,20 @@ export const userEditPass = (params) => {
     data
   })
 }
+/**
+ * 业绩
+ * @param params
+ * @returns {*}
+ */
+export const queryUserRecords = (params) => {
+  let data = {
+    ...params
+  }
+  return axios.request({
+    url: common.queryUserRecords,
+    method: 'post',
+    data
+  })
+}
+
+
