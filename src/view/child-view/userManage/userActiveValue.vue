@@ -34,7 +34,10 @@
                 </Button>
             </template>
             <template slot="headRight">
-
+                <Button v-for="(item,index) in headBtnRightList" @click="item.mothod" :key="index" class="base_btn_item"
+                        :type="item.type" :icon="item.icon">
+                    {{item.text}}
+                </Button>
             </template>
         </packageTable>
     </div>
@@ -45,7 +48,7 @@ import packageTableMixins from '../mixins/packageTableMixins'
 import { formatDate } from '../../../libs/util'
 import { mapActions } from 'vuex'
 import addUser from './components/addUser'
-
+import exportConponents from '../comontents/exportConponents'
 export default {
   name: 'userActiveValue',
   mixins: [packageTableMixins],
@@ -54,6 +57,14 @@ export default {
       title: '用户活跃度福利值过滤',
       headBtnList: [
 
+      ],
+      headBtnRightList: [
+        {
+          mothod: this.exprotData,
+          type: 'primary',
+          icon: '',
+          text: '导出'
+        }
       ],
       columnsheader: [
         {
@@ -188,6 +199,66 @@ export default {
     //
     showSearchPanel () {
       this.$refs.filterBase.init()
+    },
+    exprotData () {
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '导出数据'),
+            h(exportConponents, {
+              ref: 'exportConponents',
+              props: {
+
+              }
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.exportConponents
+          obj.checkForm().then(res => {
+            if (res) {
+              debugger
+              let { startDate, endDate } = obj.formModel
+              vm.handleQueryUserValues({
+                currentPage: 1,
+                length: vm.getPageTotal,
+                startDate,
+                endDate
+              }).then(res => {
+                if (res.code === 20000) {
+                  let allData = res.data.data
+                  let _arr = []
+                  for (let i in allData) {
+                    let list = allData[i]
+                    _arr.push({
+                      nickname: list.postUser.nickname,
+                      userId: list.userId,
+                      phone: list.postUser.phone,
+                      welfareValue: list.welfareValue,
+                      activeValue: list.activeValue,
+                      freezeWelfareValue: list.freezeWelfareValue,
+                      freezeActive: list.freezeActive
+                    })
+                  }
+                  vm.$Message.success('导出成功！')
+                  vm.$Modal.remove()
+                  vm.$refs.contentBaseRef.$refs.packageTable.exportCsv({
+                    filename: 'userValues',
+                    columns: vm.columnsheader,
+                    data: _arr
+                  })
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
     },
 
     // 重置搜索条件
