@@ -10,6 +10,10 @@ export const setToken = (token) => {
   sessionStorage.token = token
   // Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
 }
+export const setAccess = (access) => {
+  sessionStorage.access = access
+  // Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+}
 export const setUserNameCookie = (userName) => {
   if (userName && userName !== undefined) {
     Cookies.set(USER_NAME, userName, { expires: config.cookieExpires || 1 })
@@ -24,6 +28,13 @@ export const getUserName = () => {
 export const getToken = () => {
   // const token = Cookies.get(TOKEN_KEY)
   const token = sessionStorage.getItem('token')
+  if (token) return token
+  else return false
+}
+
+export const getAccess = () => {
+  // const token = Cookies.get(TOKEN_KEY)
+  const token = sessionStorage.getItem('access')
   if (token) return token
   else return false
 }

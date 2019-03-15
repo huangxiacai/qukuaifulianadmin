@@ -82,7 +82,9 @@ export default {
       return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
     },
     menuList () {
-      return this.$store.getters.menuList
+      let result=this.$store.getters.menuList;
+      debugger
+      return result
     },
     local () {
       return this.$store.state.app.local

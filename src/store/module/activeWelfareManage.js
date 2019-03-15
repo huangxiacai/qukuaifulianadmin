@@ -62,8 +62,7 @@ export default {
     handleIsSellWelfareTool ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         isSellWelfareTool({
-          ...params,
-          access_token: getToken()
+          ...params
         }).then(res => {
           resolve(res)
         }).catch(err => {

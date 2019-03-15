@@ -9,7 +9,8 @@ import {
   routeEqual,
   getRouteTitleHandled,
   localSave,
-  localRead
+  localRead,
+  getAccess
 } from '@/libs/util'
 import beforeClose from '@/router/before-close'
 import { saveErrorLogger } from '@/api/data'
@@ -39,7 +40,7 @@ export default {
     hasReadErrorPage: false
   },
   getters: {
-    menuList: (state, getters, rootState) => getMenuByRouter(routers, rootState.user.access),
+    menuList: (state, getters, rootState) => getMenuByRouter(routers, getAccess()),
     errorCount: state => state.errorList.length
   },
   mutations: {

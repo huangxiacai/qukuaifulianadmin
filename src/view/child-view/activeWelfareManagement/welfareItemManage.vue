@@ -273,8 +273,8 @@ export default {
           let _this = this
           vm.handleIsSellWelfareTool(
             {
-              toolId: row.toolIdt,
-              isSell: row.isSell
+              toolId: row.toolId,
+              isSell: row.isSell==0?1:0
             }
           ).then(res => {
             if (res.code === 20000) {

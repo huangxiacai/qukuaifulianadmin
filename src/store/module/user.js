@@ -1,5 +1,5 @@
 import { login, logout, getUserInfo, userEditPass, userSendVcode, userRecoverPass } from '../../api/user'
-import { setToken, getToken } from '@/libs/util'
+import { setToken, getToken ,setAccess} from '@/libs/util'
 import md5 from 'js-md5'
 import config from '../../config/index'
 import adminIcon from '@/assets/images/logo-min.png'
@@ -26,7 +26,8 @@ export default {
       setUserNameCookie(name)
     },
     setAccess (state, access) {
-      state.access = access
+      state.access = access;
+      setAccess(access)
     },
     setToken (state, token) {
       state.token = token
@@ -45,6 +46,7 @@ export default {
           password: password
         }).then(res => {
           if (res.code === 20000) {
+            commit('setAccess', userName)
             resolve(res)
           } else {
             resolve(res)
@@ -57,16 +59,22 @@ export default {
     // 退出登录
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
-          commit('setUserName', '')
-          localStorage.clear()
-          sessionStorage.clear()
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
+        commit('setToken', '')
+        commit('setAccess', [])
+        commit('setUserName', '')
+        localStorage.clear()
+        sessionStorage.clear()
+        resolve()
+        // logout(state.token).then(() => {
+        //   commit('setToken', '')
+        //   commit('setAccess', [])
+        //   commit('setUserName', '')
+        //   localStorage.clear()
+        //   sessionStorage.clear()
+        //   resolve()
+        // }).catch(err => {
+        //   reject(err)
+        // })
         // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
         // commit('setToken', '')
         // commit('setAccess', [])
@@ -84,7 +92,7 @@ export default {
             commit('setToken', data.username)
             commit('setUserName', data.username)
             commit('setUserId', data.userId)// 保存user id
-            commit('setAccess', 'admin')
+            //commit('setAccess', 'admin')
             commit('setHasGetInfo', true)
             resolve(data)
           }).catch(err => {
