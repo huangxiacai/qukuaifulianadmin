@@ -162,8 +162,16 @@ export const getNewTagList = (list, newRoute) => {
  * @param {*} route 路由列表
  */
 const hasAccess = (access, route) => {
-  if (route.meta && route.meta.access) return hasOneOf(access, route.meta.access)
-  else return true
+  debugger
+  if (route.meta && !route.meta.hasOwnProperty("hideInMenu") && route.meta.access!=undefined)
+    if(route.meta.access.indexOf(access)>-1){
+      return true;
+    }else{
+      return false;
+    }
+    //return hasOneOf(access, route.meta.access)
+  else
+    return true
 }
 
 /**

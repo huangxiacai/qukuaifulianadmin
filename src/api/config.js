@@ -13,6 +13,8 @@ export const userManage = {
   insertUser: 'manager/user/insertUser', // 添加用户到管理
   querySales: 'manager/fobBean/querySales',// 充值列表
   queryUserRecords:"manager/user/queryUserRecords",//用户业绩
+  saveIdCard:'manager/user/saveIdCard',//添加身份证
+  saveBankCard:'manager/user/saveBankCard',//添加银行卡
 }
 /**
  * 福利值活跃度管理

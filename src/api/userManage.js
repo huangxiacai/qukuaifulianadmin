@@ -205,3 +205,23 @@ export const queryUserRecords = (params) => {
     method: 'post'
   })
 }
+export const saveIdCard = (params) => {
+  const data = {
+    ...params
+  }
+  return axios.request({
+    url: userManage.saveIdCard,
+    data,
+    method: 'post'
+  })
+}
+export const saveBankCard = (params) => {
+  const data = {
+    ...params
+  }
+  return axios.request({
+    url: userManage.saveBankCard,
+    data,
+    method: 'post'
+  })
+}

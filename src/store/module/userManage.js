@@ -1,4 +1,4 @@
-import { insertUser,queryUserRecords, getqueryUsers, querySales, updateUserStatus, queryUserValues, queryUserBeans } from '../../api/userManage'
+import { insertUser,queryUserRecords, getqueryUsers, querySales, updateUserStatus, queryUserValues, queryUserBeans ,saveBankCard,saveIdCard} from '../../api/userManage'
 import { setToken, getToken } from '@/libs/util'
 
 export default {
@@ -132,6 +132,37 @@ export default {
     handlequeryUserRecords ({ state, commit }, params) {
       return new Promise((resolve, reject) => {
         queryUserRecords({
+          ...params,
+          access_token: getToken()
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    /**
+     * 保存idcard
+     * @param state
+     * @param commit
+     * @param params
+     * @returns {Promise<any>}
+     */
+    handlesaveIdCard ({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        saveIdCard({
+          ...params,
+          access_token: getToken()
+        }).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    handlesaveBankCard ({ state, commit }, params) {
+      return new Promise((resolve, reject) => {
+        saveBankCard({
           ...params,
           access_token: getToken()
         }).then(res => {

@@ -65,6 +65,8 @@ import packageTableMixins from '../mixins/packageTableMixins'
 import { formatDate } from '../../../libs/util'
 import { mapActions } from 'vuex'
 import addUser from './components/addUser'
+import addIDCardCom from './components/addIDCardCom'
+import addBankCardCom from './components/addBankCardCom'
 import exportConponents from '../comontents/exportConponents'
 export default {
   name: 'accessManage',
@@ -366,13 +368,42 @@ export default {
             } else if (row.status === 2) {
               result = '解冻'
             }
-            return h('Button', {
+            let arr=[
+              h('Button', {
+              props: {
+                type: 'text',
+                size: 'small'
+              },
               on: {
                 click: function () {
-                  vm.userUpdateUserStatus(row, result)
+                  debugger
+                  vm.addBankCard(row)
                 }
               }
-            }, result)
+            }, '添加银行卡'),
+              h('Button', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                on: {
+                  click: function () {
+                    vm.addIdCard(row)
+                  }
+                }
+              }, '实名认证'),
+              h('Button', {
+                props: {
+                  type: 'text',
+                  size: 'small'
+                },
+                on: {
+                  click: function () {
+                    vm.userUpdateUserStatus(row, result)
+                  }
+                }
+              }, result)];
+            return h('div', arr);
           }
         }
       ]
@@ -382,7 +413,9 @@ export default {
     ...mapActions([
       'handleGetqueryUsers',
       'handleInsertUser',
-      'handleUpdateUserStatus'
+      'handleUpdateUserStatus',
+      'handlesaveBankCard',
+      'handlesaveIdCard'
     ]),
     add () {
       let vm = this
@@ -432,6 +465,94 @@ export default {
     //
     showSearchPanel () {
       this.$refs.filterBase.init()
+    },
+    addBankCard(row){
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '添加银行卡'),
+            h(addBankCardCom, {
+              ref: 'addBankCardCom',
+              props: {}
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addBankCardCom
+          obj.checkForm().then(res => {
+            if (res) {
+              let {
+                bankcardCode,bankcardPhone,bankcardType,bankcardName
+              } = obj.getData
+
+              // 发送请求
+              vm.handlesaveBankCard({
+                bankcardCode,bankcardPhone,bankcardType,bankcardName,
+                userId:row.userId
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('添加成功！');
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
+    },
+    addIdCard(row){
+      let vm = this
+      let config = {
+        loading: true,
+        render: (h) => {
+          return h('div', [
+            h('h3', '添加实名认证'),
+            h(addIDCardCom, {
+              ref: 'addIDCardCom',
+              props: {}
+            })
+          ])
+        },
+        onOk: function () {
+          let _this = this
+          let obj = this.$refs.addIDCardCom
+          obj.checkForm().then(res => {
+            if (res) {
+              let {
+                idcardCode,realName
+              } = obj.getData
+
+              // 发送请求
+              vm.handlesaveIdCard({
+                idcardCode,realName,
+                userId:row.userId
+              }).then(res => {
+                if (res.code === 20000) {
+                  vm.$Message.success('添加成功！')
+                  vm.$Modal.remove()
+                  vm.init()
+                } else {
+                  vm.$Message.error(res.msg)
+                  _this.buttonLoading = false
+                }
+              })
+            } else {
+              _this.buttonLoading = false
+            }
+          })
+        }
+      }
+      this.$Modal.confirm(config)
     },
 
     // 重置搜索条件
