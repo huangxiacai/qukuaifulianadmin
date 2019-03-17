@@ -169,8 +169,11 @@ export default {
       })
     }
   },
+  created(){
+
+  },
   destroyed(){
-    debugger
+    location.reload();
     localStorage.clear();
   }
 }
