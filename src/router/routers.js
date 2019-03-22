@@ -51,7 +51,7 @@ export default [
     meta: {
       title: '用户管理',
       notCache: true,
-      access:['admin','kefu',"hqy","wz","my","manager"],
+      access:['admin','kefu','hqy','wz','my','manager'],
     },
     component: Main,
     children: [
@@ -98,7 +98,7 @@ export default [
     name: 'fudouManage',
     meta: {
       title: '福豆管理',
-      access:['admin','kefu',"hqy","wz","my","manager"],
+      access:['admin','kefu','hqy','wz','my','manager'],
       notCache: true
     },
     component: Main,
@@ -227,7 +227,7 @@ export default [
     name: 'activeWelfareManagement',
     meta: {
       title: '福利值活跃度管理',
-      access:['admin','kefu',"hqy","wz","my","manager"],
+      access:['admin','kefu','hqy','wz','my','manager'],
       notCache: true
     },
     component: Main,
@@ -237,7 +237,7 @@ export default [
         name: 'welfareRecord',
         meta: {
           title: '福利值记录',
-          access:['admin','kefu'],
+          access:['admin','kefu','hqy','wz','my','manager'],
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/welfareRecord.vue')
@@ -256,7 +256,7 @@ export default [
         name: 'activityRecord',
         meta: {
           title: '活跃度记录',
-          access:['admin','kefu'],
+          access:['admin','kefu','hqy','wz','my','manager'],
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/activityRecord.vue')
@@ -266,7 +266,7 @@ export default [
         name: 'welfareItemManage',
         meta: {
           title: '福利值道具管理',
-          access:['admin','kefu'],
+          access:['admin','kefu','hqy','wz','my','manager'],
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/welfareItemManage.vue')
@@ -276,7 +276,7 @@ export default [
         name: 'userAchievementList',
         meta: {
           title: '充值列表',
-          access:['admin'],
+          access:['admin','hqy','wz','my','manager'],
           notCache: true
         },
         component: () => import('@/view/child-view/activeWelfareManagement/userAchievementList.vue')
@@ -289,7 +289,7 @@ export default [
     meta: {
       title: '商城管理',
       notCache: true,
-      access:['shop','admin',"hqy","wz","my","manager"],
+      access:['shop','admin','hqy','wz','my','manager'],
     },
     component: Main,
     children: [
@@ -336,7 +336,7 @@ export default [
     name: 'systemManage',
     meta: {
       title: '系统管理',
-      access:['admin',"hqy","wz","my","manager"],
+      access:['admin','hqy','wz','my','manager'],
       notCache: true
     },
     component: Main,
@@ -346,7 +346,6 @@ export default [
         name: 'postManage',
         meta: {
           title: '帖子管理',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/postManage.vue')
@@ -356,7 +355,6 @@ export default [
         name: 'systemRuleManage',
         meta: {
           title: '系统规则管理',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/systemRuleManage.vue')
@@ -366,7 +364,6 @@ export default [
         name: 'noticeManage',
         meta: {
           title: '公告管理',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/noticeManage.vue')
@@ -376,7 +373,6 @@ export default [
         name: 'indexMusicManage',
         meta: {
           title: '首页音乐管理',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/indexMusicManage.vue')
@@ -386,7 +382,6 @@ export default [
         name: 'mageManage',
         meta: {
           title: '法师管理',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/mageManage.vue')
@@ -396,7 +391,6 @@ export default [
         name: 'magePurchaseHistory',
         meta: {
           title: '法师购买记录',
-          access:['admin'],
           notCache: true
         },
         component: () => import('@/view/child-view/systemManage/magePurchaseHistory.vue')
