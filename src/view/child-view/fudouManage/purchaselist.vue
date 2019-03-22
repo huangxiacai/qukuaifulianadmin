@@ -56,6 +56,14 @@
 
       </template>
     </packageTable>
+    <Modal v-model="showImageStatus" :footer-hide="true" @on-visible-change="visibleChange" width="420">
+      <p slot="header" style="color:#f60;text-align:center">
+        <span>查看凭证</span>
+      </p>
+      <div style="text-align:center;width:100%;height:640px;overflow-y: auto">
+        <img style="width:100%;height: 100%;" :src="srcimg">
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -69,6 +77,8 @@ export default {
   mixins: [packageTableMixins],
   data () {
     return {
+      srcimg:null,
+      showImageStatus:false,
       reqBase: {
         currentPage: 1,
         length: 15,
@@ -146,7 +156,6 @@ export default {
         // }
       ],
       columnsheader: [
-
         {
           title: '用户昵称',
           key: 'postUser.nickname',
@@ -189,6 +198,7 @@ export default {
           align: 'center',
           width: 100,
           render: (h, { row }) => {
+            let vm=this;
             if (row.payOrder === null || row.payOrder === '') {
             } else {
               return h('div', {
@@ -200,10 +210,16 @@ export default {
                 h('img', {
                   style: {
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    cursor:'pointer',
                   },
                   attrs: {
                     src: this.fileImgPrefix + '' + row.payOrder
+                  },
+                  on:{
+                    click:function(){
+                      vm.clickImgShow(vm.fileImgPrefix + '' + row.payOrder);
+                    }
                   }
                 })
               ])
@@ -359,6 +375,19 @@ export default {
     },
     endDateChange (value) {
       this.$set(this.filter_form, 'endDate', value)
+    },
+    clickImgShow(img){
+      this.srcimg=img;
+      this.showImageStatus=true;
+    },
+    closeImgShow(){
+      this.showImageStatus=false;
+    },
+    visibleChange(b){
+      if(!b){
+        this.srcimg=null;
+        this.showImageStatus=false;
+      }
     },
     add () {
       let vm = this

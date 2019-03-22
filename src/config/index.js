@@ -22,7 +22,7 @@ export default {
    * 图片路线地址
    */
   imgUrl: {
-    dev: 'http://image.fuliantianxia.com/test', // http://test.fuliantianxia.com
+    dev: 'http://image.fuliantianxia.com/test', // http://image.fuliantianxia.com/prod
     pro: 'http://image.fuliantianxia.com/prod'
   },
   /**
